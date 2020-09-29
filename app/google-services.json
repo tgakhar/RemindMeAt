@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "224251646834",
+    "firebase_url": "https://remindmeat-dadc3.firebaseio.com",
+    "project_id": "remindmeat-dadc3",
+    "storage_bucket": "remindmeat-dadc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224251646834:android:f441a848c7223628aa43eb",
+        "android_client_info": {
+          "package_name": "com.example.remindmeat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224251646834-al05t56vo5ii45h7hj167uj64c6ncumv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcFq-j8wI2FE5CRjqwwvImm0jeniOLGX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224251646834-al05t56vo5ii45h7hj167uj64c6ncumv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
