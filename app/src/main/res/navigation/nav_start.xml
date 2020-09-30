@@ -20,4 +20,9 @@
         android:name="com.example.remindmeat.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" />
+    <fragment
+        android:id="@+id/forgotFragment"
+        android:name="com.example.remindmeat.forgotFragment"
+        android:label="fragment_forgot"
+        tools:layout="@layout/fragment_forgot" />
 </navigation>
