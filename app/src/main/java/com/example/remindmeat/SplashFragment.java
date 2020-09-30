@@ -5,7 +5,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ public class SplashFragment extends Fragment {
     Animation topAnim,bottomAnim;
     TextView txt_title,txt_tag;
     ImageView img_main;
+    private static int SPLASH_SCREEN=3000;
     public SplashFragment() {
         // Required empty public constructor
     }
@@ -43,6 +47,14 @@ public class SplashFragment extends Fragment {
         img_main.setAnimation(topAnim);
         txt_title.setAnimation(bottomAnim);
         txt_tag.setAnimation(bottomAnim);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                NavController navController= Navigation.findNavController(getActivity(),R.id.nav_host_main);
+                navController.navigate(R.id.loginFragment);
+            }
+        },SPLASH_SCREEN);
     }
 
     @Override
