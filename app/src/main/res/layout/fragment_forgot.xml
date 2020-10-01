@@ -15,6 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="100dp"
+        android:transitionName="logo_image"
         />
     <TextView
         android:id="@+id/txt_forgotTitle"
@@ -27,6 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_forgotLogo"
+        android:transitionName="logo_text"
         />
     <TextView
         android:id="@+id/txt_forgotHello"
@@ -39,6 +41,7 @@
         android:textColor="@color/main"
         app:layout_constraintStart_toStartOf="@id/edt_forgotEmail"
         app:layout_constraintTop_toBottomOf="@id/txt_forgotTitle"
+        android:transitionName="logo_tag"
         />
     <TextView
         android:id="@+id/txt_forgotDesc"
@@ -68,6 +71,7 @@
         android:hint="Enter Email"
         app:boxStrokeColor="@color/main"
         app:hintTextColor="@color/main"
+        android:transitionName="logo_email"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -93,6 +97,7 @@
         android:fontFamily="@font/baloo_bhai"
         android:textColor="#FFFFFF"
         android:background="@color/main"
+        android:transitionName="logo_btn"
         />
 
     <LinearLayout
@@ -103,6 +108,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_forgot"
+        android:transitionName="login_signup"
        >
 
 

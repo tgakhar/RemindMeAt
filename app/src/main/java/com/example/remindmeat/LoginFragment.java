@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
+import androidx.transition.TransitionInflater;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,11 +33,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
 
-    TextView txt_reg,txt_forgot;
+    TextView txt_reg,txt_forgot,txt_title,txt_tag;
     TextInputLayout txt_layEmail,txt_layPass;
     Button btn_login;
     String email,pass;
     FirebaseAuth auth;
+    LinearLayout layout_bottom;
+    ImageView img_logo;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -46,6 +51,8 @@ public class LoginFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setSharedElementEnterTransition(TransitionInflater.from(getContext())
+                .inflateTransition(android.R.transition.move));
 
     }
 
@@ -58,6 +65,10 @@ public class LoginFragment extends Fragment {
         txt_layEmail=view.findViewById(R.id.edt_loginEmail);
         txt_layPass=view.findViewById(R.id.edt_loginPassword);
         btn_login=view.findViewById(R.id.btn_login);
+        txt_title=view.findViewById(R.id.txt_loginTitle);
+        txt_tag=view.findViewById(R.id.txt_loginHello);
+        layout_bottom=view.findViewById(R.id.layout_bottom);
+        img_logo=view.findViewById(R.id.img_loginLogo);
         btn_login.setOnClickListener(login);
         txt_forgot.setOnClickListener(forgot);
         txt_reg.setOnClickListener(newUser);
@@ -66,7 +77,15 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View view) {
             NavController navController= Navigation.findNavController(getActivity(),R.id.nav_host_main);
-            navController.navigate(R.id.forgotFragment);
+            FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                    .addSharedElement(img_logo, "logo_image")
+                    .addSharedElement(txt_title, "logo_text")
+                    .addSharedElement(txt_tag, "logo_tag")
+                    .addSharedElement(txt_layEmail, "logo_email")
+                    .addSharedElement(btn_login, "logo_btn")
+                    .addSharedElement(layout_bottom, "login_signup")
+                    .build();
+            navController.navigate(R.id.forgotFragment,null,null,extras);
         }
     };
 
@@ -105,7 +124,16 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View v) {
             NavController navController= Navigation.findNavController(getActivity(),R.id.nav_host_main);
-            navController.navigate(R.id.registrationFragment);
+            FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                    .addSharedElement(img_logo, "logo_image")
+                    .addSharedElement(txt_title, "logo_text")
+                    .addSharedElement(txt_tag, "logo_tag")
+                    .addSharedElement(txt_layEmail, "logo_email")
+                    .addSharedElement(txt_layPass, "logo_pass")
+                    .addSharedElement(btn_login, "logo_btn")
+                    .addSharedElement(layout_bottom, "login_signup")
+                    .build();
+            navController.navigate(R.id.registrationFragment,null,null,extras);
         }
     };
 

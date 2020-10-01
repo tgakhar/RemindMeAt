@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
+import androidx.transition.TransitionInflater;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -52,7 +54,12 @@ public class SplashFragment extends Fragment {
             @Override
             public void run() {
                 NavController navController= Navigation.findNavController(getActivity(),R.id.nav_host_main);
-                navController.navigate(R.id.loginFragment);
+                FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                        .addSharedElement(img_main, "logo_image")
+                        .addSharedElement(txt_title, "logo_text")
+                        .addSharedElement(txt_tag, "logo_tag")
+                        .build();
+                navController.navigate(R.id.loginFragment,null,null,extras);
             }
         },SPLASH_SCREEN);
     }

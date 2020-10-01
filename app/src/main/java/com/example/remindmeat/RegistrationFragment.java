@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
+import androidx.transition.TransitionInflater;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +35,14 @@ import java.util.Map;
 
 
 public class RegistrationFragment extends Fragment {
-    TextView txt_login;
+    TextView txt_login,txt_title,txt_tag;
     Button btn_register;
     TextInputLayout txt_layEmail,txt_layPass,txt_layName,txt_layCPass;
     FirebaseAuth auth;
     FirebaseFirestore db;
     String name,email,pass,cPass;
+    LinearLayout layout_bottom;
+    ImageView img_logo;
     public RegistrationFragment() {
         // Required empty public constructor
     }
@@ -47,6 +53,8 @@ public class RegistrationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setSharedElementEnterTransition(TransitionInflater.from(getContext())
+                .inflateTransition(android.R.transition.move));
     }
 
     @Override
@@ -55,11 +63,15 @@ public class RegistrationFragment extends Fragment {
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
         txt_login=view.findViewById(R.id.txt_registerLogin);
+        txt_title=view.findViewById(R.id.txt_registerTitle);
+        txt_tag=view.findViewById(R.id.txt_registerHello);
+        img_logo=view.findViewById(R.id.img_registerLogo);
         txt_layEmail=view.findViewById(R.id.edt_registerEmail);
         txt_layPass=view.findViewById(R.id.edt_registerPass);
         txt_layCPass=view.findViewById(R.id.edt_registerCPass);
         txt_layName=view.findViewById(R.id.edt_registerName);
         btn_register=view.findViewById(R.id.btn_register);
+        layout_bottom=view.findViewById(R.id.layout_registerBottom);
         txt_login.setOnClickListener(oldUser);
         btn_register.setOnClickListener(registerUser);
     }
@@ -69,7 +81,17 @@ public class RegistrationFragment extends Fragment {
         @Override
         public void onClick(View v) {
             NavController navController= Navigation.findNavController(getActivity(),R.id.nav_host_main);
-            navController.navigate(R.id.loginFragment);
+            FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                    .addSharedElement(img_logo, "logo_image")
+                    .addSharedElement(txt_title, "logo_text")
+                    .addSharedElement(txt_tag, "logo_tag")
+                    .addSharedElement(txt_layEmail, "logo_email")
+                    .addSharedElement(txt_layPass, "logo_pass")
+                    .addSharedElement(btn_register, "logo_btn")
+                    .addSharedElement(layout_bottom, "login_signup")
+                    .build();
+
+            navController.navigate(R.id.loginFragment,null,null,extras);
         }
     };
 
@@ -100,7 +122,17 @@ public class RegistrationFragment extends Fragment {
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(getActivity().getApplicationContext(), "Successfully Registered!", Toast.LENGTH_LONG).show();
                                     NavController navController= Navigation.findNavController(getActivity(),R.id.nav_host_main);
-                                    navController.navigate(R.id.loginFragment);
+                                    FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                                            .addSharedElement(img_logo, "logo_image")
+                                            .addSharedElement(txt_title, "logo_text")
+                                            .addSharedElement(txt_tag, "logo_tag")
+                                            .addSharedElement(txt_layEmail, "logo_email")
+                                            .addSharedElement(txt_layPass, "logo_pass")
+                                            .addSharedElement(btn_register, "logo_btn")
+                                            .addSharedElement(layout_bottom, "login_signup")
+                                            .build();
+
+                                    navController.navigate(R.id.loginFragment,null,null,extras);
                                 }
                             });
                         }
