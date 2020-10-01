@@ -60,10 +60,18 @@ public class RegistrationFragment extends Fragment {
         txt_layCPass=view.findViewById(R.id.edt_registerCPass);
         txt_layName=view.findViewById(R.id.edt_registerName);
         btn_register=view.findViewById(R.id.btn_register);
-
+        txt_login.setOnClickListener(oldUser);
         btn_register.setOnClickListener(registerUser);
     }
 
+
+    View.OnClickListener oldUser=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            NavController navController= Navigation.findNavController(getActivity(),R.id.nav_host_main);
+            navController.navigate(R.id.loginFragment);
+        }
+    };
 
 
     View.OnClickListener registerUser=new View.OnClickListener() {
