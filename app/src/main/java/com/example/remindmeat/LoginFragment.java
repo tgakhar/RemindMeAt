@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class LoginFragment extends Fragment {
 
-    TextView txt_reg;
+    TextView txt_reg,txt_forgot;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -37,9 +37,17 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         txt_reg=view.findViewById(R.id.txt_loginRegister);
-
+        txt_forgot=view.findViewById(R.id.txt_loginForgot);
+        txt_forgot.setOnClickListener(forgot);
         txt_reg.setOnClickListener(newUser);
     }
+    View.OnClickListener forgot=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            NavController navController= Navigation.findNavController(getActivity(),R.id.nav_host_main);
+            navController.navigate(R.id.forgotFragment);
+        }
+    };
 
 
     View.OnClickListener newUser=new View.OnClickListener() {
