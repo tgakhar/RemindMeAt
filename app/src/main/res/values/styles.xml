@@ -7,5 +7,12 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
-
+    <style name="MyToolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextAppearance">@style/My_TextAppearance_Toolbar</item>
+    </style>
+    <style name="My_TextAppearance_Toolbar" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/baloo_bhai</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">25sp</item>
+    </style>
 </resources>

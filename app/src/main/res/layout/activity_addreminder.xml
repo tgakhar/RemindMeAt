@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddreminderActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/topbar_addReminder">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            android:background="@color/White"
+            app:title="Add Reminder"
+            app:titleTextColor="@color/main"
+            style="@style/MyToolbar"
+            >
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logo45" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/txt_titleAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remind me about"
+        app:layout_constraintTop_toBottomOf="@id/topbar_addReminder"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/main"
+        android:fontFamily="@font/baloo_bhai"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edt_addTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_titleAdd"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:boxStrokeColor="@color/main"
+        app:hintTextColor="@color/main">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/color_cursor"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/txt_loationAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="When i'm at"
+        app:layout_constraintTop_toBottomOf="@id/edt_addTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/main"
+        android:fontFamily="@font/baloo_bhai"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        />
+
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_addLoation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_loationAdd"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        card_view:cardCornerRadius="4dp">
+
+
+
+    </androidx.cardview.widget.CardView>
+
+    <!--    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edt_addLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_loationAdd"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:boxStrokeColor="@color/main"
+            app:hintTextColor="@color/main">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textCursorDrawable="@drawable/color_cursor"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>-->
+
+    <TextView
+        android:id="@+id/txt_addDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        app:layout_constraintTop_toBottomOf="@id/card_addLoation"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/main"
+        android:fontFamily="@font/baloo_bhai"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edt_addDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_addDescription"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:boxStrokeColor="@color/main"
+        app:hintTextColor="@color/main">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="3"
+            android:textCursorDrawable="@drawable/color_cursor"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_addRepeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edt_addDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/txt_addRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeat Reminder:-"
+            android:textColor="@color/main"
+            android:fontFamily="@font/baloo_bhai"
+            android:textSize="20sp"
+            />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_addRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:layout_marginStart="20dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_addDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/layout_addRepeat"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/txt_addDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Any specific date:-"
+            android:textColor="@color/main"
+            android:fontFamily="@font/baloo_bhai"
+            android:textSize="20sp"
+            />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edt_addDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:hint="Select date"
+            app:boxStrokeColor="@color/main"
+            app:endIconMode="clear_text"
+            app:hintTextColor="@color/main"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:textCursorDrawable="@drawable/color_cursor"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/txt_addRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reminder range"
+        app:layout_constraintTop_toBottomOf="@id/layout_addDate"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/main"
+        android:fontFamily="@font/baloo_bhai"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/layout_range"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_addRange">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="Range"
+                android:stepSize="1"
+                android:value="40.0"
+                android:valueFrom="30.0"
+                android:valueTo="150.0"
+                app:haloColor="#A6E5E5"
+                app:thumbColor="#1DACAC"
+                app:trackColorActive="@color/main"
+                app:trackColorInactive="@color/DarkGray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/txt_addRangeSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="40 m"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_addReminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/layout_range"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Add Reminder"
+        android:textSize="25sp"
+        android:fontFamily="@font/baloo_bhai"
+        android:textColor="#FFFFFF"
+        android:background="@color/main"
+        android:transitionName="logo_btn"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
