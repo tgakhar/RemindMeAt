@@ -1,9 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DashActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/layout_appbar">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_baseline_menu_24"
+            android:background="@color/White"
+            app:title="@string/title_app"
+            app:titleTextColor="@color/main"
+            style="@style/MyToolbar"
+            >
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logo45" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_appbar"
+        android:id="@+id/layout_dashTop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/btn_dashMap"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:text="Map View"
+                android:textSize="18sp"
+                android:textColor="@color/main"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/btn_dashList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:text="List View"
+                android:textColor="@color/DarkGray"
+                android:textSize="18sp"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:id="@+id/view_dash"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/DarkGray"
+        android:layout_below="@id/layout_dashTop"
+        />
+
+    <fragment
+        android:id="@+id/nav_host_dash"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view_dash"
+        app:defaultNavHost="true"/>
+
+</RelativeLayout>
