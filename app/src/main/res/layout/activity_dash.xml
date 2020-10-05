@@ -86,6 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/view_dash"
-        app:defaultNavHost="true"/>
+        app:defaultNavHost="true"
+        app:navGraph='@navigation/nav_dash' />
 
 </RelativeLayout>
