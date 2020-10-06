@@ -23,12 +23,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class LoginFragment extends Fragment {
@@ -40,7 +43,7 @@ public class LoginFragment extends Fragment {
     FirebaseAuth auth;
     LinearLayout layout_bottom;
     ImageView img_logo;
-
+    FirebaseFirestore db;
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -62,6 +65,7 @@ public class LoginFragment extends Fragment {
         txt_reg=view.findViewById(R.id.txt_loginRegister);
         txt_forgot=view.findViewById(R.id.txt_loginForgot);
         auth=FirebaseAuth.getInstance();
+        db=FirebaseFirestore.getInstance();
         txt_layEmail=view.findViewById(R.id.edt_loginEmail);
         txt_layPass=view.findViewById(R.id.edt_loginPassword);
         btn_login=view.findViewById(R.id.btn_login);
@@ -103,9 +107,8 @@ public class LoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful())
                         {
-                            Toast.makeText(getActivity().getApplicationContext(),"Login Success!",Toast.LENGTH_LONG).show();
-                            Intent intent=new Intent(getActivity(),DashActivity.class);
-                            startActivity(intent);
+                            checkIfAdmin(auth.getCurrentUser().getUid());
+
                         }else {
 
                             Toast.makeText(getActivity().getApplicationContext(),"Login Unsuccessful!",Toast.LENGTH_LONG).show();
@@ -118,6 +121,31 @@ public class LoginFragment extends Fragment {
 
         }
     };
+
+    private void checkIfAdmin(String uid) {
+
+        db.collection("Users").document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.getString("isAdmin")!=null){
+                    Toast.makeText(getActivity().getApplicationContext(),"Admin Login Success!",Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(getActivity(),AdminActivity.class);
+                    startActivity(intent);
+                }else  {
+                    Toast.makeText(getActivity().getApplicationContext(),"User Login Success!",Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(getActivity(),DashActivity.class);
+                    startActivity(intent);
+                }
+
+            }
+        });
+
+    }
+
+
+    public void getUserData(){
+
+    }
 
 
     View.OnClickListener newUser=new View.OnClickListener() {
