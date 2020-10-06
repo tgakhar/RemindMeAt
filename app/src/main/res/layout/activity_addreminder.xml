@@ -88,29 +88,15 @@
         android:layout_marginEnd="20dp"
         card_view:cardCornerRadius="4dp">
 
-
+        <fragment
+            android:id="@+id/location_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
 
     </androidx.cardview.widget.CardView>
 
-    <!--    <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edt_addLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_loationAdd"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            app:boxStrokeColor="@color/main"
-            app:hintTextColor="@color/main">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textCursorDrawable="@drawable/color_cursor"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>-->
 
     <TextView
         android:id="@+id/txt_addDescription"
