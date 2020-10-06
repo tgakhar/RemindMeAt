@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +14,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -30,12 +33,15 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class AddreminderActivity extends AppCompatActivity {
@@ -67,6 +73,8 @@ public class AddreminderActivity extends AppCompatActivity {
         edt_description=findViewById(R.id.edt_addDescription);
         repeatSwitch=findViewById(R.id.switch_addRepeat);
         btn_addReminder=findViewById(R.id.btn_addReminder);
+        btn_addReminder.setOnClickListener(addReminder);
+
         repeatSwitch.setOnCheckedChangeListener(repeat);
         edt_date.getEditText().setOnClickListener(datePicker);
         slider.addOnChangeListener(updateSlider);
@@ -148,6 +156,50 @@ public class AddreminderActivity extends AppCompatActivity {
             }else {
                 edt_date.setEnabled(true);
             }
+        }
+    };
+
+    View.OnClickListener addReminder= new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            title=edt_title.getEditText().getText().toString().trim();
+            description=edt_description.getEditText().getText().toString().trim();
+            range= (int) slider.getValue();
+            if (repeatSwitch.isChecked()){
+                repeatMode=1;
+                date=null;
+            }else{
+                repeatMode=0;
+                date=edt_date.getEditText().getText().toString();
+            }
+
+            Log.d("Addreminder","Title"+title+", Description"+description+", Range"+range+", repeateMode"+repeatMode+", Date"+date+", Address="+address);
+
+
+            Map<String, Object> reminderMap = new HashMap<>();
+
+            reminderMap.put("Title",title);
+            reminderMap.put("Description",description);
+            reminderMap.put("Address",address);
+            reminderMap.put("Repeat",repeatMode);
+            reminderMap.put("Date",date);
+            reminderMap.put("Range",range);
+            reminderMap.put("Latitude",latLng.latitude);
+            reminderMap.put("Longitude",latLng.longitude);
+            reminderMap.put("Status",status);
+
+
+            curUser=auth.getCurrentUser();
+
+            db.collection("Users").document(curUser.getUid()).collection("Reminder").add(reminderMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(AddreminderActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(AddreminderActivity.this,DashActivity.class);
+                    startActivity(intent);
+                }
+            });
+
         }
     };
 
