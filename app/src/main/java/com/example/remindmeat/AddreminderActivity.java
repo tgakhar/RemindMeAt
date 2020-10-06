@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -66,6 +67,7 @@ public class AddreminderActivity extends AppCompatActivity {
         edt_description=findViewById(R.id.edt_addDescription);
         repeatSwitch=findViewById(R.id.switch_addRepeat);
         btn_addReminder=findViewById(R.id.btn_addReminder);
+        repeatSwitch.setOnCheckedChangeListener(repeat);
         edt_date.getEditText().setOnClickListener(datePicker);
         slider.addOnChangeListener(updateSlider);
         autocompleteFragmentLocation= (AutocompleteSupportFragment)
@@ -120,8 +122,10 @@ public class AddreminderActivity extends AppCompatActivity {
             MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
             builder.setTitleText("Please select date");
             builder.setCalendarConstraints(constraint.build());
+            //builder.setTheme(R.style.MaterialCalendarTheme);
             final MaterialDatePicker<Long> materialDatePicker = builder.build();
             builder.setSelection(today);
+
             materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
 
             materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
@@ -131,6 +135,19 @@ public class AddreminderActivity extends AppCompatActivity {
 
                 }
             });
+        }
+    };
+
+    SwitchMaterial.OnCheckedChangeListener repeat=new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+            if (b){
+                edt_date.getEditText().getText().clear();
+                edt_date.setEnabled(false);
+            }else {
+                edt_date.setEnabled(true);
+            }
         }
     };
 
