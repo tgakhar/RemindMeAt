@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class DashActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button btn_mapView,btn_listView;
+    FloatingActionButton btn_addReminder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,10 +22,18 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
 
         btn_listView=findViewById(R.id.btn_dashList);
         btn_mapView=findViewById(R.id.btn_dashMap);
-
+        btn_addReminder=findViewById(R.id.dash_addReminderButton);
+        btn_addReminder.setOnClickListener(addReminder);
         btn_listView.setOnClickListener(this);
         btn_mapView.setOnClickListener(this);
     }
+    View.OnClickListener addReminder=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent=new Intent(DashActivity.this,AddreminderActivity.class);
+            startActivity(intent);
+        }
+    };
 
     @Override
     public void onClick(View view) {

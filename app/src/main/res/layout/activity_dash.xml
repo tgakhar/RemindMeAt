@@ -88,5 +88,15 @@
         android:layout_below="@id/view_dash"
         app:defaultNavHost="true"
         app:navGraph='@navigation/nav_dash' />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/dash_addReminderButton"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/ic_baseline_add_alarm_24"/>
 
 </RelativeLayout>
