@@ -1,4 +1,4 @@
-package com.example.remindmeat;
+package com.example.remindmeat.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.remindmeat.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DashActivity extends AppCompatActivity implements View.OnClickListener {

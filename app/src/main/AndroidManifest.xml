@@ -16,10 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminActivity"></activity>
-        <activity android:name=".AddreminderActivity" />
-        <activity android:name=".DashActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".View.AdminActivity"></activity>
+        <activity android:name=".View.AddreminderActivity" />
+        <activity android:name=".View.DashActivity" />
+        <activity android:name=".View.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.remindmeat.SplashFragment"
+        android:name="com.example.remindmeat.View.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.remindmeat.LoginFragment"
+        android:name="com.example.remindmeat.View.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.remindmeat.RegistrationFragment"
+        android:name="com.example.remindmeat.View.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" />
     <fragment
         android:id="@+id/forgotFragment"
-        android:name="com.example.remindmeat.forgotFragment"
+        android:name="com.example.remindmeat.View.forgotFragment"
         android:label="fragment_forgot"
         tools:layout="@layout/fragment_forgot" />
 </navigation>

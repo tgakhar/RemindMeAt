@@ -1,4 +1,4 @@
-package com.example.remindmeat;
+package com.example.remindmeat.View;
 
 import android.os.Bundle;
 
@@ -19,6 +19,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.remindmeat.R;
 
 
 public class SplashFragment extends Fragment {
@@ -41,7 +43,7 @@ public class SplashFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        topAnim= AnimationUtils.loadAnimation(getActivity(),R.anim.top_animation);
+        topAnim= AnimationUtils.loadAnimation(getActivity(), R.anim.top_animation);
         bottomAnim=AnimationUtils.loadAnimation(getActivity(),R.anim.bottom_animation);
         txt_title=view.findViewById(R.id.txt_title);
         img_main=view.findViewById(R.id.img_splashMain);
