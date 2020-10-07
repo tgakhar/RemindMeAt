@@ -31,6 +31,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -144,9 +145,6 @@ public class LoginFragment extends Fragment {
     }
 
 
-    public void getUserData(){
-
-    }
 
 
     View.OnClickListener newUser=new View.OnClickListener() {
@@ -193,5 +191,15 @@ public class LoginFragment extends Fragment {
         }
         txt_layPass.setErrorEnabled(false);
         return false;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser user=auth.getCurrentUser();
+        if (user!=null){
+            checkIfAdmin(user.getUid());
+
+        }
     }
 }
