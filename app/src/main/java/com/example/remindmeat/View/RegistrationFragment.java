@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -136,6 +137,16 @@ public class RegistrationFragment extends Fragment {
                                     navController.navigate(R.id.loginFragment,null,null,extras);
                                 }
                             });
+                        }else{
+                            try {
+                                throw  task.getException();
+                            }catch (FirebaseAuthUserCollisionException already) {
+                                Toast.makeText(getActivity().getApplicationContext(),"User Already Exist!Please login",Toast.LENGTH_LONG).show();
+                                NavController navController=Navigation.findNavController(getActivity(),R.id.nav_host_main);
+                                navController.navigate(R.id.loginFragment);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });

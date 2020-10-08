@@ -31,6 +31,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -111,10 +113,24 @@ public class LoginFragment extends Fragment {
                         {
                             checkIfAdmin(auth.getCurrentUser().getUid());
 
-                        }else {
-
-                            Toast.makeText(getActivity().getApplicationContext(),"Login Unsuccessful!",Toast.LENGTH_LONG).show();
-
+                        }else{
+                            try{
+                                throw task.getException();
+                            }catch (FirebaseAuthInvalidUserException e){
+                                Toast.makeText(getActivity().getApplicationContext(),"Email not exist!",Toast.LENGTH_LONG).show();
+                                txt_layEmail.getEditText().getText().clear();
+                                txt_layPass.getEditText().getText().clear();
+                                txt_layEmail.setError("Email not exist!");
+                                txt_layEmail.getEditText().requestFocus();
+                            }catch (FirebaseAuthInvalidCredentialsException e){
+                                // Toast.makeText(getActivity().getApplicationContext(),"Wrong Password!",Toast.LENGTH_LONG).show();
+                                txt_layEmail.getEditText().getText().clear();
+                                txt_layPass.getEditText().getText().clear();
+                                txt_layEmail.setError("Please enter valid login credentials");
+                                txt_layEmail.getEditText().requestFocus();
+                            }catch (Exception e ){
+                                Toast.makeText(getActivity().getApplicationContext(),"Login Failed!",Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 });
