@@ -1,6 +1,8 @@
 package com.example.remindmeat.View;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -10,17 +12,31 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.remindmeat.R;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 public class DashActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button btn_mapView,btn_listView;
     FloatingActionButton btn_addReminder;
+
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    MaterialToolbar materialToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash);
+        drawerLayout=findViewById(R.id.drawer_layout);
+        navigationView=findViewById(R.id.navigationView);
+        materialToolbar=findViewById(R.id.topAppBar);
 
+        setSupportActionBar(materialToolbar);
+
+        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,materialToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
         btn_listView=findViewById(R.id.btn_dashList);
         btn_mapView=findViewById(R.id.btn_dashMap);
         btn_addReminder=findViewById(R.id.dash_addReminderButton);
