@@ -57,6 +57,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.maps.android.ui.IconGenerator;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -132,6 +133,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong);
 
+                    }
+                    for (int i=0;i<reminderList.size();i++){
+                        putReminderMarker(new LatLng(reminderList.get(i).getReminderLat(),reminderList.get(i).getReminderLong()),reminderList.get(i).getReminderId());
                     }
                     Log.d("ListView","List="+reminderList);
 
@@ -215,12 +219,45 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    void putReminderMarker(LatLng latLng, String reminderId){
+
+
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        //Log.d("MapView","Marker="+i+" "+reminderList.get(i));
+        //markerOptions.title("Current Position");
+        markerOptions.alpha(1.0f);
+        IconGenerator iconFactory = new IconGenerator(getActivity());
+        iconFactory.setBackground(getResources().getDrawable(R.drawable.logo45));
+        iconFactory.setTextAppearance(R.style.myStyleText);
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon()));
+        markerOptions.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
+
+
+        Marker m = mGoogleMap.addMarker(markerOptions);
+        m.setTag(reminderId);
+        m.setTitle("vvv");
+
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+
+                return true;
+            }
+        });
+
+
+
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        mGoogleMap.setMaxZoomPreference(22);
+        mGoogleMap.setMaxZoomPreference(50);
         mGoogleMap.setMinZoomPreference(1);
         mLocationRequest = new LocationRequest();
         //  mLocationRequest.setInterval(30000); // two minute interval
