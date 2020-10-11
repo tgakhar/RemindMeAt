@@ -17,10 +17,12 @@ import com.example.remindmeat.Adapter.ReminderAdapter;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -133,6 +135,19 @@ public class ListFragment extends Fragment {
     };
 
     private void deleteReminder(View view) {
+        RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
+        final int position = viewHolder.getAdapterPosition();
+        curUser=auth.getCurrentUser();
+        DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder").document(reminderList.get(position).getReminderId());
+
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getActivity().getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                reminderList.remove(position);
+                setReminderRecycler(reminderList);
+            }
+        });
 
     }
 
