@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.remindmeat.Adapter.ReminderAdapter;
 import com.example.remindmeat.Model.Reminder;
@@ -110,6 +111,29 @@ public class ListFragment extends Fragment {
         recyclerView_listReminder.setLayoutManager(layoutManager);
         reminderAdapter = new ReminderAdapter(reminderList, getActivity());
         recyclerView_listReminder.setAdapter(reminderAdapter);
+        reminderAdapter.setOnClickListner(adapterClick);
+    }
+
+    View.OnClickListener adapterClick=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.img_delete:
+                    deleteReminder(view);
+
+                    break;
+                case R.id.img_edit:
+                    Toast.makeText(getActivity().getApplicationContext(), "Update", Toast.LENGTH_SHORT).show();
+                    break;
+
+            }
+
+
+        }
+    };
+
+    private void deleteReminder(View view) {
+
     }
 
 }
