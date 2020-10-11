@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -43,14 +44,23 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,7 +77,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     Location mLastLocation;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
-
+    FirebaseAuth auth;
+    FirebaseFirestore db;
+    FirebaseUser curUser;
+    List<Reminder> reminderList=new ArrayList<>();
     public MapFragment() {
         // Required empty public constructor
     }
@@ -89,9 +102,50 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        auth=FirebaseAuth.getInstance();
+        db=FirebaseFirestore.getInstance();
         requestLocationPermission();
         loadMap();
+        loadData();
     }
+
+    private void loadData() {
+
+        curUser=auth.getCurrentUser();
+        CollectionReference collectionReference=db.collection("Users").document(curUser.getUid()).collection("Reminder");
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document:task.getResult()){
+
+                        String reminderId=(String) document.getId();
+                        String reminderTitle=(String) document.getData().get("Title");
+                        String reminderLocation=(String) document.getData().get("Address");
+                        String reminderDescription=(String) document.getData().get("Description");
+                        String reminderDate=(String) document.getData().get("Date");
+                        Integer reminderRepeat= ((Long) document.getData().get("Repeat")).intValue();
+                        Integer reminderRange= ((Long) document.getData().get("Range")).intValue();
+                        Integer reminderStatus= ((Long) document.getData().get("Status")).intValue();
+                        Double reminderLat= (Double) document.getData().get("Latitude");
+                        Double reminderLong= (Double) document.getData().get("Longitude");
+
+                        addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong);
+
+                    }
+                    Log.d("ListView","List="+reminderList);
+
+                }
+
+            }
+        });
+    }
+
+    private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong) {
+        reminderList.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong));
+
+    }
+
 
 
     @Override
