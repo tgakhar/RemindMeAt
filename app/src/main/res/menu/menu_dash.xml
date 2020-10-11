@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home"
+            android:icon="@drawable/ic_baseline_home_24"
+            />
+
+        <item
+            android:id="@+id/nav_historyReminder"
+            android:title="Reminder History"
+            android:icon="@drawable/ic_baseline_history_24"
+            />
+    </group>
+
+
+    <group android:checkableBehavior="single">
+        <item android:title="Profile">
+            <menu>
+                <item
+                    android:id="@+id/nav_profile"
+                    android:title="Profile Settings"
+                    android:icon="@drawable/ic_baseline_account_circle_24"
+                    />
+
+                <item
+                    android:id="@+id/nav_logout"
+                    android:title="Log Out"
+                    android:icon="@drawable/ic_baseline_exit_to_app_24"
+                    />
+
+            </menu>
+        </item>
+
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:title="Communication">
+            <menu>
+                <item
+                    android:id="@+id/nav_feedBack"
+                    android:title="Rate Us"
+                    android:icon="@drawable/ic_baseline_rate_review_24"
+                    />
+
+            </menu>
+        </item>
+    </group>
+
+</menu>
