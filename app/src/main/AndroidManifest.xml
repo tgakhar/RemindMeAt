@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.AdminActivity"></activity>
+        <activity android:name=".ReminderdetailsActivity"></activity>
+        <activity android:name=".View.AdminActivity" />
         <activity android:name=".View.AddreminderActivity" />
         <activity android:name=".View.DashActivity" />
         <activity android:name=".View.MainActivity">
