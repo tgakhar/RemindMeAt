@@ -1,6 +1,7 @@
 package com.example.remindmeat.Adapter;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.remindmeat.Location.SingleShotLocationProvider;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
 
     List<Reminder> reminderList = new ArrayList<>();
     Context context;
+    LatLng current;
     private View.OnClickListener deleteClickListener,editClickListener;
 
     SwitchMaterial.OnCheckedChangeListener statusChangeListener;
@@ -40,7 +44,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
         holder.txt_title.setText(reminderList.get(position).getReminderTitle());
         holder.txt_address.setText(reminderList.get(position).getReminderLocation());
@@ -50,6 +54,25 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
             holder.switchStatus.setChecked(false);
         }
 
+        final LatLng target=new LatLng(reminderList.get(position).getReminderLat(),reminderList.get(position).getReminderLong());
+        Log.d("Adapter","Taget="+target);
+        Log.d("Adapter","Current="+current);
+        //holder.txt_distance.setText(""+checkDistance(target));
+        SingleShotLocationProvider.requestSingleUpdate(context,
+                new SingleShotLocationProvider.LocationCallback() {
+                    @Override public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+                        final Location loc1 = new Location("");
+                        loc1.setLatitude(target.latitude);
+                        loc1.setLongitude(target.longitude);
+                        final Location loc2 = new Location("");
+                        loc2.setLatitude(location.latitude);
+                        loc2.setLongitude(location.longitude);
+                        float d= BigDecimal.valueOf((loc1.distanceTo(loc2))/1000).setScale(3,BigDecimal.ROUND_HALF_UP).floatValue();
+                        holder.txt_distance.setText(""+d+" Km");
+                        Log.d("Location", "my location " +loc1.distanceTo(loc2) );
+                        Log.d("Location", "my location is " + location.latitude +location.longitude);
+                    }
+                });
 
     }
     @Override
