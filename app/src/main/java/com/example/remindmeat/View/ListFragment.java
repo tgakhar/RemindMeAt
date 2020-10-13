@@ -55,7 +55,7 @@ public class ListFragment extends Fragment {
     private FloatingActionButton fab_main, fab_all, fab_inactive,fab_active;
     private Animation fab_open, fab_close, fab_clock, fab_anticlock;
     TextView textview_all,textview_mail, textview_active;
-
+    int status=0;
     Boolean isOpen = false;
     public ListFragment() {
         // Required empty public constructor
@@ -140,6 +140,8 @@ public class ListFragment extends Fragment {
             fab_active.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.Gray)));
             fab_inactive.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.White)));
             fab_all.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.White)));
+            status=1;
+            filterData();
         }
     };
 
@@ -149,6 +151,8 @@ public class ListFragment extends Fragment {
             fab_inactive.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.Gray)));
             fab_active.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.White)));
             fab_all.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.White)));
+            status=0;
+            filterData();
         }
     };
 
@@ -163,7 +167,41 @@ public class ListFragment extends Fragment {
         }
     };
 
+
+
+    private void filterData(){
+        reminderList.clear();
+        curUser=auth.getCurrentUser();
+        CollectionReference collectionReference=db.collection("Users").document(curUser.getUid()).collection("Reminder");
+        collectionReference.whereEqualTo("Status",status).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document:task.getResult()){
+
+                        String reminderId=(String) document.getId();
+                        String reminderTitle=(String) document.getData().get("Title");
+                        String reminderLocation=(String) document.getData().get("Address");
+                        String reminderDescription=(String) document.getData().get("Description");
+                        String reminderDate=(String) document.getData().get("Date");
+                        Integer reminderRepeat= ((Long) document.getData().get("Repeat")).intValue();
+                        Integer reminderRange= ((Long) document.getData().get("Range")).intValue();
+                        Integer reminderStatus= ((Long) document.getData().get("Status")).intValue();
+                        Double reminderLat= (Double) document.getData().get("Latitude");
+                        Double reminderLong= (Double) document.getData().get("Longitude");
+
+                        addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong);
+
+                    }
+                }
+                setReminderRecycler(reminderList);
+            }
+        });
+
+    }
+
     private void loadData() {
+        reminderList.clear();
         curUser = auth.getCurrentUser();
         CollectionReference collectionReference = db.collection("Users").document(curUser.getUid()).collection("Reminder");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -187,7 +225,7 @@ public class ListFragment extends Fragment {
 
                     }
 
-
+                    setReminderRecycler(reminderList);
                 }
 
             }
