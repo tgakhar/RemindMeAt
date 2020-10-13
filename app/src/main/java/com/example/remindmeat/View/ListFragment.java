@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.example.remindmeat.Adapter.ReminderAdapter;
@@ -31,7 +33,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ListFragment extends Fragment {
@@ -117,6 +121,29 @@ public class ListFragment extends Fragment {
         reminderAdapter = new ReminderAdapter(reminderList, getActivity());
         recyclerView_listReminder.setAdapter(reminderAdapter);
         reminderAdapter.setOnClickListner(adapterClick);
+        reminderAdapter.setStatusChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) compoundButton.getTag();
+                final int position = viewHolder.getAdapterPosition();
+                curUser=auth.getCurrentUser();
+                DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder").document(reminderList.get(position).getReminderId());
+                int s=0;
+                if (b){
+                    s=1;
+                }else {
+                    s=0;
+                }
+                Map<String,Object> status=new HashMap<>();
+                status.put("Status",s);
+                docRef.update(status).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("ListFragment","Status Updated");
+                    }
+                });
+            }
+        });
     }
 
     View.OnClickListener adapterClick=new View.OnClickListener() {

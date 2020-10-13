@@ -28,8 +28,8 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
     Context context;
     LatLng current;
     private View.OnClickListener OnClick;
-
     SwitchMaterial.OnCheckedChangeListener statusChangeListener;
+
     public ReminderAdapter(List<Reminder> reminderList, Context context) {
         this.reminderList = reminderList;
         this.context = context;
@@ -86,6 +86,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
         OnClick = onClickListner;
     }
 
+    public void setStatusChangeListener(SwitchMaterial.OnCheckedChangeListener onCheckedChangeListener){
+        statusChangeListener=onCheckedChangeListener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txt_title,txt_address,txt_distance;
         ImageView img_delete,img_edit,img_distance;
@@ -108,12 +112,14 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
             txt_address.setTag(this);
             img_distance.setTag(this);
             txt_distance.setTag(this);
+            switchStatus.setTag(this);
             txt_distance.setOnClickListener(OnClick);
             img_distance.setOnClickListener(OnClick);
             txt_address.setOnClickListener(OnClick);
             txt_title.setOnClickListener(OnClick);
             img_delete.setOnClickListener(OnClick);
             img_edit.setOnClickListener(OnClick);
+            switchStatus.setOnCheckedChangeListener(statusChangeListener);
         }
     }
 }
