@@ -1,4 +1,4 @@
-package com.example.remindmeat;
+package com.example.remindmeat.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.remindmeat.Model.Reminder;
+import com.example.remindmeat.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ReminderdetailsActivity extends AppCompatActivity {

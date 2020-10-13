@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.example.remindmeat.Adapter.ReminderAdapter;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
-import com.example.remindmeat.ReminderdetailsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
