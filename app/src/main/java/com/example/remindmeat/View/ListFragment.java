@@ -1,5 +1,7 @@
 package com.example.remindmeat.View;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.example.remindmeat.Adapter.ReminderAdapter;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
+import com.example.remindmeat.ReminderdetailsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -127,12 +130,38 @@ public class ListFragment extends Fragment {
                 case R.id.img_edit:
                     Toast.makeText(getActivity().getApplicationContext(), "Update", Toast.LENGTH_SHORT).show();
                     break;
+                case R.id.txt_layoutTitle:
+                case R.id.txt_layoutLocation:
+                    showReminderDetails(view);
+                    break;
+                case R.id.txt_layoutDistance:
+                case R.id.img_location:
+                    openMap(view);
+                    break;
 
             }
 
 
         }
     };
+
+    private void openMap(View view) {
+        RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
+        final int position = viewHolder.getAdapterPosition();
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr="+reminderList.get(position).getReminderLat()+","+reminderList.get(position).getReminderLong()));
+        startActivity(intent);
+
+    }
+
+    private void showReminderDetails(View view) {
+        RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
+        final int position = viewHolder.getAdapterPosition();
+
+        Intent intent=new Intent(getActivity().getApplicationContext(), ReminderdetailsActivity.class);
+        intent.putExtra("Reminder",reminderList.get(position));
+        startActivity(intent);
+    }
 
     private void deleteReminder(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();

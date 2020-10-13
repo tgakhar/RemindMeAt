@@ -27,7 +27,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
     List<Reminder> reminderList = new ArrayList<>();
     Context context;
     LatLng current;
-    private View.OnClickListener deleteClickListener,editClickListener;
+    private View.OnClickListener OnClick;
 
     SwitchMaterial.OnCheckedChangeListener statusChangeListener;
     public ReminderAdapter(List<Reminder> reminderList, Context context) {
@@ -83,13 +83,12 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
 
     public void setOnClickListner(View.OnClickListener onClickListner)
     {
-        deleteClickListener = onClickListner;
-        editClickListener=onClickListner;
+        OnClick = onClickListner;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txt_title,txt_address,txt_distance;
-        ImageView img_delete,img_edit;
+        ImageView img_delete,img_edit,img_distance;
         SwitchMaterial switchStatus;
 
 
@@ -102,10 +101,19 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
             switchStatus=itemView.findViewById(R.id.switch_status);
             img_delete=itemView.findViewById(R.id.img_delete);
             img_edit=itemView.findViewById(R.id.img_edit);
+            img_distance=itemView.findViewById(R.id.img_location);
             img_delete.setTag(this);
             img_edit.setTag(this);
-            img_delete.setOnClickListener(deleteClickListener);
-            img_edit.setOnClickListener(editClickListener);
+            txt_title.setTag(this);
+            txt_address.setTag(this);
+            img_distance.setTag(this);
+            txt_distance.setTag(this);
+            txt_distance.setOnClickListener(OnClick);
+            img_distance.setOnClickListener(OnClick);
+            txt_address.setOnClickListener(OnClick);
+            txt_title.setOnClickListener(OnClick);
+            img_delete.setOnClickListener(OnClick);
+            img_edit.setOnClickListener(OnClick);
         }
     }
 }
