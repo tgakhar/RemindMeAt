@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".View.ListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -12,5 +12,120 @@
         android:id="@+id/recycler_listReminder"
         tools:listitem="@layout/layout_reminder"
         />
+    <TextView
+        android:id="@+id/textview_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="236dp"
+        android:layout_marginEnd="68dp"
+        android:background="#212121"
+        android:padding="8dp"
+        android:text="Active"
+        android:textColor="#ffffff"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="236dp"
+        android:layout_marginEnd="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:elevation="16dp"
+        android:focusable="true"
+        app:fabSize="mini"
+        android:visibility="invisible"
+        app:backgroundTint="@color/White"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@drawable/ic_baseline_access_alarm_24" />
+
+
+    <TextView
+        android:id="@+id/textview_inactive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="166dp"
+        android:layout_marginEnd="68dp"
+        android:background="#212121"
+        android:padding="8dp"
+        android:text="Inactive"
+        android:textColor="#ffffff"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_inactive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="166dp"
+        android:layout_marginEnd="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:elevation="16dp"
+        android:focusable="true"
+        app:fabSize="mini"
+        android:visibility="invisible"
+        app:backgroundTint="@color/White"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@drawable/ic_baseline_alarm_off_24" />
+
+    <TextView
+        android:id="@+id/textview_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="96dp"
+        android:layout_marginEnd="68dp"
+        android:background="#212121"
+        android:padding="8dp"
+        android:text="Clear"
+        android:textColor="#ffffff"
+        android:visibility="invisible" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="96dp"
+        android:layout_marginEnd="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:elevation="16dp"
+        android:focusable="true"
+        app:fabSize="mini"
+        android:visibility="invisible"
+        app:backgroundTint="@color/White"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@drawable/ic_baseline_clear_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="22dp"
+        android:layout_marginEnd="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:elevation="16dp"
+        android:focusable="true"
+        app:fabSize="mini"
+        android:visibility="visible"
+        app:backgroundTint="@color/White"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@drawable/ic_baseline_filter_list_24" />
 
 </RelativeLayout>
