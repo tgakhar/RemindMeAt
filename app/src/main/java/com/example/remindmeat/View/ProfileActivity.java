@@ -51,11 +51,17 @@ public class ProfileActivity extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
         imageView=findViewById(R.id.img_profile);
         imageView.setOnClickListener(changeProfile);
-        toolbar=findViewById(R.id.topAdminAppBar);
+        toolbar=findViewById(R.id.topAppBar_pro);
         edt_email=findViewById(R.id.edt_profileEmail);
         edt_name=findViewById(R.id.edt_profileName);
         setSupportActionBar(toolbar);
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(ProfileActivity.this,DashActivity.class);
+                startActivity(intent);
+            }
+        });
         loadData();
     }
 

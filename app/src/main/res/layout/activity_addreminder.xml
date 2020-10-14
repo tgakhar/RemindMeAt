@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/topbar_addReminder">
+        android:id="@+id/topbar_layoutAddReminder">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+            android:id="@+id/topbar_addReminder"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Remind me about"
-        app:layout_constraintTop_toBottomOf="@id/topbar_addReminder"
+        app:layout_constraintTop_toBottomOf="@id/topbar_layoutAddReminder"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/main"
         android:fontFamily="@font/baloo_bhai"

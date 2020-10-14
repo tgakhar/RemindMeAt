@@ -1,13 +1,16 @@
 package com.example.remindmeat.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,8 +18,9 @@ import com.example.remindmeat.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class DashActivity extends AppCompatActivity implements View.OnClickListener {
+public class DashActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
     Button btn_mapView,btn_listView;
     FloatingActionButton btn_addReminder;
@@ -24,6 +28,7 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     MaterialToolbar materialToolbar;
+    FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +36,18 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout=findViewById(R.id.drawer_layout);
         navigationView=findViewById(R.id.navigationView);
         materialToolbar=findViewById(R.id.topAppBar);
-
+        auth=FirebaseAuth.getInstance();
         setSupportActionBar(materialToolbar);
+        navigationView.bringToFront();
+
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,materialToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_home);
+
         btn_listView=findViewById(R.id.btn_dashList);
         btn_mapView=findViewById(R.id.btn_dashMap);
         btn_addReminder=findViewById(R.id.dash_addReminderButton);
@@ -70,5 +81,24 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
 
 
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()){
+            case R.id.nav_profile:
+                intent=new Intent(getApplicationContext(),ProfileActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.nav_logout:
+                auth.signOut();
+                intent=new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

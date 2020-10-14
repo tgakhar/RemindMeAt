@@ -25,6 +25,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -59,6 +60,7 @@ public class AddreminderActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseFirestore db;
     FirebaseUser curUser;
+    MaterialToolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +76,10 @@ public class AddreminderActivity extends AppCompatActivity {
         edt_description=findViewById(R.id.edt_addDescription);
         repeatSwitch=findViewById(R.id.switch_addRepeat);
         btn_addReminder=findViewById(R.id.btn_addReminder);
+        toolbar=findViewById(R.id.topbar_addReminder);
         btn_addReminder.setOnClickListener(addReminder);
 
+        toolbar.setNavigationOnClickListener(toolNav);
         repeatSwitch.setOnCheckedChangeListener(repeat);
         edt_date.getEditText().setOnClickListener(datePicker);
         slider.addOnChangeListener(updateSlider);
@@ -83,6 +87,13 @@ public class AddreminderActivity extends AppCompatActivity {
                 getSupportFragmentManager().findFragmentById(R.id.location_fragment);
         autoCompleteFragment();
     }
+
+    View.OnClickListener toolNav=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            onBackPressed();
+        }
+    };
 
     void autoCompleteFragment(){
         autocompleteFragmentLocation.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS));
@@ -168,7 +179,7 @@ public class AddreminderActivity extends AppCompatActivity {
             range= (int) slider.getValue();
             if (repeatSwitch.isChecked()){
                 repeatMode=1;
-                date=null;
+                date="0";
             }else{
                 repeatMode=0;
                 date=edt_date.getEditText().getText().toString();
