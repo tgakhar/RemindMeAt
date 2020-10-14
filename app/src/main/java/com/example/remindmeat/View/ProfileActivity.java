@@ -18,9 +18,13 @@ import android.widget.Toast;
 import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -36,15 +40,21 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseUser curUser;
     CircleImageView imageView;
-
+    MaterialToolbar toolbar;
+    FirebaseFirestore db;
+    TextInputLayout edt_email,edt_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+        db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
         imageView=findViewById(R.id.img_profile);
         imageView.setOnClickListener(changeProfile);
+        toolbar=findViewById(R.id.topAdminAppBar);
+        edt_email=findViewById(R.id.edt_profileEmail);
+        edt_name=findViewById(R.id.edt_profileName);
+        setSupportActionBar(toolbar);
 
         loadData();
     }
@@ -56,6 +66,16 @@ public class ProfileActivity extends AppCompatActivity {
                 Picasso.get().load(curUser.getPhotoUrl()).into(imageView);
             }
         }
+        curUser=auth.getCurrentUser();
+        db.collection("Users").document(curUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                edt_name.getEditText().setText(documentSnapshot.getString("Name"));
+                edt_email.getEditText().setText(documentSnapshot.getString("Email"));
+            }
+        });
+
+
     }
 
     CircleImageView.OnClickListener changeProfile=new View.OnClickListener() {
