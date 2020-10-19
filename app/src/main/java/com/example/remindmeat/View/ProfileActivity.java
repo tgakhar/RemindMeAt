@@ -8,18 +8,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.example.remindmeat.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -42,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
     CircleImageView imageView;
     MaterialToolbar toolbar;
     FirebaseFirestore db;
+    Button btn_dltProfile;
     TextInputLayout edt_email,edt_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +67,8 @@ public class ProfileActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.topAppBar_pro);
         edt_email=findViewById(R.id.edt_profileEmail);
         edt_name=findViewById(R.id.edt_profileName);
+        btn_dltProfile=findViewById(R.id.btn_profileDelete);
+        btn_dltProfile.setOnClickListener(DeleteProfile);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,5 +199,75 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    View.OnClickListener DeleteProfile=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            View popupview = getLayoutInflater().inflate(R.layout.popview_deleteprofile, null);
+            final PopupWindow popupWindow = new PopupWindow(popupview, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            if (Build.VERSION.SDK_INT >= 21) {
+                popupWindow.setElevation(5.0f);
+            }
+            final TextInputLayout edtPEmail = popupview.findViewById(R.id.edt_currentEmail);
+            final TextInputLayout edtPPass = popupview.findViewById(R.id.edt_currentPass);
+            Button btnSubmit = popupview.findViewById(R.id.btn_poplogin);
+            popupWindow.setFocusable(true);
+            popupWindow.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.main)));
+            popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+            btnSubmit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (TextUtils.isEmpty(edtPEmail.getEditText().getText().toString())) {
+                        edtPEmail.setError("New Email cannot be blank!");
+                        edtPEmail.requestFocus();
+                    } else if (TextUtils.isEmpty(edtPPass.getEditText().getText().toString())) {
+                        edtPPass.setError("Password cannot be blank!");
+                        edtPPass.requestFocus();
+                    } else {
+                        if (edtPPass.getEditText().getText().toString().length() < 6) {
+                            edtPPass.setError("Invalid password,Should be at least 6 characters");
+                            edtPPass.requestFocus();
+                        } else {
+                            AuthCredential credential = EmailAuthProvider.getCredential(edtPEmail.getEditText().getText().toString(), edtPPass.getEditText().getText().toString());
+                            curUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        db.collection("Users").document(curUser.getUid()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    curUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                                                                startActivity(intent);
+                                                                popupWindow.dismiss();
+                                                            } else {
+                                                                Log.d("Dashboard Fragment", "onComplete: UserDeleter" + task.getException().getMessage());
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+
+                                    } else {
+                                        Log.d("Setting Activity", "onFailure: Authentication" + task.getException().getMessage());
+                                        edtPEmail.getEditText().getText().clear();
+                                        edtPPass.getEditText().getText().clear();
+                                        edtPEmail.setError("Please enter correct details");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+
+        }
+    };
 
 }
