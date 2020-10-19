@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FeedbackActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/topbar_feedback">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            android:background="@color/White"
+            app:title="Feedback"
+            app:titleTextColor="@color/main"
+            style="@style/MyToolbar"
+            >
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_baseline_rate_review_24" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@+id/topbar_feedback"
+        android:id="@+id/layout_fed1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/logo150" />
+        <TextView
+            android:id="@+id/txt_titleFeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:text="Thank you for using our service. Can you please take 1 minute to leave a review about your experience with us?!"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_feedBack"
+            android:layout_width="match_parent"
+            android:layout_marginTop="80dp"
+            android:hint="Tell us your opinion..."
+            android:layout_height="200dp"
+            android:ems="10"
+            android:padding="10dp"
+            android:gravity="start|top"
+            android:background="#3051ca8e"
+            android:layout_margin="10dp"
+            android:inputType="textMultiLine" />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_feedBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/layout_fed1"
+        android:background="@color/main"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="Send Feedback"
+        android:textSize="25sp"
+        android:fontFamily="@font/baloo_bhai"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
