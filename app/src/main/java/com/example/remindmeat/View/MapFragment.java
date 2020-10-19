@@ -82,6 +82,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     FirebaseFirestore db;
     FirebaseUser curUser;
     List<Reminder> reminderList=new ArrayList<>();
+    ArrayList markerLocation= new ArrayList();
+    private static final float COORDINATE_OFFSET = 0.000025f;
+    private int offsetType = 0;
     public MapFragment() {
         // Required empty public constructor
     }
@@ -158,6 +161,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        loadMap();
     }
 
     @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
@@ -222,9 +226,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     void putReminderMarker(LatLng latLng, String reminderId){
 
 
-
+        markerLocation.add(latLng);
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
+        markerOptions.position(getLatLng(latLng));
         //Log.d("MapView","Marker="+i+" "+reminderList.get(i));
         //markerOptions.title("Current Position");
         markerOptions.alpha(1.0f);
@@ -250,6 +254,44 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
 
+    }
+
+    private LatLng getLatLng(LatLng latLng) {
+
+        LatLng updatedLatLng;
+
+        if (markerLocation.contains(latLng)) {
+            double latitude = 0;
+            double longitude = 0;
+            if (offsetType == 0) {
+                latitude = latLng.latitude + COORDINATE_OFFSET;
+                longitude = latLng.longitude;
+            } else if (offsetType == 1) {
+                latitude = latLng.latitude - COORDINATE_OFFSET;
+                longitude = latLng.longitude;
+            } else if (offsetType == 2) {
+                latitude = latLng.latitude;
+                longitude = latLng.longitude + COORDINATE_OFFSET;
+            } else if (offsetType == 3) {
+                latitude = latLng.latitude;
+                longitude = latLng.longitude - COORDINATE_OFFSET;
+            } else if (offsetType == 4) {
+                latitude = latLng.latitude + COORDINATE_OFFSET;
+                longitude = latLng.longitude + COORDINATE_OFFSET;
+            }
+            offsetType++;
+            if (offsetType == 5) {
+                offsetType = 0;
+            }
+
+
+            updatedLatLng = getLatLng(new LatLng(latitude, longitude));
+
+        } else {
+            markerLocation.add(latLng);
+            updatedLatLng = latLng;
+        }
+        return updatedLatLng;
     }
 
     @Override
