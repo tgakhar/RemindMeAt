@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
+import com.example.remindmeat.ReminderdialogActivity;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -246,9 +247,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-
-
-                return true;
+                if (marker.getTag()!=null){
+                    Reminder reminder = null;
+                    for(Reminder r : reminderList){
+                        if(r.getReminderId() != null && r.getReminderId().contains((String)marker.getTag())){
+                            reminder=r;
+                        }
+                    }
+                    ReminderdialogActivity reminderdialogActivity=new ReminderdialogActivity();
+                    reminderdialogActivity.showDialog(getActivity(),reminder);
+                    return true;
+                }else {
+                    return false;
+                }
             }
         });
 
@@ -365,18 +376,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Location");
+        //markerOptions.title("Current Location");
         markerOptions.alpha(0.8f);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
 
-        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-
-                return true;
-            }
-        });
     }
 }

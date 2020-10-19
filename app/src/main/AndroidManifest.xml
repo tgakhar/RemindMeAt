@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FeedbackActivity"></activity>
+        <activity android:name=".ReminderdialogActivity"></activity>
+        <activity android:name=".FeedbackActivity" />
         <activity android:name=".View.ProfileActivity" />
         <activity android:name=".View.ReminderdetailsActivity" />
         <activity android:name=".View.AdminActivity" />
