@@ -54,8 +54,9 @@ public class ProfileActivity extends AppCompatActivity {
     CircleImageView imageView;
     MaterialToolbar toolbar;
     FirebaseFirestore db;
-    Button btn_dltProfile;
+    Button btn_dltProfile,btn_resetpass;
     TextInputLayout edt_email,edt_name;
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +69,9 @@ public class ProfileActivity extends AppCompatActivity {
         edt_email=findViewById(R.id.edt_profileEmail);
         edt_name=findViewById(R.id.edt_profileName);
         btn_dltProfile=findViewById(R.id.btn_profileDelete);
+        btn_resetpass=findViewById(R.id.btn_profileChangePass);
         btn_dltProfile.setOnClickListener(DeleteProfile);
+        btn_resetpass.setOnClickListener(resetPass);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,6 +269,27 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
 
+
+        }
+    };
+
+    View.OnClickListener resetPass= new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            {
+                email=edt_email.getEditText().getText().toString().trim();
+                auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getApplicationContext(),"Email sent successfully!",Toast.LENGTH_LONG).show();
+                            auth.signOut();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            }
 
         }
     };

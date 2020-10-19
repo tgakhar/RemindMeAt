@@ -13,12 +13,20 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.remindmeat.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DashActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
@@ -29,16 +37,27 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
     NavigationView navigationView;
     MaterialToolbar materialToolbar;
     FirebaseAuth auth;
+    FirebaseUser curUser;
+    CircleImageView imageView;
+    TextView useremail, name;
+    FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash);
+        db=FirebaseFirestore.getInstance();
+        auth=FirebaseAuth.getInstance();
         drawerLayout=findViewById(R.id.drawer_layout);
         navigationView=findViewById(R.id.navigationView);
         materialToolbar=findViewById(R.id.topAppBar);
         auth=FirebaseAuth.getInstance();
         setSupportActionBar(materialToolbar);
         navigationView.bringToFront();
+        View header= navigationView.getHeaderView(0);
+        imageView = header.findViewById(R.id.profile_image);
+        useremail= header.findViewById(R.id.profile_email);
+        name= header.findViewById(R.id.profile_name);
+        loadData();
 
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,materialToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -100,5 +119,24 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void loadData() {
+        curUser=auth.getCurrentUser();
+        if(curUser!=null){
+            if(curUser.getPhotoUrl()!= null){
+                Picasso.get().load(curUser.getPhotoUrl()).into(imageView);
+            }
+        }
+        curUser=auth.getCurrentUser();
+        db.collection("Users").document(curUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                name.setText(documentSnapshot.getString("Name"));
+                useremail.setText(documentSnapshot.getString("Email"));
+            }
+        });
+
+
     }
 }
