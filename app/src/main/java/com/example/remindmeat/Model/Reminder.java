@@ -15,11 +15,12 @@ public class Reminder implements Parcelable {
     Integer reminderStatus;
     Double reminderLat;
     Double reminderLong;
+    Integer Uid;
 
     public Reminder() {
     }
 
-    public Reminder(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong) {
+    public Reminder(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong,Integer Uid) {
         this.reminderId = reminderId;
         this.reminderTitle = reminderTitle;
         this.reminderLocation = reminderLocation;
@@ -30,97 +31,8 @@ public class Reminder implements Parcelable {
         this.reminderStatus = reminderStatus;
         this.reminderLat = reminderLat;
         this.reminderLong = reminderLong;
+        this.Uid=Uid;
     }
-
-
-    protected Reminder(Parcel in) {
-        reminderId = in.readString();
-        reminderTitle = in.readString();
-        reminderLocation = in.readString();
-        reminderDescription = in.readString();
-        reminderDate = in.readString();
-        if (in.readByte() == 0) {
-            reminderRepeat = null;
-        } else {
-            reminderRepeat = in.readInt();
-        }
-        if (in.readByte() == 0) {
-            reminderRange = null;
-        } else {
-            reminderRange = in.readInt();
-        }
-        if (in.readByte() == 0) {
-            reminderStatus = null;
-        } else {
-            reminderStatus = in.readInt();
-        }
-        if (in.readByte() == 0) {
-            reminderLat = null;
-        } else {
-            reminderLat = in.readDouble();
-        }
-        if (in.readByte() == 0) {
-            reminderLong = null;
-        } else {
-            reminderLong = in.readDouble();
-        }
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(reminderId);
-        dest.writeString(reminderTitle);
-        dest.writeString(reminderLocation);
-        dest.writeString(reminderDescription);
-        dest.writeString(reminderDate);
-        if (reminderRepeat == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(reminderRepeat);
-        }
-        if (reminderRange == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(reminderRange);
-        }
-        if (reminderStatus == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(reminderStatus);
-        }
-        if (reminderLat == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(reminderLat);
-        }
-        if (reminderLong == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(reminderLong);
-        }
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Reminder> CREATOR = new Creator<Reminder>() {
-        @Override
-        public Reminder createFromParcel(Parcel in) {
-            return new Reminder(in);
-        }
-
-        @Override
-        public Reminder[] newArray(int size) {
-            return new Reminder[size];
-        }
-    };
 
     public String getReminderId() {
         return reminderId;
@@ -202,5 +114,116 @@ public class Reminder implements Parcelable {
         this.reminderLong = reminderLong;
     }
 
+    public Integer getUid() {
+        return Uid;
+    }
+
+    public void setUid(Integer uid) {
+        Uid = uid;
+    }
+
+    public static Creator<Reminder> getCREATOR() {
+        return CREATOR;
+    }
+
+    protected Reminder(Parcel in) {
+        reminderId = in.readString();
+        reminderTitle = in.readString();
+        reminderLocation = in.readString();
+        reminderDescription = in.readString();
+        reminderDate = in.readString();
+        if (in.readByte() == 0) {
+            reminderRepeat = null;
+        } else {
+            reminderRepeat = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            reminderRange = null;
+        } else {
+            reminderRange = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            reminderStatus = null;
+        } else {
+            reminderStatus = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            reminderLat = null;
+        } else {
+            reminderLat = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            reminderLong = null;
+        } else {
+            reminderLong = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            Uid = null;
+        } else {
+            Uid = in.readInt();
+        }
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(reminderId);
+        dest.writeString(reminderTitle);
+        dest.writeString(reminderLocation);
+        dest.writeString(reminderDescription);
+        dest.writeString(reminderDate);
+        if (reminderRepeat == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(reminderRepeat);
+        }
+        if (reminderRange == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(reminderRange);
+        }
+        if (reminderStatus == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(reminderStatus);
+        }
+        if (reminderLat == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(reminderLat);
+        }
+        if (reminderLong == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(reminderLong);
+        }
+        if (Uid == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(Uid);
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Reminder> CREATOR = new Creator<Reminder>() {
+        @Override
+        public Reminder createFromParcel(Parcel in) {
+            return new Reminder(in);
+        }
+
+        @Override
+        public Reminder[] newArray(int size) {
+            return new Reminder[size];
+        }
+    };
 
 }

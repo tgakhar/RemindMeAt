@@ -9,12 +9,14 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -47,6 +49,10 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_dash);
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            startForegroundService(new Intent(this, LocationService.class));
+        else
+            startService(new Intent(this, LocationService.class));
         drawerLayout=findViewById(R.id.drawer_layout);
         navigationView=findViewById(R.id.navigationView);
         materialToolbar=findViewById(R.id.topAppBar);

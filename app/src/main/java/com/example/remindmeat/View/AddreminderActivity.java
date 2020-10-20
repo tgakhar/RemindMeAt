@@ -44,6 +44,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.TimeZone;
 
 public class AddreminderActivity extends AppCompatActivity {
@@ -187,6 +188,9 @@ public class AddreminderActivity extends AppCompatActivity {
 
             Log.d("Addreminder","Title"+title+", Description"+description+", Range"+range+", repeateMode"+repeatMode+", Date"+date+", Address="+address);
 
+            Random random = new Random(System.nanoTime() % 100000);
+
+            int randomInt = random.nextInt(1000000000);
 
             Map<String, Object> reminderMap = new HashMap<>();
 
@@ -199,7 +203,7 @@ public class AddreminderActivity extends AppCompatActivity {
             reminderMap.put("Latitude",latLng.latitude);
             reminderMap.put("Longitude",latLng.longitude);
             reminderMap.put("Status",status);
-
+            reminderMap.put("UniqueId",randomInt);
 
             curUser=auth.getCurrentUser();
 

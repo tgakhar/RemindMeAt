@@ -188,8 +188,8 @@ public class ListFragment extends Fragment {
                         Integer reminderStatus= ((Long) document.getData().get("Status")).intValue();
                         Double reminderLat= (Double) document.getData().get("Latitude");
                         Double reminderLong= (Double) document.getData().get("Longitude");
-
-                        addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong);
+                        Integer reminderUid= ((Long) document.getData().get("UniqueId")).intValue();
+                        addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong, reminderUid);
 
                     }
                 }
@@ -219,8 +219,8 @@ public class ListFragment extends Fragment {
                         Integer reminderStatus = ((Long) document.getData().get("Status")).intValue();
                         Double reminderLat = (Double) document.getData().get("Latitude");
                         Double reminderLong = (Double) document.getData().get("Longitude");
-
-                        addToList(reminderId, reminderTitle, reminderLocation, reminderDescription, reminderDate, reminderRepeat, reminderRange, reminderStatus, reminderLat, reminderLong);
+                        Integer reminderUid= ((Long) document.getData().get("UniqueId")).intValue();
+                        addToList(reminderId, reminderTitle, reminderLocation, reminderDescription, reminderDate, reminderRepeat, reminderRange, reminderStatus, reminderLat, reminderLong,reminderUid);
 
                     }
 
@@ -233,9 +233,9 @@ public class ListFragment extends Fragment {
 
     }
 
-    private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong) {
+    private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong, Integer reminderUid) {
 
-        reminderList.add(new Reminder(reminderId, reminderTitle, reminderLocation, reminderDescription, reminderDate, reminderRepeat, reminderRange, reminderStatus, reminderLat, reminderLong));
+        reminderList.add(new Reminder(reminderId, reminderTitle, reminderLocation, reminderDescription, reminderDate, reminderRepeat, reminderRange, reminderStatus, reminderLat, reminderLong,reminderUid));
 
         setReminderRecycler(reminderList);
     }
