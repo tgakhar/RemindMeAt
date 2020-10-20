@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +52,7 @@ public class ListFragment extends Fragment {
     List<Reminder> reminderList = new ArrayList<>();
     RecyclerView recyclerView_listReminder;
     ReminderAdapter reminderAdapter;
-
+    EditText search;
     //For exapndable Floating menu
     private FloatingActionButton fab_main, fab_all, fab_inactive,fab_active;
     private Animation fab_open, fab_close, fab_clock, fab_anticlock;
@@ -98,7 +101,35 @@ public class ListFragment extends Fragment {
         fab_active.setOnClickListener(fabActive);
         fab_inactive.setOnClickListener(fabInactive);
         fab_all.setOnClickListener(fabAll);
+        search=view.findViewById(R.id.edt_searchList);
+        search.addTextChangedListener(searchAdpter);
+
+        searchList();
     }
+
+    private void searchList() {
+        search.setBackgroundResource(R.drawable.search_input_style);
+
+
+
+    }
+
+    TextWatcher searchAdpter=new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            reminderAdapter.getFilter().filter(s);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     View.OnClickListener fabMain=new View.OnClickListener() {
         @Override
