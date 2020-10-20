@@ -91,62 +91,12 @@ public class AdminActivity extends AppCompatActivity {
         setAdminRecycler(adminList);
     }
 
-    private void setAdminRecycler(List<Admin> adminList) {
-        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getApplicationContext()
+    private void setAdminRecycler(final List<Admin> adminList) {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()
                 , RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        adminAdapter=new AdminAdapter(adminList,AdminActivity.this);
+        adminAdapter = new AdminAdapter(adminList, AdminActivity.this);
         recyclerView.setAdapter(adminAdapter);
-        adminAdapter.setOnClickListner(adapterClick);
     }
 
-    View.OnClickListener adapterClick=new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()){
-                case R.id.img_delete:
-                    deleteUser(view);
-                    break;
-            }
-        }
-    };
-
-    private void deleteUser(View view) {
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
-        final int position = viewHolder.getAdapterPosition();
-        String url ="http://10.123.157.102:3000/delete/"+adminList.get(position).getUId();
-        Log.d("AdminActivity","Link"+url);
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        db.collection("Users").document(adminList.get(position).getUId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    Toast.makeText(AdminActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
-                                    adminList.remove(position);
-                                    adminAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        });
-
-
-                        //textView.setText("Response is: "+ response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("AdminActivity","Error="+error.getMessage());
-                Toast.makeText(AdminActivity.this, "Didn't work"+error.getMessage(), Toast.LENGTH_SHORT).show();
-                // textView.setText("That didn't work!");
-            }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
     }
-}

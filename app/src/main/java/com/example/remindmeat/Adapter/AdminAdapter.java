@@ -21,7 +21,6 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder>{
     List<Admin> adminList=new ArrayList<>();
     Context context;
 
-    private View.OnClickListener OnClick;
 
     public AdminAdapter(List<Admin> adminList, Context context) {
         this.adminList = adminList;
@@ -40,10 +39,7 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder>{
         holder.txt_email.setText(""+adminList.get(position).getEmail());
     }
 
-    public void setOnClickListner(View.OnClickListener onClickListner)
-    {
-        OnClick = onClickListner;
-    }
+
 
     @Override
     public int getItemCount() {
@@ -53,14 +49,12 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView txt_email;
-        ImageView img_delete;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_email=itemView.findViewById(R.id.txt_adminEmail);
-            img_delete=itemView.findViewById(R.id.img_delete);
 
-            img_delete.setTag(this);
-            img_delete.setOnClickListener(OnClick);
+
         }
     }
 }
