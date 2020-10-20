@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,9 +17,13 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -30,6 +35,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -61,7 +67,10 @@ public class ProfileActivity extends AppCompatActivity {
     Button btn_dltProfile,btn_resetpass;
     TextInputLayout edt_email,edt_name;
     ImageView img_edtEmail;
-    String  email,nEmail;
+    String  email,nEmail,UName;
+    SwitchMaterial switch_mode;
+    int accuracyMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +96,38 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        switch_mode= findViewById(R.id.switch_accuracy);
+        switch_mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    accuracyMode=1;
+                }
+                else{
+                    accuracyMode=0;
+                }
+                updateAccuracyMode();
+
+            }
+        });
+        toolbar.setOnMenuItemClickListener(toolListener);
         loadData();
+    }
+
+    private void updateAccuracyMode() {
+        curUser=auth.getCurrentUser();
+        Map<String,Object> usermap=new HashMap<>();
+        usermap.put("Accuracy Mode",accuracyMode);
+        db.collection("Users").document(curUser.getUid()).update(usermap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"Accuracy mode Updated Successfully!",Toast.LENGTH_LONG).show();
+                    loadData();
+                }
+            }
+        });
     }
 
     private void loadData() {
@@ -103,6 +143,12 @@ public class ProfileActivity extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 edt_name.getEditText().setText(documentSnapshot.getString("Name"));
                 edt_email.getEditText().setText(documentSnapshot.getString("Email"));
+                Integer i= ((Long) documentSnapshot.getData().get("Accuracy Mode")).intValue();
+                if (i==1){
+                    switch_mode.setChecked(true);
+                }else {
+                    switch_mode.setChecked(false);
+                }
             }
         });
 
@@ -326,13 +372,16 @@ public class ProfileActivity extends AppCompatActivity {
                         edtPEmail.setError(" New Email cannot be blank!");
                         edtPEmail.requestFocus();
                     }else if(TextUtils.isEmpty(edtNEmail.getEditText().getText().toString())) {
+                        edtPEmail.setError(null);
                         edtNEmail.setError(" Email cannot be blank!");
                         edtNEmail.requestFocus();
                     }else if(TextUtils.isEmpty(edtPPass.getEditText().getText().toString())) {
+                        edtNEmail.setError(null);
                         edtPPass.setError("Password cannot be blank!");
                         edtPPass.requestFocus();
                     }else{
                         if(edtPPass.getEditText().getText().toString().length()<6){
+                            edtPPass.setError(null);
                             edtPPass.setError("Invalid password,Should be at least 6 characters");
                             edtPPass.requestFocus();
                         } else {
@@ -399,5 +448,54 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_profile, menu);
+        return true;
+    }
+    Toolbar.OnMenuItemClickListener toolListener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.menu_update:
+                    UName=edt_name.getEditText().getText().toString();
+
+
+                    if(!checkEmptyField()){
+                        updateData();
+                    }
+
+                    Toast.makeText(getApplicationContext(),"Done",Toast.LENGTH_LONG).show();
+            }
+            return true;
+        }
+    };
+    public  boolean checkEmptyField(){
+        if(TextUtils.isEmpty(UName)) {
+            edt_name.setError("Name cannot be blank!");
+            edt_name.requestFocus();
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public void updateData(){
+        curUser=auth.getCurrentUser();
+        Map<String,Object> usermap=new HashMap<>();
+        usermap.put("Name",UName);
+        db.collection("Users").document(curUser.getUid()).update(usermap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"Updated Successfully!",Toast.LENGTH_LONG).show();
+                    loadData();
+
+                }
+            }
+        });
+    }
 
 }

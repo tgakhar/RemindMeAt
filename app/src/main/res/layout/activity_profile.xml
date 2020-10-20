@@ -98,11 +98,31 @@
         app:layout_constraintBottom_toBottomOf="@id/edt_profileEmail"
         app:layout_constraintEnd_toEndOf="@id/edt_profileName"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_Accuracy"
+        android:text="High Accuracy:-"
+        app:layout_constraintTop_toBottomOf="@+id/edt_profileEmail"
+        app:layout_constraintBottom_toTopOf="@+id/btn_profileChangePass"
+        app:layout_constraintStart_toStartOf="@id/edt_profileEmail"
+        android:layout_marginTop="20dp"
+        />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_accuracy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/txt_Accuracy"
+        app:layout_constraintTop_toTopOf="@id/txt_Accuracy"
+        app:layout_constraintBottom_toBottomOf="@id/txt_Accuracy"
+        android:checked="false"
+        android:layout_marginStart="20dp" />
     <Button
         android:id="@+id/btn_profileChangePass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/edt_profileEmail"
+        app:layout_constraintTop_toBottomOf="@id/txt_Accuracy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"

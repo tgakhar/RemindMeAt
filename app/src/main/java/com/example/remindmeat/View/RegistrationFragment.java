@@ -112,6 +112,7 @@ public class RegistrationFragment extends Fragment {
             usermap.put("Name",name);
             usermap.put("Email",email);
             usermap.put("Disabled",0);
+            usermap.put("Accuracy Mode",1);
             if (!checkEmptyField()){
                 auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
