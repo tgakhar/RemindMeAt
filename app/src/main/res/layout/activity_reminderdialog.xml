@@ -60,15 +60,35 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
-                android:text="4080 chemin de la"
+                android:text="1444 rue Mackay"
                 android:textStyle="bold"
                 android:textSize="18sp"/>
-
+            <ImageView
+                android:id="@+id/img_dialogDelete"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@id/txt_dialogLocation"
+                android:src="@drawable/ic_baseline_delete_forever_24"
+                android:layout_marginTop="15dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_dialogDelete"
+                app:layout_constraintTop_toBottomOf="@id/img_dialogDelete"
+                app:layout_constraintStart_toStartOf="@id/img_dialogDelete"
+                app:layout_constraintEnd_toEndOf="@id/img_dialogDelete"
+                android:layout_marginTop="4dp"
+                android:text="Delete"
+                android:textStyle="bold"
+                android:textSize="10sp"/>
             <ImageView
                 android:id="@+id/img_dialogEdit"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/img_dialogDelete"
                 android:layout_marginStart="15dp"
                 app:layout_constraintTop_toBottomOf="@id/txt_dialogLocation"
                 android:src="@drawable/ic_baseline_edit_24"
