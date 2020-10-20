@@ -49,10 +49,6 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_dash);
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startForegroundService(new Intent(this, LocationService.class));
-        else
-            startService(new Intent(this, LocationService.class));
         drawerLayout=findViewById(R.id.drawer_layout);
         navigationView=findViewById(R.id.navigationView);
         materialToolbar=findViewById(R.id.topAppBar);
@@ -63,7 +59,6 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         imageView = header.findViewById(R.id.profile_image);
         useremail= header.findViewById(R.id.profile_email);
         name= header.findViewById(R.id.profile_name);
-        loadData();
 
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,materialToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -79,6 +74,12 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         btn_addReminder.setOnClickListener(addReminder);
         btn_listView.setOnClickListener(this);
         btn_mapView.setOnClickListener(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            startForegroundService(new Intent(this, LocationService.class));
+        else
+            startService(new Intent(this, LocationService.class));
+
+        loadData();
     }
     View.OnClickListener addReminder=new View.OnClickListener() {
         @Override

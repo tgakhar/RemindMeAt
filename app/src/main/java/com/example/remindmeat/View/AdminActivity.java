@@ -36,7 +36,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminActivity extends AppCompatActivity {
     List<Admin> adminList=new ArrayList<>();
@@ -137,7 +139,8 @@ public class AdminActivity extends AppCompatActivity {
                         if (document.getString("isAdmin")==null){
                             String userId=(String) document.getId();
                             String userEmail=(String) document.getData().get("Email");
-                            addToList(userId,userEmail);
+                            Integer userDisable = ((Long) document.getData().get("Disabled")).intValue();
+                            addToList(userId,userEmail,userDisable);
                         }
 
                     }
@@ -148,9 +151,9 @@ public class AdminActivity extends AppCompatActivity {
 
     }
 
-    private void addToList(String userId, String userEmail) {
+    private void addToList(String userId, String userEmail, Integer userDisable) {
 
-        adminList.add(new Admin(userEmail,userId));
+        adminList.add(new Admin(userEmail,userId,userDisable));
 
         setAdminRecycler(adminList);
     }
@@ -161,6 +164,111 @@ public class AdminActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         adminAdapter = new AdminAdapter(adminList, AdminActivity.this);
         recyclerView.setAdapter(adminAdapter);
+
+        adminAdapter.setOnClickListner(adapterClick);
+    }
+
+    View.OnClickListener adapterClick=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.img_delete:
+                    deleteUser(view);
+                    break;
+                case R.id.img_disable:
+                    updateUser(view);
+                    break;
+            }
+        }
+    };
+
+    private void updateUser(View view) {
+        final int d;
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
+        final int position = viewHolder.getAdapterPosition();
+        String url;
+        if (adminList.get(position).getDisabled()==0){
+            d=1;
+             url ="http://10.123.157.102:3000/disable/"+adminList.get(position).getUId();
+        }else {
+            d=0;
+            url ="http://10.123.157.102:3000/enable/"+adminList.get(position).getUId();
+        }
+        Log.d("AdminActivity","Link"+url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        Map<String,Object>map=new HashMap<>();
+                        map.put("Disabled",d);
+
+                        db.collection("Users").document(adminList.get(position).getUId()).update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Toast.makeText(AdminActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                                    adminList.clear();
+                                    loadUser();
+                                }
+                            }
+                        });
+
+
+                        //textView.setText("Response is: "+ response.substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("AdminActivity","Error="+error.getMessage());
+                Toast.makeText(AdminActivity.this, "Didn't work"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                // textView.setText("That didn't work!");
+            }
+        });
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+    }
+
+    private void deleteUser(View view) {
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
+        final int position = viewHolder.getAdapterPosition();
+        String url ="http://10.123.157.102:3000/delete/"+adminList.get(position).getUId();
+        Log.d("AdminActivity","Link"+url);
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        db.collection("Users").document(adminList.get(position).getUId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Toast.makeText(AdminActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
+                                    adminList.remove(position);
+                                    adminAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+
+
+                        //textView.setText("Response is: "+ response.substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("AdminActivity","Error="+error.getMessage());
+                Toast.makeText(AdminActivity.this, "Didn't work"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                // textView.setText("That didn't work!");
+            }
+        });
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     }

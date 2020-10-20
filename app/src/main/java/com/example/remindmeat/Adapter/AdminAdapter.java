@@ -42,6 +42,9 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txt_email.setText("" + adminListFiltered.get(position).getEmail());
+        if (adminListFiltered.get(position).getDisabled()==1){
+            holder.img_diasable.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_baseline_block_red_24));
+        }
     }
 
     public void setOnClickListner(View.OnClickListener onClickListner) {
@@ -96,14 +99,17 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txt_email;
-        ImageView img_delete;
+        ImageView img_delete,img_diasable;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_email = itemView.findViewById(R.id.txt_adminEmail);
             img_delete = itemView.findViewById(R.id.img_delete);
+            img_diasable=itemView.findViewById(R.id.img_disable);
 
             img_delete.setTag(this);
+            img_diasable.setTag(this);
+            img_diasable.setOnClickListener(OnClick);
             img_delete.setOnClickListener(OnClick);
         }
     }

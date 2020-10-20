@@ -184,6 +184,9 @@ public class AddreminderActivity extends AppCompatActivity {
             }else{
                 repeatMode=0;
                 date=edt_date.getEditText().getText().toString();
+                if (date.length()<2){
+                    date="0";
+                }
             }
 
             Log.d("Addreminder","Title"+title+", Description"+description+", Range"+range+", repeateMode"+repeatMode+", Date"+date+", Address="+address);
