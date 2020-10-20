@@ -7,8 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,6 +27,8 @@ import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,12 +45,39 @@ public class AdminActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     AdminAdapter adminAdapter;
     MaterialToolbar toolbar;
+    EditText searchAdmin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         auth=FirebaseAuth.getInstance();
         toolbar=findViewById(R.id.topAdminAppBar);
+        searchAdmin=findViewById(R.id.edt_searchList_admin);
+        searchAdmin.addTextChangedListener(searchAdminAdapter);
+         searchAdminList();
+        searchAdmin.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if(motionEvent.getRawX() >= (searchAdmin.getRight() - searchAdmin.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // your action here
+                        searchAdmin.getText().clear();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+
+
+
+
 
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -59,6 +92,37 @@ public class AdminActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.recycler_admin);
         loadUser();
     }
+
+
+
+
+    private void searchAdminList() {
+
+        searchAdmin.setBackgroundResource(R.drawable.search_input_style);
+
+    }
+
+    TextWatcher searchAdminAdapter=new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            adminAdapter.getFilter().filter(s);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+
+
+
+
 
     private void loadUser() {
 
