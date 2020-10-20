@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.remindmeat.Location.SingleShotLocationProvider;
 import com.example.remindmeat.Model.Reminder;
+import com.example.remindmeat.View.DashActivity;
 import com.example.remindmeat.View.ReminderdetailsActivity;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -78,7 +79,7 @@ public class ReminderdialogActivity extends AppCompatActivity {
 
     }
 
-    private void showReminderDetail(Dialog dialog, Reminder reminder) {
+    private void showReminderDetail(final Dialog dialog, final Reminder reminder) {
 
         txt_tite= dialog.findViewById(R.id.txt_dialogTitle);
         txt_location= dialog.findViewById(R.id.txt_dialogLocation);
@@ -108,28 +109,27 @@ public class ReminderdialogActivity extends AppCompatActivity {
         switchMaterial.setOnCheckedChangeListener(updateStatus);
         img_location.setOnClickListener(openMap);
         txt_distance.setOnClickListener(openMap);
-        img_delete.setOnClickListener(deleteReminder);
+        img_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth=FirebaseAuth.getInstance();
+                db=FirebaseFirestore.getInstance();
+                user=auth.getCurrentUser();
+                DocumentReference docRef=db.collection("Users").document(user.getUid()).collection("Reminder").document(reminder.getReminderId());
+
+                docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    Intent intent=new Intent(dialog.getContext(), DashActivity.class);
+                    dialog.getContext().startActivity(intent);
+                    }
+                });
+            }
+        });
     }
 
-    View.OnClickListener deleteReminder=new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            auth=FirebaseAuth.getInstance();
-            db=FirebaseFirestore.getInstance();
-            user=auth.getCurrentUser();
-            DocumentReference docRef=db.collection("Users").document(user.getUid()).collection("Reminder").document(reminder.getReminderId());
 
-            docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
-                    /*Intent intent=new Intent(ReminderdialogActivity.this,DashActivity.class);
-                    startActivity(intent);*/
-                }
-            });
-        }
-    };
     SwitchMaterial.OnCheckedChangeListener updateStatus=new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
