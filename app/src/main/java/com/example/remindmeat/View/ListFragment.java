@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.remindmeat.Adapter.ReminderAdapter;
+import com.example.remindmeat.EditreminderActivity;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -331,6 +332,7 @@ public class ListFragment extends Fragment {
 
                     break;
                 case R.id.img_edit:
+                    editReminder(view);
                     Toast.makeText(getActivity().getApplicationContext(), "Update", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.txt_layoutTitle:
@@ -347,6 +349,17 @@ public class ListFragment extends Fragment {
 
         }
     };
+
+    private void editReminder(View view) {
+        RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
+        final int position = viewHolder.getAdapterPosition();
+
+        Intent intent=new Intent(getActivity().getApplicationContext(), EditreminderActivity.class);
+        intent.putExtra("Reminder",reminderList.get(position));
+        startActivity(intent);
+
+    }
+
 
     private void openMap(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
