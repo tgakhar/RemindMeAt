@@ -56,7 +56,7 @@ public class AdminActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.topAdminAppBar);
         searchAdmin=findViewById(R.id.edt_searchList_admin);
         searchAdmin.addTextChangedListener(searchAdminAdapter);
-         searchAdminList();
+
         searchAdmin.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -77,7 +77,7 @@ public class AdminActivity extends AppCompatActivity {
         });
 
 
-
+        searchAdminList();
 
 
 
@@ -269,6 +269,7 @@ public class AdminActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
                                     Toast.makeText(AdminActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
+                                    adminList.clear();
                                     loadUser();
                                 }
                             }
