@@ -103,6 +103,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
 
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = reminderListFiltered;
+                //updatelist(reminderListFiltered);
                 return filterResults;
             }
 
@@ -115,7 +116,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
             }
         };
     }
-
+    public Reminder getItem (int position) {
+        return reminderListFiltered.get(position);
+    }
 
     @Override
     public int getItemCount() {

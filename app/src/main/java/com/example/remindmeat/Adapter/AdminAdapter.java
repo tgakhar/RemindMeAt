@@ -56,6 +56,9 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder> 
         return adminListFiltered.size();
     }
 
+    public Admin getItem (int position) {
+        return adminListFiltered.get(position);
+    }
 
 
     @Override

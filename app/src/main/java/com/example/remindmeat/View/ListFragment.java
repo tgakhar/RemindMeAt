@@ -352,9 +352,8 @@ public class ListFragment extends Fragment {
     private void editReminder(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
-
         Intent intent=new Intent(getActivity().getApplicationContext(), EditreminderActivity.class);
-        intent.putExtra("Reminder",reminderList.get(position));
+        intent.putExtra("Reminder",reminderAdapter.getItem(position));
         startActivity(intent);
 
     }
@@ -364,7 +363,7 @@ public class ListFragment extends Fragment {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                Uri.parse("http://maps.google.com/maps?daddr="+reminderList.get(position).getReminderLat()+","+reminderList.get(position).getReminderLong()));
+                Uri.parse("http://maps.google.com/maps?daddr="+reminderAdapter.getItem(position).getReminderLat()+","+reminderAdapter.getItem(position).getReminderLong()));
         startActivity(intent);
 
     }
@@ -374,7 +373,7 @@ public class ListFragment extends Fragment {
         final int position = viewHolder.getAdapterPosition();
 
         Intent intent=new Intent(getActivity().getApplicationContext(), ReminderdetailsActivity.class);
-        intent.putExtra("Reminder",reminderList.get(position));
+        intent.putExtra("Reminder",reminderAdapter.getItem(position));
         startActivity(intent);
     }
 
@@ -382,14 +381,13 @@ public class ListFragment extends Fragment {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
         curUser=auth.getCurrentUser();
-        DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder").document(reminderList.get(position).getReminderId());
+        DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder").document(reminderAdapter.getItem(position).getReminderId());
 
         docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getActivity().getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                reminderList.remove(position);
-                setReminderRecycler(reminderList);
+                loadData();
             }
         });
 

@@ -188,7 +188,8 @@ public class AdminActivity extends AppCompatActivity {
     private void resetPass(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
-        auth.sendPasswordResetEmail(adminList.get(position).getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+        Admin admin=adminAdapter.getItem(position);
+        auth.sendPasswordResetEmail(admin.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
@@ -205,12 +206,13 @@ public class AdminActivity extends AppCompatActivity {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
         String url;
-        if (adminList.get(position).getDisabled()==0){
+        final Admin admin=adminAdapter.getItem(position);
+        if (admin.getDisabled()==0){
             d=1;
-             url ="http://10.123.157.102:3000/disable/"+adminList.get(position).getUId();
+             url ="http://10.123.157.102:3000/disable/"+admin.getUId();
         }else {
             d=0;
-            url ="http://10.123.157.102:3000/enable/"+adminList.get(position).getUId();
+            url ="http://10.123.157.102:3000/enable/"+admin.getUId();
         }
         Log.d("AdminActivity","Link"+url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -221,7 +223,7 @@ public class AdminActivity extends AppCompatActivity {
                         Map<String,Object>map=new HashMap<>();
                         map.put("Disabled",d);
 
-                        db.collection("Users").document(adminList.get(position).getUId()).update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        db.collection("Users").document(admin.getUId()).update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
@@ -253,7 +255,8 @@ public class AdminActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
-        String url ="http://10.123.157.102:3000/delete/"+adminList.get(position).getUId();
+        final Admin admin=adminAdapter.getItem(position);
+        String url ="http://10.123.157.102:3000/delete/"+admin.getUId();
         Log.d("AdminActivity","Link"+url);
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -261,13 +264,12 @@ public class AdminActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
-                        db.collection("Users").document(adminList.get(position).getUId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        db.collection("Users").document(admin.getUId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
                                     Toast.makeText(AdminActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
-                                    adminList.remove(position);
-                                    adminAdapter.notifyDataSetChanged();
+                                    loadUser();
                                 }
                             }
                         });
