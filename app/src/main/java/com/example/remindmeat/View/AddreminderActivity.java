@@ -98,7 +98,7 @@ public class AddreminderActivity extends AppCompatActivity {
 
     void autoCompleteFragment(){
         autocompleteFragmentLocation.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS));
-        Places.initialize(getApplicationContext(), "AIzaSyD65EBPYQAG0ITBPgmZHk_vNMKsexCEVcA");
+        Places.initialize(getApplicationContext(), "AIzaSyC3V_fpRwWxPgiIrptG_Hi7VEEGl5Fd4d8");
         PlacesClient placesClient = Places.createClient(this);
         autocompleteFragmentLocation.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @SuppressLint("UseCompatLoadingForDrawables")

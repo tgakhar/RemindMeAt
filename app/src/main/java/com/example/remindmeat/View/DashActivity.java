@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.remindmeat.FeedbackActivity;
 import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnSuccessListener;

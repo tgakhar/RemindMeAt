@@ -1,4 +1,4 @@
-package com.example.remindmeat;
+package com.example.remindmeat.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
@@ -15,12 +15,10 @@ import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.remindmeat.Location.SingleShotLocationProvider;
 import com.example.remindmeat.Model.Reminder;
-import com.example.remindmeat.View.DashActivity;
-import com.example.remindmeat.View.ReminderdetailsActivity;
+import com.example.remindmeat.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -40,7 +38,7 @@ public class ReminderdialogActivity extends AppCompatActivity {
     FirebaseUser user;
     Reminder reminder;
     TextView txt_tite,txt_location,txt_distance;
-    ImageView img_delete,img_location;
+    ImageView img_delete,img_location,img_edit;
     SwitchMaterial switchMaterial;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +73,15 @@ public class ReminderdialogActivity extends AppCompatActivity {
                 activity.startActivity(i);
             }
         });
+
+        img_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i =new Intent(activity, EditreminderActivity.class) ;
+                i.putExtra("Reminder",reminder);
+                activity.startActivity(i);
+            }
+        });
         dialog.show();
 
     }
@@ -86,6 +93,7 @@ public class ReminderdialogActivity extends AppCompatActivity {
         img_delete=dialog.findViewById(R.id.img_dialogDelete);
         txt_distance=dialog.findViewById(R.id.txt_dialogDistance);
         img_location=dialog.findViewById(R.id.img_dialogLocation);
+        img_edit=findViewById(R.id.img_dialogEdit);
         switchMaterial=dialog.findViewById(R.id.switch_dialogStatus);
         txt_tite.setText(reminder.getReminderTitle());
         txt_location.setText(reminder.getReminderLocation());
@@ -128,6 +136,8 @@ public class ReminderdialogActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
     SwitchMaterial.OnCheckedChangeListener updateStatus=new CompoundButton.OnCheckedChangeListener() {

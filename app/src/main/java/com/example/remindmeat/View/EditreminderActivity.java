@@ -1,4 +1,4 @@
-package com.example.remindmeat;
+package com.example.remindmeat.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.remindmeat.Model.Reminder;
-import com.example.remindmeat.View.DashActivity;
+import com.example.remindmeat.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -88,7 +88,7 @@ public class EditreminderActivity extends AppCompatActivity {
         setReminderData();
 
         autocompleteFragmentLocation.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS));
-        Places.initialize(getApplicationContext(), "AIzaSyD65EBPYQAG0ITBPgmZHk_vNMKsexCEVcA");
+        Places.initialize(getApplicationContext(), "AIzaSyC3V_fpRwWxPgiIrptG_Hi7VEEGl5Fd4d8");
         PlacesClient placesClient = Places.createClient(this);
         autocompleteFragmentLocation.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
@@ -118,10 +118,10 @@ public class EditreminderActivity extends AppCompatActivity {
 
         if (reminder.getReminderRepeat()==0){
             repeatSwitch.setChecked(false);
-            if (reminder.getReminderDate().length()<2){
-
-            }else {
+            if (!reminder.getReminderDate().equals("0")){
                 edt_date.getEditText().setText(reminder.getReminderDate());
+            }else {
+
             }
 
         }else{

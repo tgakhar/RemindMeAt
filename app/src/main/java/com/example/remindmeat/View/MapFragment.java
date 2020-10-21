@@ -2,8 +2,6 @@ package com.example.remindmeat.View;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -13,7 +11,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -29,7 +26,6 @@ import android.widget.Toast;
 
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
-import com.example.remindmeat.ReminderdialogActivity;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;

@@ -1,18 +1,25 @@
 package com.example.remindmeat.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ReminderdetailsActivity extends AppCompatActivity {
 
@@ -20,11 +27,15 @@ public class ReminderdetailsActivity extends AppCompatActivity {
     Reminder reminder;
     MaterialToolbar toolbar;
     TextView txt_title,txt_address,txt_description,txt_range,txt_repeat,txt_status,txt_date;
+    FirebaseUser curUser;
+    FirebaseFirestore db;
+    FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminderdetails);
-
+        auth=FirebaseAuth.getInstance();
+        db=FirebaseFirestore.getInstance();
         reminder=getIntent().getExtras().getParcelable("Reminder");
 
         //
@@ -40,11 +51,45 @@ public class ReminderdetailsActivity extends AppCompatActivity {
 
 
         toolbar.setNavigationOnClickListener(toolNav);
-
+       toolbar.setOnMenuItemClickListener(menuClick);
         navigate.setOnClickListener(Navigate);
         setTextData();
 
     }
+
+    Toolbar.OnMenuItemClickListener menuClick=new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.top_delete:
+                        deleteReminder();
+                    break;
+                case R.id.top_edit:
+                    Intent intent=new Intent(ReminderdetailsActivity.this, EditreminderActivity.class);
+                    intent.putExtra("Reminder",reminder);
+                    startActivity(intent);
+                    break;
+            }
+
+            return true;
+        }
+    };
+
+    private void deleteReminder() {
+        curUser=auth.getCurrentUser();
+        DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder").document(reminder.getReminderId());
+
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(ReminderdetailsActivity.this,DashActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
 
     private void setTextData() {
         txt_title.setText(reminder.getReminderTitle());

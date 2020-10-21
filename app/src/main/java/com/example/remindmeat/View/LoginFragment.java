@@ -146,11 +146,11 @@ public class LoginFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.getString("isAdmin")!=null){
-                    Toast.makeText(getActivity().getApplicationContext(),"Admin Login Success!",Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getActivity().getApplicationContext(),"Admin Login Success!",Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(getActivity(),AdminActivity.class);
                     startActivity(intent);
                 }else  {
-                    Toast.makeText(getActivity().getApplicationContext(),"User Login Success!",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity().getApplicationContext(),"User Login Success!",Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(getActivity(),DashActivity.class);
                     startActivity(intent);
                 }
