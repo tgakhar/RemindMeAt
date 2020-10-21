@@ -27,6 +27,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -61,7 +62,7 @@ public class EditreminderActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseFirestore db;
     FirebaseUser curUser;
-
+    MaterialToolbar toolbar;
     Reminder reminder;
 
     @Override
@@ -80,6 +81,8 @@ public class EditreminderActivity extends AppCompatActivity {
         repeatSwitch=findViewById(R.id.switch_editRepeat);
         repeatSwitch.setOnCheckedChangeListener(repeat);
         btn_editReminder=findViewById(R.id.btn_editReminder);
+        toolbar=findViewById(R.id.topbar_editReminder);
+        toolbar.setNavigationOnClickListener(toolNav);
         btn_editReminder.setOnClickListener(updateReminder);
         slider.addOnChangeListener(updateSlider);
         edt_date.getEditText().setOnClickListener(datePicker);
@@ -112,16 +115,15 @@ public class EditreminderActivity extends AppCompatActivity {
     private void setReminderData() {
         edt_title.getEditText().setText(reminder.getReminderTitle());
         edt_description.getEditText().setText(reminder.getReminderDescription());
-        edt_date.getEditText().setText(reminder.getReminderDate());
         slider.setValue(reminder.getReminderRange());
         txt_rangeValue.setText(reminder.getReminderRange()+" m");
 
         if (reminder.getReminderRepeat()==0){
             repeatSwitch.setChecked(false);
-            if (!reminder.getReminderDate().equals("0")){
-                edt_date.getEditText().setText(reminder.getReminderDate());
-            }else {
+            if (reminder.getReminderDate().equals("0")){
 
+            }else {
+                edt_date.getEditText().setText(reminder.getReminderDate());
             }
 
         }else{
@@ -252,5 +254,11 @@ public class EditreminderActivity extends AppCompatActivity {
         }
     };
 
+    View.OnClickListener toolNav=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            onBackPressed();
+        }
+    };
 
 }

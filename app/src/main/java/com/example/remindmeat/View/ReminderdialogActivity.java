@@ -93,7 +93,7 @@ public class ReminderdialogActivity extends AppCompatActivity {
         img_delete=dialog.findViewById(R.id.img_dialogDelete);
         txt_distance=dialog.findViewById(R.id.txt_dialogDistance);
         img_location=dialog.findViewById(R.id.img_dialogLocation);
-        img_edit=findViewById(R.id.img_dialogEdit);
+        img_edit=dialog.findViewById(R.id.img_dialogEdit);
         switchMaterial=dialog.findViewById(R.id.switch_dialogStatus);
         txt_tite.setText(reminder.getReminderTitle());
         txt_location.setText(reminder.getReminderLocation());

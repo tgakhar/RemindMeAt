@@ -99,7 +99,7 @@ public class ReminderdetailsActivity extends AppCompatActivity {
 
         if (reminder.getReminderRepeat()==0){
             txt_repeat.setText("Does not repeat");
-            if (reminder.getReminderDate().length()==0||reminder.getReminderDate()==null){
+            if (reminder.getReminderDate().equals("0")){
                 txt_date.setText("No specific date");
             }else{
                 txt_date.setText("On "+reminder.getReminderDate());
