@@ -178,9 +178,26 @@ public class AdminActivity extends AppCompatActivity {
                 case R.id.img_disable:
                     updateUser(view);
                     break;
+                case R.id.img_reset:
+                    resetPass(view);
+                    break;
             }
         }
     };
+
+    private void resetPass(View view) {
+        RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
+        final int position = viewHolder.getAdapterPosition();
+        auth.sendPasswordResetEmail(adminList.get(position).getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(AdminActivity.this, "Password reset link sent successfully", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
 
     private void updateUser(View view) {
         final int d;

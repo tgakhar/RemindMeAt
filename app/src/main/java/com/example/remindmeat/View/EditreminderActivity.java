@@ -81,7 +81,7 @@ public class EditreminderActivity extends AppCompatActivity {
         repeatSwitch=findViewById(R.id.switch_editRepeat);
         repeatSwitch.setOnCheckedChangeListener(repeat);
         btn_editReminder=findViewById(R.id.btn_editReminder);
-        toolbar=findViewById(R.id.topbar_editReminder);
+        toolbar=findViewById(R.id.topAppBar_edit);
         toolbar.setNavigationOnClickListener(toolNav);
         btn_editReminder.setOnClickListener(updateReminder);
         slider.addOnChangeListener(updateSlider);

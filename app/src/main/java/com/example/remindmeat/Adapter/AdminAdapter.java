@@ -99,18 +99,21 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txt_email;
-        ImageView img_delete,img_diasable;
+        ImageView img_delete,img_diasable,img_reset;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_email = itemView.findViewById(R.id.txt_adminEmail);
             img_delete = itemView.findViewById(R.id.img_delete);
             img_diasable=itemView.findViewById(R.id.img_disable);
-
+            img_reset=itemView.findViewById(R.id.img_reset);
             img_delete.setTag(this);
             img_diasable.setTag(this);
+            img_reset.setTag(this);
             img_diasable.setOnClickListener(OnClick);
             img_delete.setOnClickListener(OnClick);
+            img_reset.setOnClickListener(OnClick);
+            itemView.setTag(this);
         }
     }
 }
