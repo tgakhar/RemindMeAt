@@ -9,18 +9,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 public class FeedbackActivity extends AppCompatActivity {
     Button btn_send;
     EditText txt_message;
     String message;
-
+    MaterialToolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
         btn_send=findViewById(R.id.btn_feedBack);
         txt_message=findViewById(R.id.edt_feedBack);
-
+        toolbar=findViewById(R.id.topAppBar_feedback);
+        toolbar.setNavigationOnClickListener(toolNav);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -30,8 +33,15 @@ public class FeedbackActivity extends AppCompatActivity {
         });
     }
 
+    View.OnClickListener toolNav=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            onBackPressed();
+        }
+    };
+
     private void sendFeedback() {
-        String[] TO = {"dhruvj5418@gmail.com","karthik.bablu25@gmail.com","gakhartanvi@gmail.com","nishuuukaur12@gmail.com","akshay9varma@gmail.com","dankharachintan@gmail.com"};
+        String[] TO = {"dhruvj5418@gmail.com","karthik.bablu25@gmail.com","gakhartanvi@gmail.com","nishuuukaur12@gmail.com","akshay9varma@gmail.com","dankharachintan@gmail.com","saikamaljit181294@gmail.com"};
         String[] CC = {""};
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 

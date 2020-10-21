@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.remindmeat.FeedbackActivity;
 import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -117,7 +118,10 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
                 intent=new Intent(getApplicationContext(),ProfileActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.nav_feedBack:
+                intent=new Intent(getApplicationContext(), FeedbackActivity.class);
+                startActivity(intent);
+                break;
             case R.id.nav_logout:
                 auth.signOut();
                 intent=new Intent(getApplicationContext(),MainActivity.class);
