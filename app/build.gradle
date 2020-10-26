@@ -51,4 +51,5 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'in.shadowfax:proswipebutton:1.2.2'
 }
