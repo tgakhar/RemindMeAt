@@ -74,10 +74,15 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         btn_addReminder.setOnClickListener(addReminder);
         btn_listView.setOnClickListener(this);
         btn_mapView.setOnClickListener(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            //Intent intent=new Intent(this,LocationService.class);
+
             startForegroundService(new Intent(this, LocationService.class));
-        else
+        }
+        else{
+           // Intent intent=new Intent(this,LocationService.class);
             startService(new Intent(this, LocationService.class));
+        }
 
         loadData();
     }

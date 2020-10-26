@@ -3,6 +3,7 @@ package com.example.remindmeat.Location;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -32,10 +33,10 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -45,6 +46,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -54,7 +56,6 @@ import io.grpc.android.BuildConfig;
 public class LocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String YES_ACTION = "YES_ACTION";
     FirebaseAuth auth;
     FirebaseFirestore db;
     FirebaseUser user;
@@ -85,16 +86,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         db=FirebaseFirestore.getInstance();
         user=auth.getCurrentUser();
 
-        //loadData();
-            readData(new MyCallback() {
-                @Override
-                public void onCallback(List<Reminder> attractionsList) {
-                    for (Reminder r:attractionsList){
-                        reminderList.add(r);
-                    }
-
-                }
-            });
+        loadData();
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -103,25 +95,27 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
                 //location request
                 Log.d(TAG,"New Location="+locationResult);
                 Location l=locationResult.getLastLocation();
-                double lat2 = l.getLatitude();
-                double lng2 = l.getLongitude();
+                final double lat2 = l.getLatitude();
+                final double lng2 = l.getLongitude();
                 showNotificationAndStartForegroundService();
-                Log.d("Location","T");
-                Log.d("ListView","List3="+reminderList);
-                for (Reminder r:reminderList){
-                    Log.d("Location","Test="+r.getReminderId());
+                             Log.d("Location","T");
 
-                    if (distance(r.getReminderLat(), r.getReminderLong(), lat2, lng2) < r.getReminderRange()) { // if distance < 0.1 miles we take locations as equal
-                        //do what you want to do...
-                        Log.d("Matched,","Location matched"+r.getReminderLocation());
 
-                        createNotification(r);
+                            Log.d("ListView","List3="+reminderList);
+                            //Log.d("Location","Test="+reminderList.getReminderId());
+                        for (Reminder r:reminderList){
+                            Log.d("Location","Test="+r.getReminderId());
 
-                    }
-                }
+                            if (distance(r.getReminderLat(), r.getReminderLong(), lat2, lng2) < r.getReminderRange()) { // if distance < 0.1 miles we take locations as equal
+                                //do what you want to do...
+                                Log.d("Matched,","Location matched"+r.getReminderLocation());
+
+                                //createNotification(r);
+
+                            }
+                        }
+
                 // lat1 and lng1 are the values of a previously stored location
-
-
 
             }
             private double distance(double lat1, double lng1, double lat2, double lng2) {
@@ -144,7 +138,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
                 return dist; // output distance, in MILES
             }
         };
+
     }
+
 
     private void createNotification(Reminder r) {
         NotificationCompat.Builder builder=new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID);
@@ -153,12 +149,6 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         builder.setContentTitle(r.getReminderTitle());
         builder.setContentText(r.getReminderDescription());
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-
-
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(alarmSound);
-        NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(getApplicationContext());
-        notificationManagerCompat.notify(r.getUid(), builder.build());
     }
 
     private void createNotificationChannel() {
@@ -179,84 +169,50 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
     private void loadData() {
         user=auth.getCurrentUser();
+        String date=new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
+        Log.d("LocationService","Date="+date);
         CollectionReference collectionReference=db.collection("Users").document(user.getUid()).collection("Reminder");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Task task1 = collectionReference
+                .whereIn("Date", Arrays.asList("0",date))
+                .get();
+
+        Task task2 = collectionReference
+                .whereEqualTo("Status", "1")
+                .get();
+
+        Tasks.whenAllSuccess(task1, task2).addOnSuccessListener(new OnSuccessListener<List<Object>>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                String date=new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
-                Log.d("LocationService","Date="+date);
-                if (task.isSuccessful()){
-                    ArrayList<Reminder> test=new ArrayList<>();
-                    for (QueryDocumentSnapshot document:task.getResult()){
-                        if (document.getData().get("Date")=="0"||document.getData().get("Date").equals(date)){
-                            String reminderId=(String) document.getId();
-                            String reminderTitle=(String) document.getData().get("Title");
-                            String reminderLocation=(String) document.getData().get("Address");
-                            String reminderDescription=(String) document.getData().get("Description");
-                            String reminderDate=(String) document.getData().get("Date");
-                            Integer reminderRepeat= ((Long) document.getData().get("Repeat")).intValue();
-                            Integer reminderRange= ((Long) document.getData().get("Range")).intValue();
-                            Integer reminderStatus= ((Long) document.getData().get("Status")).intValue();
-                            Double reminderLat= (Double) document.getData().get("Latitude");
-                            Double reminderLong= (Double) document.getData().get("Longitude");
-                            Integer reminderUid= ((Long) document.getData().get("UniqueId")).intValue();
-                            test.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
-                            //addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid);
-                        }
+            public void onSuccess(List<Object> objects) {
+                for (Object object : objects) {
+                    QuerySnapshot queryDocumentSnapshots = (QuerySnapshot) object;
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Log.d("LocationService","Document="+document.getData());
+                        String reminderId= document.getId();
+                        String reminderTitle=(String) document.getData().get("Title");
+                        String reminderLocation=(String) document.getData().get("Address");
+                        String reminderDescription=(String) document.getData().get("Description");
+                        String reminderDate=(String) document.getData().get("Date");
+                        Integer reminderRepeat= ((Long) document.getData().get("Repeat")).intValue();
+                        Integer reminderRange= ((Long) document.getData().get("Range")).intValue();
+                        Integer reminderStatus= ((Long) document.getData().get("Status")).intValue();
+                        Double reminderLat= (Double) document.getData().get("Latitude");
+                        Double reminderLong= (Double) document.getData().get("Longitude");
+                        Integer reminderUid= ((Long) document.getData().get("UniqueId")).intValue();
+                        //test.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
+                        addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid);
+                        Log.d("ListView","ListId="+reminderId);
+
                     }
-
-                    reminderList=test;
-
-                   // Log.d("ListView","List="+reminderList);
-
-                }
-
-            }
-        });
-    }
-
-    public interface MyCallback {
-        void onCallback(List<Reminder> attractionsList);
-    }
-
-    public void readData(final MyCallback myCallback) {
-        CollectionReference collectionReference=db.collection("Users").document(user.getUid()).collection("Reminder");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    String date=new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
-                    Log.d("LocationService","Date="+date);
-                    List<Reminder> attractionsList = new ArrayList<>();
-                    for (QueryDocumentSnapshot document:task.getResult()){
-                        if (document.getData().get("Date")=="0"||document.getData().get("Date").equals(date)){
-                            String reminderId=(String) document.getId();
-                            String reminderTitle=(String) document.getData().get("Title");
-                            String reminderLocation=(String) document.getData().get("Address");
-                            String reminderDescription=(String) document.getData().get("Description");
-                            String reminderDate=(String) document.getData().get("Date");
-                            Integer reminderRepeat= ((Long) document.getData().get("Repeat")).intValue();
-                            Integer reminderRange= ((Long) document.getData().get("Range")).intValue();
-                            Integer reminderStatus= ((Long) document.getData().get("Status")).intValue();
-                            Double reminderLat= (Double) document.getData().get("Latitude");
-                            Double reminderLong= (Double) document.getData().get("Longitude");
-                            Integer reminderUid= ((Long) document.getData().get("UniqueId")).intValue();
-                            attractionsList.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
-                            //addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid);
-                        }
-                    }
-                    myCallback.onCallback(attractionsList);
                 }
             }
         });
     }
+
+
 
     private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong, Integer reminderUid) {
         reminderList.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
-      /*  for (Reminder r:reminderList){
-            Log.d("Location","ListL="+r.getReminderId());
-        }*/
-
+        Log.d("Location","ListL="+reminderId);
     }
 
     @Override
