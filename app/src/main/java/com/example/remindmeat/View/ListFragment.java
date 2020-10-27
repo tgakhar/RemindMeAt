@@ -1,5 +1,7 @@
 package com.example.remindmeat.View;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.net.Uri;
@@ -380,16 +382,40 @@ public class ListFragment extends Fragment {
     private void deleteReminder(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
-        curUser=auth.getCurrentUser();
-        DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder").document(reminderAdapter.getItem(position).getReminderId());
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Do you want to delete the reminder?")
+                .setCancelable(false)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        curUser=auth.getCurrentUser();
+                        DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder").document(reminderAdapter.getItem(position).getReminderId());
 
-        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getActivity().getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                loadData();
-            }
-        });
+                        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getActivity().getApplicationContext(),"Reminder deleted successfully!!!",
+                                        Toast.LENGTH_SHORT).show();
+                                  loadData();
+                            }
+                        });
+
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Action for 'NO' Button
+                        dialog.cancel();
+                        Toast.makeText(getActivity().getApplicationContext(),"Reminder is still available!!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+        //Creating dialog box
+        AlertDialog alert = builder.create();
+        //Setting the title manually
+        alert.setTitle("Delete!!!");
+        alert.show();
+
 
     }
 
