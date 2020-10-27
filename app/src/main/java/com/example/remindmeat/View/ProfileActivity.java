@@ -29,7 +29,9 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.R;
+import com.example.remindmeat.ViewnotificationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -124,6 +126,16 @@ public class ProfileActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(getApplicationContext(),"Accuracy mode Updated Successfully!",Toast.LENGTH_LONG).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        //Intent intent=new Intent(this,LocationService.class);
+                        stopService(new Intent(ProfileActivity.this, LocationService.class));
+                        startForegroundService(new Intent(ProfileActivity.this, LocationService.class));
+                    }
+                    else{
+                        // Intent intent=new Intent(this,LocationService.class);
+                        stopService(new Intent(ProfileActivity.this, LocationService.class));
+                        startService(new Intent(ProfileActivity.this, LocationService.class));
+                    }
                     loadData();
                 }
             }

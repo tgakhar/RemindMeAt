@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
 import com.google.android.gms.common.api.Status;
@@ -245,6 +247,16 @@ public class EditreminderActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){
                         Toast.makeText(EditreminderActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                            //Intent intent=new Intent(this,LocationService.class);
+                            stopService(new Intent(EditreminderActivity.this, LocationService.class));
+                            startForegroundService(new Intent(EditreminderActivity.this, LocationService.class));
+                        }
+                        else{
+                            // Intent intent=new Intent(this,LocationService.class);
+                            stopService(new Intent(EditreminderActivity.this, LocationService.class));
+                            startService(new Intent(EditreminderActivity.this, LocationService.class));
+                        }
                         Intent intent=new Intent(EditreminderActivity.this, DashActivity.class);
                         startActivity(intent);
                     }

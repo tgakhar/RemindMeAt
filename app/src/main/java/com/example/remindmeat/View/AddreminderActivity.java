@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +17,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.R;
+import com.example.remindmeat.ViewnotificationActivity;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -214,6 +217,16 @@ public class AddreminderActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
                     Toast.makeText(AddreminderActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        //Intent intent=new Intent(this,LocationService.class);
+                        stopService(new Intent(AddreminderActivity.this, LocationService.class));
+                        startForegroundService(new Intent(AddreminderActivity.this, LocationService.class));
+                    }
+                    else{
+                        // Intent intent=new Intent(this,LocationService.class);
+                        stopService(new Intent(AddreminderActivity.this, LocationService.class));
+                        startService(new Intent(AddreminderActivity.this, LocationService.class));
+                    }
                     Intent intent=new Intent(AddreminderActivity.this,DashActivity.class);
                     startActivity(intent);
                 }

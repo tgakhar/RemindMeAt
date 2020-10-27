@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -255,7 +256,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }
                     ReminderdialogActivity reminderdialogActivity=new ReminderdialogActivity();
-                    reminderdialogActivity.showDialog(getActivity(),reminder);
+                    try {
+                        reminderdialogActivity.showDialog(getActivity(),reminder);
+                    }
+                    catch (WindowManager.BadTokenException e) {
+                        //use a log message
+                    }
                     return true;
                 }else {
                     return false;

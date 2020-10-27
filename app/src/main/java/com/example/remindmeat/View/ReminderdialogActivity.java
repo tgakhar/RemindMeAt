@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.Location.SingleShotLocationProvider;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
@@ -40,6 +42,7 @@ public class ReminderdialogActivity extends AppCompatActivity {
     TextView txt_tite,txt_location,txt_distance;
     ImageView img_delete,img_location,img_edit;
     SwitchMaterial switchMaterial;
+    Dialog dialog1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,7 @@ public class ReminderdialogActivity extends AppCompatActivity {
     public void showDialog(final FragmentActivity activity, final Reminder reminder) {
         this.reminder=reminder;
         final Dialog dialog = new Dialog(activity);
+        dialog1=dialog;
         dialog.requestWindowFeature(Window.FEATURE_ACTION_MODE_OVERLAY);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.activity_reminderdialog);
@@ -128,7 +132,16 @@ public class ReminderdialogActivity extends AppCompatActivity {
                 docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                            //Intent intent=new Intent(this,LocationService.class);
+                            dialog.getContext().stopService(new Intent(dialog.getContext(), LocationService.class));
+                            dialog.getContext().startForegroundService(new Intent(dialog.getContext(), LocationService.class));
+                        }
+                        else{
+                            // Intent intent=new Intent(this,LocationService.class);
+                            dialog.getContext().stopService(new Intent(dialog.getContext(), LocationService.class));
+                            dialog.getContext().startService(new Intent(dialog.getContext(), LocationService.class));
+                        }
                     Intent intent=new Intent(dialog.getContext(), DashActivity.class);
                     dialog.getContext().startActivity(intent);
                     }
@@ -160,6 +173,16 @@ public class ReminderdialogActivity extends AppCompatActivity {
             docRef.update(status).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        //Intent intent=new Intent(this,LocationService.class);
+                        dialog1.getContext().stopService(new Intent(dialog1.getContext(), LocationService.class));
+                        dialog1.getContext().startForegroundService(new Intent(dialog1.getContext(), LocationService.class));
+                    }
+                    else{
+                        // Intent intent=new Intent(this,LocationService.class);
+                        dialog1.getContext().stopService(new Intent(dialog1.getContext(), LocationService.class));
+                        dialog1.getContext().startService(new Intent(dialog1.getContext(), LocationService.class));
+                    }
                     //Toast.makeText(getActivity().getApplicationContext(), "Status Updated", Toast.LENGTH_SHORT).show();
                 }
             });

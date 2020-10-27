@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.remindmeat.Adapter.ReminderAdapter;
+import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -317,6 +319,16 @@ public class ListFragment extends Fragment {
                 docRef.update(status).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                            //Intent intent=new Intent(this,LocationService.class);
+                            getActivity().getApplicationContext().stopService(new Intent(getActivity().getApplicationContext(), LocationService.class));
+                            getActivity().getApplicationContext().startForegroundService(new Intent(getActivity().getApplicationContext(), LocationService.class));
+                        }
+                        else{
+                            // Intent intent=new Intent(this,LocationService.class);
+                            getActivity().getApplicationContext().stopService(new Intent(getActivity().getApplicationContext(), LocationService.class));
+                            getActivity().getApplicationContext().startService(new Intent(getActivity().getApplicationContext(), LocationService.class));
+                        }
                         Log.d("ListFragment","Status Updated");
                     }
                 });
@@ -396,6 +408,16 @@ public class ListFragment extends Fragment {
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(getActivity().getApplicationContext(),"Reminder deleted successfully!!!",
                                         Toast.LENGTH_SHORT).show();
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                                    //Intent intent=new Intent(this,LocationService.class);
+                                    getActivity().getApplicationContext().stopService(new Intent(getActivity().getApplicationContext(), LocationService.class));
+                                    getActivity().getApplicationContext().startForegroundService(new Intent(getActivity().getApplicationContext(), LocationService.class));
+                                }
+                                else{
+                                    // Intent intent=new Intent(this,LocationService.class);
+                                    getActivity().getApplicationContext().stopService(new Intent(getActivity().getApplicationContext(), LocationService.class));
+                                    getActivity().getApplicationContext().startService(new Intent(getActivity().getApplicationContext(), LocationService.class));
+                                }
                                   loadData();
                             }
                         });
