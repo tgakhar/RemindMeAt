@@ -1,5 +1,6 @@
 package com.example.remindmeat.View;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -37,6 +38,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
 
 public class LoginFragment extends Fragment {
 
@@ -48,6 +52,8 @@ public class LoginFragment extends Fragment {
     LinearLayout layout_bottom;
     ImageView img_logo;
     FirebaseFirestore db;
+    private final int REQUEST_LOCATION_PERMISSION = 1;
+
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -80,6 +86,7 @@ public class LoginFragment extends Fragment {
         btn_login.setOnClickListener(login);
         txt_forgot.setOnClickListener(forgot);
         txt_reg.setOnClickListener(newUser);
+        requestLocationPermission();
     }
     View.OnClickListener forgot=new View.OnClickListener() {
         @Override
@@ -96,6 +103,28 @@ public class LoginFragment extends Fragment {
             navController.navigate(R.id.forgotFragment,null,null,extras);
         }
     };
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
+    public void requestLocationPermission() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
+        if(EasyPermissions.hasPermissions(getActivity(), perms)) {
+            Toast.makeText(getActivity().getApplicationContext(), "Permission already granted", Toast.LENGTH_SHORT).show();
+
+        }
+        else {
+            EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
+        }
+    }
+
+
 
     View.OnClickListener login=new View.OnClickListener() {
         @Override

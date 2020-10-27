@@ -42,6 +42,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -63,14 +64,14 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     FirebaseUser user;
     List<Reminder> reminderList=new ArrayList<>();
     public static final String TAG = LocationService.class.getSimpleName();
-    private static final long LOCATION_REQUEST_INTERVAL = 10000;
-    private static final float LOCATION_REQUEST_DISPLACEMENT = 5.0f;
+    private static final long LOCATION_REQUEST_INTERVAL = 30000;
+    private static final float LOCATION_REQUEST_DISPLACEMENT = 30;
     private GoogleApiClient mGoogleApiClient;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
     private static final String CHANNEL_ID = "Notification";
-
+    private static int accuracyMode = 100;
 
 
     @Nullable
@@ -87,7 +88,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
         user=auth.getCurrentUser();
-
+        getAccuracyMode();
         loadData();
         mLocationCallback = new LocationCallback() {
             @Override
@@ -141,6 +142,21 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
             }
         };
 
+    }
+
+    private void getAccuracyMode() {
+        user=auth.getCurrentUser();
+        db.collection("Users").document(user.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Integer i= ((Long) documentSnapshot.getData().get("Accuracy Mode")).intValue();
+                if (i==1){
+                    accuracyMode=100;
+                }else {
+                   accuracyMode=102;
+                }
+            }
+        });
     }
 
 
@@ -264,10 +280,10 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
      */
     private void createLocationRequest() {
         mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setPriority(accuracyMode);
         mLocationRequest.setInterval(LOCATION_REQUEST_INTERVAL);
         mLocationRequest.setSmallestDisplacement(LOCATION_REQUEST_DISPLACEMENT);
-
+        Log.d("LocationAccurecy","Accu="+accuracyMode);
         requestLocationUpdate();
     }
 
