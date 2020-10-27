@@ -47,6 +47,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -208,7 +209,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
     private void loadData() {
         user=auth.getCurrentUser();
-        String date=new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
+        String date= DateFormat.getDateInstance().format(new Date());
         Log.d("LocationService","Date="+date);
         CollectionReference collectionReference=db.collection("Users").document(user.getUid()).collection("Reminder");
         Task task1 = collectionReference
