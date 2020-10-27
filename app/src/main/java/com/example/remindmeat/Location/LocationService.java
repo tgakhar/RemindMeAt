@@ -25,7 +25,9 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.remindmeat.Model.Reminder;
 
+import com.example.remindmeat.Mynotification;
 import com.example.remindmeat.R;
+import com.example.remindmeat.ViewnotificationActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -110,7 +112,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
                                 //do what you want to do...
                                 Log.d("Matched,","Location matched"+r.getReminderLocation());
 
-                                //createNotification(r);
+                                createNotification(r);
 
                             }
                         }
@@ -149,6 +151,27 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         builder.setContentTitle(r.getReminderTitle());
         builder.setContentText(r.getReminderDescription());
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        Intent intent = new Intent(this, ViewnotificationActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("Reminder",r);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, r.getUid(), intent, 0);
+        builder.setContentIntent(pendingIntent);
+        Intent intentAction = new Intent(this, Mynotification.class);
+
+        //This is optional if you have more than one buttons and want to differentiate between two
+        intentAction.putExtra("Complete","Complete");
+        intentAction.putExtra("Cancel","Cancel");
+        intentAction.putExtra("Reminder",r);
+        PendingIntent pIntentlogin = PendingIntent.getBroadcast(this,r.getUid(),intentAction,PendingIntent.FLAG_UPDATE_CURRENT);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);
+        builder.setAutoCancel(true);
+        builder.addAction(R.drawable.logo45, "Completed", pIntentlogin);
+        builder.addAction(R.drawable.logo45,"Cancel",pIntentlogin);
+        builder.setAutoCancel(true);
+        NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(getApplicationContext());
+        notificationManagerCompat.notify(r.getUid(), builder.build());
     }
 
     private void createNotificationChannel() {

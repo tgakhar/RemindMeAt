@@ -40,7 +40,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
+        <receiver android:name=".Mynotification"/>
         <service
             android:name=".Location.LocationService"
             android:exported="false" />
