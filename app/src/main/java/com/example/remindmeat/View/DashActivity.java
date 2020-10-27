@@ -59,7 +59,9 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         imageView = header.findViewById(R.id.profile_image);
         useremail= header.findViewById(R.id.profile_email);
         name= header.findViewById(R.id.profile_name);
-
+        imageView.setOnClickListener(openProfile);
+        useremail.setOnClickListener(openProfile);
+        name.setOnClickListener(openProfile);
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,materialToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -82,6 +84,14 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         public void onClick(View view) {
             Intent intent=new Intent(DashActivity.this,AddreminderActivity.class);
             startActivity(intent);
+        }
+    };
+    View.OnClickListener openProfile  = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(DashActivity.this, ProfileActivity.class);
+            startActivity(i);
+
         }
     };
 
