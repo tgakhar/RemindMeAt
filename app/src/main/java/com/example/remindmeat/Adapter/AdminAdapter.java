@@ -18,20 +18,55 @@ import com.example.remindmeat.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * This adapter class is used for showing all registered user's as list in recyclerview.
+ */
 public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder> implements Filterable {
 
+    /**
+     * ArrayList of Admin type for saving all user's details
+     */
     List<Admin> adminList = new ArrayList<>();
+
+    /**
+     * ArrayList of Admin type for saving all filtered user's details
+     */
     List<Admin> adminListFiltered = new ArrayList<>();
+
+    /**
+     * Variable of a context
+     */
     Context context;
 
+    /**
+     * Variable of OnClickListener
+     */
     private View.OnClickListener OnClick;
 
+    /**
+     * Constructor
+     * @param adminList
+     * @param context
+     */
     public AdminAdapter(List<Admin> adminList, Context context) {
         this.adminList = adminList;
         this.context = context;
         this.adminListFiltered = adminList;
     }
 
+    /**
+     * onCreate method which returns new object of {@link ViewHolder}
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,6 +74,11 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
 
+    /**
+     * onBind method for showing user details in recyclerview
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txt_email.setText("" + adminListFiltered.get(position).getEmail());
@@ -47,20 +87,36 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder> 
         }
     }
 
+    /**
+     * @param onClickListner
+     */
     public void setOnClickListner(View.OnClickListener onClickListner) {
         OnClick = onClickListner;
     }
 
+    /**
+     * This method returns size of {@link ArrayList adminListFiltered}
+     * @return
+     */
     @Override
     public int getItemCount() {
         return adminListFiltered.size();
     }
 
+    /**
+     * This method returns position of item in {@link ArrayList adminListFiltered}
+     * @param position
+     * @return
+     */
     public Admin getItem (int position) {
         return adminListFiltered.get(position);
     }
 
 
+    /**
+     * This method filtered the {@link ArrayList adminListFiltered} using search value
+     * @return
+     */
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -99,6 +155,9 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder> 
     }
 
 
+    /**
+     * Item class
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txt_email;

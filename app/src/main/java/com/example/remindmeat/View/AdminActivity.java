@@ -40,14 +40,54 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * This java class is for {@link AdminActivity}
+ */
 public class AdminActivity extends AppCompatActivity {
+    /**
+     * Variable of {@link ArrayList Admin type}
+     */
     List<Admin> adminList=new ArrayList<>();
+
+    /**
+     * Object of {@link FirebaseAuth}
+     */
     FirebaseAuth auth;
+
+    /**
+     * Object of {@link FirebaseFirestore}
+     */
     FirebaseFirestore db;
+
+    /**
+     * Recyclerview variable
+     */
     RecyclerView recyclerView;
+    /**
+     * Object of {@link AdminAdapter}
+     */
     AdminAdapter adminAdapter;
+    /**
+     * Object of {@link MaterialToolbar}
+     */
     MaterialToolbar toolbar;
+
+    /**
+     * Object of {@link EditText for search bar}
+     */
     EditText searchAdmin;
+
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,14 +136,18 @@ public class AdminActivity extends AppCompatActivity {
     }
 
 
-
-
+    /**
+     * This method set design of search edit text
+     */
     private void searchAdminList() {
 
         searchAdmin.setBackgroundResource(R.drawable.search_input_style);
 
     }
 
+    /**
+     * {@link TextWatcher} method for getting text value on change
+     */
     TextWatcher searchAdminAdapter=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -122,10 +166,9 @@ public class AdminActivity extends AppCompatActivity {
     };
 
 
-
-
-
-
+    /**
+     * This method is used to get all User details from database
+     */
     private void loadUser() {
 
         CollectionReference collectionReference=db.collection("Users");
@@ -151,6 +194,12 @@ public class AdminActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is used to add object of {@link Admin} in {@link ArrayList}.
+     * @param userId
+     * @param userEmail
+     * @param userDisable
+     */
     private void addToList(String userId, String userEmail, Integer userDisable) {
 
         adminList.add(new Admin(userEmail,userId,userDisable));
@@ -158,6 +207,10 @@ public class AdminActivity extends AppCompatActivity {
         setAdminRecycler(adminList);
     }
 
+    /**
+     * This method is setting adapter to recycler view using object of {@link AdminAdapter}
+     * @param adminList
+     */
     private void setAdminRecycler(final List<Admin> adminList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()
                 , RecyclerView.VERTICAL, false);
@@ -168,6 +221,9 @@ public class AdminActivity extends AppCompatActivity {
         adminAdapter.setOnClickListner(adapterClick);
     }
 
+    /**
+     * Click Listener for adapter
+     */
     View.OnClickListener adapterClick=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -185,6 +241,10 @@ public class AdminActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * This method is used to send password reset link to user's email
+     * @param view
+     */
     private void resetPass(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
@@ -200,6 +260,10 @@ public class AdminActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is used to disable/enable user from application.
+     * @param view
+     */
     private void updateUser(View view) {
         final int d;
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -251,6 +315,10 @@ public class AdminActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is used to delete user from application as well as user data from database.
+     * @param view
+     */
     private void deleteUser(View view) {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
