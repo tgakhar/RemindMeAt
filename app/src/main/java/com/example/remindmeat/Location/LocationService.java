@@ -178,14 +178,15 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
         //This is optional if you have more than one buttons and want to differentiate between two
         intentAction.putExtra("Complete","Complete");
-        intentAction.putExtra("Cancel","Cancel");
+        //intentAction.putExtra("Cancel","Cancel");
         intentAction.putExtra("Reminder",r);
         PendingIntent pIntentlogin = PendingIntent.getBroadcast(this,r.getUid(),intentAction,PendingIntent.FLAG_UPDATE_CURRENT);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setSound(alarmSound);
         builder.setAutoCancel(true);
         builder.addAction(R.drawable.logo45, "Completed", pIntentlogin);
-        builder.addAction(R.drawable.logo45,"Cancel",pIntentlogin);
+       // builder.addAction(R.drawable.logo45,"Cancel",pIntentlogin);
+        builder.setCategory(NotificationCompat.CATEGORY_ALARM);
         builder.setAutoCancel(true);
         NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(getApplicationContext());
         notificationManagerCompat.notify(r.getUid(), builder.build());

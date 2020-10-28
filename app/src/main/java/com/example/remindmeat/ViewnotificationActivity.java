@@ -1,6 +1,7 @@
 package com.example.remindmeat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.content.Intent;
 import android.os.Build;
@@ -49,7 +50,7 @@ public class ViewnotificationActivity extends AppCompatActivity {
         reminder = getIntent().getExtras().getParcelable("Reminder");
 
         setContentView(R.layout.activity_viewnotification);
-
+        NotificationManagerCompat.from(getApplicationContext()).cancel(reminder.getUid());
         showDetails();
     }
 
