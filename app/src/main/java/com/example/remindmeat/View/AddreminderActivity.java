@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.R;
-import com.example.remindmeat.ViewnotificationActivity;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;

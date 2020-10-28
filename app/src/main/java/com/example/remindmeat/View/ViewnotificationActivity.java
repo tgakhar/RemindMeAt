@@ -1,4 +1,4 @@
-package com.example.remindmeat;
+package com.example.remindmeat.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.Model.Reminder;
-import com.example.remindmeat.View.DashActivity;
+import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

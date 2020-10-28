@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.R;
+import com.example.remindmeat.ReminderhistoryActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -133,6 +134,10 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent intent;
         switch (item.getItemId()){
+            case R.id.nav_historyReminder:
+                intent=new Intent(getApplicationContext(), ReminderhistoryActivity.class);
+                startActivity(intent);
+                break;
             case R.id.nav_profile:
                 intent=new Intent(getApplicationContext(),ProfileActivity.class);
                 startActivity(intent);

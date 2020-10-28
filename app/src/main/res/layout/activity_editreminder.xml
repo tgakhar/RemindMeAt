@@ -247,9 +247,9 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="Range"
                 android:stepSize="1"
-                android:value="40.0"
-                android:valueFrom="30.0"
-                android:valueTo="150.0"
+                android:value="50.0"
+                android:valueFrom="50.0"
+                android:valueTo="1000.0"
                 app:haloColor="#A6E5E5"
                 app:thumbColor="#1DACAC"
                 app:trackColorActive="@color/main"
@@ -266,7 +266,7 @@
                 android:id="@+id/txt_editRangeSelected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="40 m"
+                android:text="50 m"
                 android:textSize="18sp" />
 
         </LinearLayout>

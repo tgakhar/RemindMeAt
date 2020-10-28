@@ -1,4 +1,4 @@
-package com.example.remindmeat;
+package com.example.remindmeat.Location;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
