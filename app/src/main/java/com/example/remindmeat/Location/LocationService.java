@@ -23,6 +23,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.remindmeat.BroadcastReceiver.Mynotification;
+import com.example.remindmeat.BroadcastReceiver.RestartService;
 import com.example.remindmeat.Model.Reminder;
 
 import com.example.remindmeat.R;
@@ -181,7 +183,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setSound(alarmSound);
         builder.setAutoCancel(true);
-        builder.addAction(R.drawable.logo45, "Completed", pIntentlogin);
+        builder.addAction(R.drawable.ic_baseline_done_24, "Completed", pIntentlogin);
        // builder.addAction(R.drawable.logo45,"Cancel",pIntentlogin);
         builder.setCategory(NotificationCompat.CATEGORY_ALARM);
         builder.setAutoCancel(true);
@@ -260,6 +262,15 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     public int onStartCommand(Intent intent, int flags, int startId) {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         return START_STICKY;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("restartservice");
+        broadcastIntent.setClass(this, RestartService.class);
+        this.sendBroadcast(broadcastIntent);
+        super.onTaskRemoved(rootIntent);
     }
 
     /**

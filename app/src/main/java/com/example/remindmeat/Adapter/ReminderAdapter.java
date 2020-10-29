@@ -53,7 +53,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
         holder.txt_title.setText(reminderListFiltered.get(position).getReminderTitle());
         holder.txt_address.setText(reminderListFiltered.get(position).getReminderLocation());
         if (reminderListFiltered.get(position).getReminderStatus() == 1) {
-            holder.switchStatus.setChecked(true);
+            //holder.switchStatus.setChecked(true);
         } else {
             holder.switchStatus.setChecked(false);
         }
