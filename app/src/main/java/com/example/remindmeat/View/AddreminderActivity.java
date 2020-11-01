@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -180,6 +181,20 @@ public class AddreminderActivity extends AppCompatActivity {
             title=edt_title.getEditText().getText().toString().trim();
             description=edt_description.getEditText().getText().toString().trim();
             range= (int) slider.getValue();
+
+            if (TextUtils.isEmpty(title)){
+                edt_title.setError("Title Required!");
+                return;
+            }else if (latLng==null||address.isEmpty()){
+                edt_title.setError(null);
+                Toast.makeText(AddreminderActivity.this, "Please select location", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (TextUtils.isEmpty(description)){
+                edt_description.setError("Description Required!");
+                return;
+            }
+
             if (repeatSwitch.isChecked()){
                 repeatMode=1;
                 date="0";
