@@ -2,10 +2,13 @@ package com.example.remindmeat.View;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -51,6 +54,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -85,6 +89,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     ArrayList markerLocation= new ArrayList();
     private static final float COORDINATE_OFFSET = 0.000025f;
     private int offsetType = 0;
+    private boolean connected;
     public MapFragment() {
         // Required empty public constructor
     }
@@ -110,7 +115,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         db=FirebaseFirestore.getInstance();
         requestLocationPermission();
         loadMap();
-        loadData();
+        if(checkInternetConnection()){
+            loadData();
+        }else {
+            noInternetConnection();
+        }
+
     }
 
     private void loadData() {
@@ -151,6 +161,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong, Integer reminderUid) {
         reminderList.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
 
+    }
+    public boolean checkInternetConnection() {
+
+        //Check internet connection:
+        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        //Means that we are connected to a network (mobile or wi-fi)
+        connected = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
+
+        return connected;
+    }
+
+    private void noInternetConnection() {
+        final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.mapFrag),"No Internet Connection!!!",Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Retry!", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkInternetConnection()){
+                    snackbar.dismiss();
+                    loadData();
+                }else {
+                    noInternetConnection();
+                }
+            }
+        }).show();
     }
 
 
