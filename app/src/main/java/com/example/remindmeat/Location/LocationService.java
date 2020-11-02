@@ -45,6 +45,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -206,10 +207,42 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         }
     }
 
-
-    private void loadData() {
+   /* void loadData(){
         user=auth.getCurrentUser();
         String date= DateFormat.getDateInstance().format(new Date());
+        CollectionReference collectionReference=db.collection("Users").document(user.getUid()).collection("Reminder");
+        Query query=collectionReference.whereEqualTo("Status","1");
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    if (((Long) document.getData().get("Status")).intValue() == 1) {
+
+                    }
+                        Log.d("LocationService", "Document=" + document.getData());
+                        String reminderId = document.getId();
+                        String reminderTitle = (String) document.getData().get("Title");
+                        String reminderLocation = (String) document.getData().get("Address");
+                        String reminderDescription = (String) document.getData().get("Description");
+                        String reminderDate = (String) document.getData().get("Date");
+                        Integer reminderRepeat = ((Long) document.getData().get("Repeat")).intValue();
+                        Integer reminderRange = ((Long) document.getData().get("Range")).intValue();
+                        Integer reminderStatus = ((Long) document.getData().get("Status")).intValue();
+                        Double reminderLat = (Double) document.getData().get("Latitude");
+                        Double reminderLong = (Double) document.getData().get("Longitude");
+                        Integer reminderUid = ((Long) document.getData().get("UniqueId")).intValue();
+                        //test.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
+                        addToList(reminderId, reminderTitle, reminderLocation, reminderDescription, reminderDate, reminderRepeat, reminderRange, reminderStatus, reminderLat, reminderLong, reminderUid);
+                        Log.d("ListView", "ListId=" + reminderId);
+
+                }
+            }
+        });
+    }*/
+
+   private void loadData() {
+        user=auth.getCurrentUser();
+        final String date= DateFormat.getDateInstance().format(new Date());
         int s=1;
         Log.d("LocationService","Date="+date);
         CollectionReference collectionReference=db.collection("Users").document(user.getUid()).collection("Reminder");
@@ -228,21 +261,24 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
                     QuerySnapshot queryDocumentSnapshots = (QuerySnapshot) object;
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         if (((Long) document.getData().get("Status")).intValue()==1){
-                            Log.d("LocationService","Document="+document.getData());
-                            String reminderId= document.getId();
-                            String reminderTitle=(String) document.getData().get("Title");
-                            String reminderLocation=(String) document.getData().get("Address");
-                            String reminderDescription=(String) document.getData().get("Description");
-                            String reminderDate=(String) document.getData().get("Date");
-                            Integer reminderRepeat= ((Long) document.getData().get("Repeat")).intValue();
-                            Integer reminderRange= ((Long) document.getData().get("Range")).intValue();
-                            Integer reminderStatus= ((Long) document.getData().get("Status")).intValue();
-                            Double reminderLat= (Double) document.getData().get("Latitude");
-                            Double reminderLong= (Double) document.getData().get("Longitude");
-                            Integer reminderUid= ((Long) document.getData().get("UniqueId")).intValue();
-                            //test.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
-                            addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid);
-                            Log.d("ListView","ListId="+reminderId);
+                            Log.d("LocationService","Document1="+document.getData());
+                            if (((String) document.getData().get("Date")).equals(date) || ((String) document.getData().get("Date")).equals("0")){
+                                Log.d("LocationService","Document="+document.getData());
+                                String reminderId= document.getId();
+                                String reminderTitle=(String) document.getData().get("Title");
+                                String reminderLocation=(String) document.getData().get("Address");
+                                String reminderDescription=(String) document.getData().get("Description");
+                                String reminderDate=(String) document.getData().get("Date");
+                                Integer reminderRepeat= ((Long) document.getData().get("Repeat")).intValue();
+                                Integer reminderRange= ((Long) document.getData().get("Range")).intValue();
+                                Integer reminderStatus= ((Long) document.getData().get("Status")).intValue();
+                                Double reminderLat= (Double) document.getData().get("Latitude");
+                                Double reminderLong= (Double) document.getData().get("Longitude");
+                                Integer reminderUid= ((Long) document.getData().get("UniqueId")).intValue();
+                                //test.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
+                                addToList(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid);
+                                Log.d("ListView","ListId="+reminderId);
+                            }
                         }
 
                     }

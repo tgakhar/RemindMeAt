@@ -65,9 +65,14 @@ import com.google.maps.android.ui.IconGenerator;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -124,7 +129,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void loadData() {
-
         curUser=auth.getCurrentUser();
         CollectionReference collectionReference=db.collection("Users").document(curUser.getUid()).collection("Reminder");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

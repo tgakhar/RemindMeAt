@@ -18,6 +18,7 @@ import com.example.remindmeat.Adapter.ReminderHistoryAdapter;
 import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.View.AddreminderActivity;
+import com.example.remindmeat.View.EditreminderActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -123,46 +124,9 @@ public class ReminderhistoryActivity extends AppCompatActivity {
 
         final Reminder reminder=reminderList.get(position);
 
-        Map<String, Object> reminderMap = new HashMap<>();
-
-
-        reminderMap.put("Title",reminder.getReminderTitle());
-        reminderMap.put("Description",reminder.getReminderDescription());
-        reminderMap.put("Address",reminder.getReminderLocation());
-        reminderMap.put("Repeat",reminder.getReminderRepeat());
-        reminderMap.put("Date",reminder.getReminderDate());
-        reminderMap.put("Range",reminder.getReminderRange());
-        reminderMap.put("Latitude",reminder.getReminderLat());
-        reminderMap.put("Longitude",reminder.getReminderLong());
-        reminderMap.put("Status",reminder.getReminderStatus());
-        reminderMap.put("UniqueId",reminder.getUid());
-
-        curUser=auth.getCurrentUser();
-        db.collection("Users").document(curUser.getUid()).collection("Reminder").add(reminderMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    //Intent intent=new Intent(this,LocationService.class);
-                    stopService(new Intent(ReminderhistoryActivity.this, LocationService.class));
-                    startForegroundService(new Intent(ReminderhistoryActivity.this, LocationService.class));
-                }
-                else{
-                    // Intent intent=new Intent(this,LocationService.class);
-                    stopService(new Intent(ReminderhistoryActivity.this, LocationService.class));
-                    startService(new Intent(ReminderhistoryActivity.this, LocationService.class));
-                }
-                DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder History").document(reminder.getReminderId());
-
-                docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"Reminder Re-added successfully!!!",
-                                Toast.LENGTH_SHORT).show();
-                        loadData();
-                    }
-                });
-            }
-        });
+        Intent intent=new Intent(getApplicationContext(), AddreminderActivity.class);
+        intent.putExtra("Reminder",reminder);
+        startActivity(intent);
 
     }
 
@@ -183,16 +147,6 @@ public class ReminderhistoryActivity extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(getApplicationContext(),"Reminder deleted successfully!!!",
                                         Toast.LENGTH_SHORT).show();
-                                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                                    //Intent intent=new Intent(this,LocationService.class);
-                                    stopService(new Intent(getApplicationContext(), LocationService.class));
-                                   startForegroundService(new Intent(getApplicationContext(), LocationService.class));
-                                }
-                                else{
-                                    // Intent intent=new Intent(this,LocationService.class);
-                                    stopService(new Intent(getApplicationContext(), LocationService.class));
-                                    startService(new Intent(getApplicationContext(), LocationService.class));
-                                }*/
                                 loadData();
                             }
                         });

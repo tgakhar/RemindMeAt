@@ -260,7 +260,7 @@ public class EditreminderActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){
-                        Toast.makeText(EditreminderActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(EditreminderActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                             //Intent intent=new Intent(this,LocationService.class);
                             stopService(new Intent(EditreminderActivity.this, LocationService.class));

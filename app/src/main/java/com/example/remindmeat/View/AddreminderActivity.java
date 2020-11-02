@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.remindmeat.Location.LocationService;
+import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
@@ -65,7 +66,8 @@ public class AddreminderActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseUser curUser;
     MaterialToolbar toolbar;
-
+    Reminder reminder;
+    Boolean reAdding=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +75,9 @@ public class AddreminderActivity extends AppCompatActivity {
 
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
+
+        Intent intent = getIntent();
+
         slider=findViewById(R.id.slider);
         txt_rangeValue=findViewById(R.id.txt_addRangeSelected);
         edt_date=findViewById(R.id.edt_addDate);
@@ -90,6 +95,37 @@ public class AddreminderActivity extends AppCompatActivity {
         autocompleteFragmentLocation= (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.location_fragment);
         autoCompleteFragment();
+        if (intent.hasExtra("Reminder")) {
+            reminder=intent.getExtras().getParcelable("Reminder");
+            setReminderData();
+        }
+    }
+
+    private void setReminderData() {
+        edt_title.getEditText().setText(reminder.getReminderTitle());
+        edt_description.getEditText().setText(reminder.getReminderDescription());
+        slider.setValue(reminder.getReminderRange());
+        txt_rangeValue.setText(reminder.getReminderRange()+" m");
+        reAdding=true;
+        if (reminder.getReminderRepeat()==0){
+            repeatSwitch.setChecked(false);
+            if (reminder.getReminderDate().equals("0")){
+
+            }else {
+                edt_date.getEditText().setError("Please, Select new date.");
+            }
+
+        }else{
+            repeatSwitch.setChecked(true);
+        }
+        address=reminder.getReminderLocation();
+        latLng=new LatLng(reminder.getReminderLat(),reminder.getReminderLong());
+        View fView = autocompleteFragmentLocation.getView();
+        EditText etTextInput = fView.findViewById(R.id.places_autocomplete_search_input);
+        etTextInput.setTextColor(Color.BLACK);
+        etTextInput.setHintTextColor(Color.GRAY);
+        etTextInput.setTextSize(14.5f);
+        etTextInput.setHint(reminder.getReminderLocation());
     }
 
     View.OnClickListener toolNav=new View.OnClickListener() {
@@ -231,6 +267,10 @@ public class AddreminderActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
                     Toast.makeText(AddreminderActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                    if (reAdding){
+                        deleteFromHistory();
+                    }
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                         //Intent intent=new Intent(this,LocationService.class);
                         stopService(new Intent(AddreminderActivity.this, LocationService.class));
@@ -248,6 +288,17 @@ public class AddreminderActivity extends AppCompatActivity {
 
         }
     };
+
+    private void deleteFromHistory() {
+        DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder History").document(reminder.getReminderId());
+
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        });
+    }
 
 
     private void setSearchUI() {
