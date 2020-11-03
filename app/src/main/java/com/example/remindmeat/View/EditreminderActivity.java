@@ -50,24 +50,83 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * this activity is used for editing the reminder's details  {@link EditreminderActivity}.
+ */
 public class EditreminderActivity extends AppCompatActivity {
 
+    /**
+     * variable of AutoCompleteFragmentLocation
+     */
     AutocompleteSupportFragment autocompleteFragmentLocation;
+    /**
+     * variable of LatLng
+     */
     LatLng latLng;
+    /**
+     * Variable of Slider
+     */
     Slider slider;
+    /**
+     * Variable for text view for Range value
+     */
     TextView txt_rangeValue;
+    /**
+     * Variable for SwitchMaterial
+     */
     SwitchMaterial repeatSwitch;
+    /**
+     * variables for all the TextInputLayout
+     */
     TextInputLayout edt_date,edt_title,edt_description;
+    /**
+     * variable for Edit Reminder Button
+     */
     Button btn_editReminder;
+    /**
+     * Variables for all the String
+     */
     String title,address,description,date;
+    /**
+     * int type variables for repeat mode and range
+     */
     int repeatMode,range;
+    /**
+     * int type variable for setting default value =1 for the status.
+     */
     int status = 1;
+    /**
+     * variable for FirebaseAuth
+     */
     FirebaseAuth auth;
+    /**
+     *Variable for FirebaseFirestore
+     */
     FirebaseFirestore db;
+    /**
+     * Variable for FirebaseUser
+     */
     FirebaseUser curUser;
+    /**
+     * variable for MaterialToolbar
+     */
     MaterialToolbar toolbar;
+    /**
+     * variable for reminder
+     */
     Reminder reminder;
 
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +174,9 @@ public class EditreminderActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * for setting reminder data
+     */
     private void setReminderData() {
         edt_title.getEditText().setText(reminder.getReminderTitle());
         edt_description.getEditText().setText(reminder.getReminderDescription());
@@ -143,7 +205,9 @@ public class EditreminderActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * for setting the location
+     */
     private void setSearchUI() {
         View fView = autocompleteFragmentLocation.getView();
         EditText etTextInput = fView.findViewById(R.id.places_autocomplete_search_input);
@@ -155,6 +219,10 @@ public class EditreminderActivity extends AppCompatActivity {
         close.setVisibility(View.GONE);
     }
 
+
+    /**
+     * method for repeat mode switch change listener
+     */
     SwitchMaterial.OnCheckedChangeListener repeat=new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -169,6 +237,9 @@ public class EditreminderActivity extends AppCompatActivity {
     };
 
 
+    /**
+     * Method for showing slider value in textview
+     */
     Slider.OnChangeListener updateSlider=new Slider.OnChangeListener() {
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
@@ -178,6 +249,9 @@ public class EditreminderActivity extends AppCompatActivity {
     };
 
 
+    /**
+     * onClickListener for updating date for reminder
+     */
     View.OnClickListener datePicker=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -208,6 +282,10 @@ public class EditreminderActivity extends AppCompatActivity {
         }
     };
 
+
+    /**
+     * onClickListener for update Reminder Button.
+     */
     View.OnClickListener updateReminder=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -280,6 +358,10 @@ public class EditreminderActivity extends AppCompatActivity {
         }
     };
 
+
+    /**
+     * onClickListener for back press button
+     */
     View.OnClickListener toolNav=new View.OnClickListener() {
         @Override
         public void onClick(View view) {

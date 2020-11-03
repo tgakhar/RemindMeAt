@@ -36,15 +36,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ *  This activity is for showing the history of all the completed Reminders {@link ReminderhistoryActivity}
+ */
 public class ReminderhistoryActivity extends AppCompatActivity {
 
+    /**
+     * variable for FirebaseAuth
+     */
     FirebaseAuth auth;
+    /**
+     * Variable for FirebaseFirestore
+     */
     FirebaseFirestore db;
+    /**
+     * array list of Reminder type for showing the list of Reminders
+     */
     List<Reminder>reminderList=new ArrayList<>();
+    /**
+     * Variable for Firebase User
+     */
     FirebaseUser curUser;
+    /**
+     * variable for Recycler View
+     */
     RecyclerView recyclerView;
+    /**
+     *Variable for Reminder History Adapter
+     */
     ReminderHistoryAdapter reminderHistoryAdapter;
+    /**
+     * variable for Material Toolbar
+     */
     MaterialToolbar toolbar;
+
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +99,9 @@ public class ReminderhistoryActivity extends AppCompatActivity {
         loadData();
     }
 
+    /**
+     * loadaData for loading the Data from Cloud FireStore
+     */
     private void loadData() {
         reminderList.clear();
         curUser = auth.getCurrentUser();
@@ -97,6 +136,20 @@ public class ReminderhistoryActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * for adding the reminder to list
+     * @param reminderId
+     * @param reminderTitle
+     * @param reminderLocation
+     * @param reminderDescription
+     * @param reminderDate
+     * @param reminderRepeat
+     * @param reminderRange
+     * @param reminderStatus
+     * @param reminderLat
+     * @param reminderLong
+     * @param reminderUid
+     */
     private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong, Integer reminderUid) {
 
         reminderList.add(new Reminder(reminderId, reminderTitle, reminderLocation, reminderDescription, reminderDate, reminderRepeat, reminderRange, reminderStatus, reminderLat, reminderLong,reminderUid));
@@ -104,6 +157,10 @@ public class ReminderhistoryActivity extends AppCompatActivity {
         setReminderRecycler(reminderList);
     }
 
+    /**
+     * Setter for ReminderList
+     * @param reminderList
+     */
     private void setReminderRecycler(final List<Reminder> reminderList) {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()
@@ -114,6 +171,9 @@ public class ReminderhistoryActivity extends AppCompatActivity {
         reminderHistoryAdapter.setOnClickListner(adapterClick);
     }
 
+    /**
+     * onClickListenr for delete Reminder and Add reminder
+     */
     View.OnClickListener adapterClick=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -128,6 +188,10 @@ public class ReminderhistoryActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * for reAdding the reminder to the Active Reminder list
+     * @param v
+     */
     private void addReminder(View v) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) v.getTag();
         final int position = viewHolder.getAdapterPosition();
@@ -140,6 +204,10 @@ public class ReminderhistoryActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * for deleting the reminder from history
+     * @param v
+     */
     private void deleteReminder(View v) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) v.getTag();
         final int position = viewHolder.getAdapterPosition();

@@ -15,17 +15,48 @@ import com.example.remindmeat.R;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * This adapter class is used for showing all Reminders in the Reminder History as list in recyclerview {@link ReminderHistoryAdapter}.
+ */
 
 public class ReminderHistoryAdapter extends RecyclerView.Adapter<ReminderHistoryAdapter.ViewHolder>{
 
+    /**
+     * ArrayList of Reminder type for saving all Reminder's details
+     */
     List<Reminder> reminderList = new ArrayList<>();
+    /**
+     * Variable of a context
+     */
     Context context;
+    /**
+     * Variable of OnClickListener
+     */
     private View.OnClickListener OnClick;
+
+    /**
+     * Constructor
+     * @param reminderList
+     * @param context
+     */
     public ReminderHistoryAdapter(List<Reminder> reminderList, Context context) {
         this.reminderList = reminderList;
         this.context = context;
     }
 
+    /**
+     * onCreate method which returns new object of {@ReminderHistoryAdapter ViewHolder}
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,12 +64,21 @@ public class ReminderHistoryAdapter extends RecyclerView.Adapter<ReminderHistory
         return new ReminderHistoryAdapter.ViewHolder(view);
     }
 
+    /**
+     * onBind method for showing user details in recyclerview
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txt_title.setText(reminderList.get(position).getReminderTitle());
         holder.txt_address.setText(reminderList.get(position).getReminderLocation());
     }
 
+    /**
+     * this method is to return the size of Reminderlist
+     * @return
+     */
     @Override
     public int getItemCount() {
         return reminderList.size();
@@ -48,6 +88,9 @@ public class ReminderHistoryAdapter extends RecyclerView.Adapter<ReminderHistory
         OnClick = onClickListner;
     }
 
+    /**
+     * Item class
+     */
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txt_title,txt_address;
         ImageView img_add,img_delete;

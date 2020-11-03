@@ -51,23 +51,86 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * AddReminder class is used for adding all the reminders to the list {@link AddreminderActivity}.
+ */
 public class AddreminderActivity extends AppCompatActivity {
+    /**
+     * variable of AutoCompleteFragmentLocation
+     */
     AutocompleteSupportFragment autocompleteFragmentLocation;
+    /**
+     * variable of LatLng
+     */
     LatLng latLng;
+    /**
+     * Variable of Slider
+     */
     Slider slider;
+    /**
+     * variable of TextView
+     */
     TextView txt_rangeValue;
+    /**
+     * Variable of SwitchMaterial
+     */
     SwitchMaterial repeatSwitch;
+    /**
+     * All the variables of TextInputLayout
+     */
     TextInputLayout edt_date,edt_title,edt_description;
+    /**
+     * Variable of Button
+     */
     Button btn_addReminder;
+    /**
+     * All the variable of String
+     */
     String title,address,description,date;
+    /**
+     * Variables of type int for repeatMode and Range of the Reminder
+     */
     int repeatMode,range;
+    /**
+     * Default int value for status is 1
+     */
     int status = 1;
+    /**
+     * variable of FirebaseAuth
+     */
     FirebaseAuth auth;
+    /**
+     * Variable of FirebaseFirestore
+     */
     FirebaseFirestore db;
+    /**
+     * Variable of FirebaseUser
+     */
     FirebaseUser curUser;
+    /**
+     * Variable of MaterialToolbar
+     */
     MaterialToolbar toolbar;
+    /**
+     * variable of reminder
+     */
     Reminder reminder;
+    /**
+     * Default boolean value for reAdding is false
+     */
     Boolean reAdding=false;
+
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +164,9 @@ public class AddreminderActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * for setting the Reminder data
+     */
     private void setReminderData() {
         edt_title.getEditText().setText(reminder.getReminderTitle());
         edt_description.getEditText().setText(reminder.getReminderDescription());
@@ -128,6 +194,10 @@ public class AddreminderActivity extends AppCompatActivity {
         etTextInput.setHint(reminder.getReminderLocation());
     }
 
+
+    /**
+     * onClickListener for back press button
+     */
     View.OnClickListener toolNav=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -135,6 +205,9 @@ public class AddreminderActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * autoCompleteFragment for selecting address and the latitude and longitude for the place
+     */
     void autoCompleteFragment(){
         autocompleteFragmentLocation.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS));
         Places.initialize(getApplicationContext(), "AIzaSyC3V_fpRwWxPgiIrptG_Hi7VEEGl5Fd4d8");
@@ -158,6 +231,11 @@ public class AddreminderActivity extends AppCompatActivity {
         });
 
     }
+
+
+    /**
+     *  onChangeListener for updating the vale for the slider for specifying range
+     */
     Slider.OnChangeListener updateSlider=new Slider.OnChangeListener() {
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
@@ -166,6 +244,10 @@ public class AddreminderActivity extends AppCompatActivity {
         }
     };
 
+
+    /**
+     * onClickListener for date picker for selecting date
+     */
     View.OnClickListener datePicker=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -198,6 +280,10 @@ public class AddreminderActivity extends AppCompatActivity {
         }
     };
 
+
+    /**
+     * onCheckedChangeListener for selecting repeat mode of reminder
+     */
     SwitchMaterial.OnCheckedChangeListener repeat=new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -211,6 +297,9 @@ public class AddreminderActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * onClickListener for addReminder button
+     */
     View.OnClickListener addReminder= new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -289,6 +378,9 @@ public class AddreminderActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * for deleting reminder from history
+     */
     private void deleteFromHistory() {
         DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder History").document(reminder.getReminderId());
 
@@ -300,7 +392,9 @@ public class AddreminderActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * for searching the location
+     */
     private void setSearchUI() {
         View fView = autocompleteFragmentLocation.getView();
         EditText etTextInput = fView.findViewById(R.id.places_autocomplete_search_input);
