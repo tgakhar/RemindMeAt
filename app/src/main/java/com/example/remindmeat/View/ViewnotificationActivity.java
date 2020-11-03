@@ -89,26 +89,35 @@ public class ViewnotificationActivity extends AppCompatActivity {
                 }
             }, 2000);
 
-            curUser=auth.getCurrentUser();
+            if (reminder.getReminderRepeat()==0){
+                deleteReminder();
+            }
 
-            db.collection("Users").document(curUser.getUid()).collection("Reminder").document(reminder.getReminderId()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                        //Intent intent=new Intent(this,LocationService.class);
-                        stopService(new Intent(ViewnotificationActivity.this, LocationService.class));
-                        startForegroundService(new Intent(ViewnotificationActivity.this, LocationService.class));
-                    }
-                    else{
-                        // Intent intent=new Intent(this,LocationService.class);
-                        stopService(new Intent(ViewnotificationActivity.this, LocationService.class));
-                        startService(new Intent(ViewnotificationActivity.this, LocationService.class));
-                    }
-                        saveToHistory();
-                }
-            });
+            Intent intent=new Intent(ViewnotificationActivity.this, DashActivity.class);
+            startActivity(intent);
         }
     };
+
+    private void deleteReminder() {
+        curUser=auth.getCurrentUser();
+
+        db.collection("Users").document(curUser.getUid()).collection("Reminder").document(reminder.getReminderId()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    //Intent intent=new Intent(this,LocationService.class);
+                    stopService(new Intent(ViewnotificationActivity.this, LocationService.class));
+                    startForegroundService(new Intent(ViewnotificationActivity.this, LocationService.class));
+                }
+                else{
+                    // Intent intent=new Intent(this,LocationService.class);
+                    stopService(new Intent(ViewnotificationActivity.this, LocationService.class));
+                    startService(new Intent(ViewnotificationActivity.this, LocationService.class));
+                }
+                saveToHistory();
+            }
+        });
+    }
 
     private void saveToHistory() {
         Date date = new Date();
@@ -128,8 +137,7 @@ public class ViewnotificationActivity extends AppCompatActivity {
         db.collection("Users").document(curUser.getUid()).collection("Reminder History").document(String.valueOf(date)).set(reminderMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Intent intent=new Intent(ViewnotificationActivity.this, DashActivity.class);
-                startActivity(intent);
+
             }
         });
 

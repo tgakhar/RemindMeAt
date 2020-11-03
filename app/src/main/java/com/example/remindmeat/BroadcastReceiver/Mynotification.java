@@ -34,7 +34,9 @@ public class Mynotification extends BroadcastReceiver {
         db=FirebaseFirestore.getInstance();
         if(action.equals("Complete")){
             Log.d("MyNotification","Notified"+action);
-            deleteReminder(context);
+            if (reminder.getReminderRepeat()==0){
+                deleteReminder(context);
+            }
         }
 
         Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
