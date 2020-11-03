@@ -48,6 +48,7 @@
                 app:layout_constraintTop_toBottomOf="@id/edt_currentEmail"
                 android:layout_marginTop="5dp"
                 android:hint="Enter Current Password"
+                app:endIconMode="password_toggle"
                 app:boxStrokeColor="@color/main"
                 app:hintTextColor="@color/main"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -55,7 +56,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textPassword"
                     android:textCursorDrawable="@drawable/color_cursor"
                     />
 

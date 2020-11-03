@@ -57,20 +57,78 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * This java class is for {@link ProfileActivity}
+ */
 public class ProfileActivity extends AppCompatActivity {
 
+    /**
+     * Object of {@link FirebaseAuth}
+     */
     private FirebaseAuth auth;
+
+    /**
+     * Object of {@link FirebaseUser}
+     */
     private FirebaseUser curUser;
+
+    /**
+     * Object of circle imageview for profile image
+     */
     CircleImageView imageView;
+
+    /**
+     * Object of {@link MaterialToolbar}
+     */
     MaterialToolbar toolbar;
+
+    /**
+     * Object of {@link FirebaseFirestore}
+     */
     FirebaseFirestore db;
+
+    /**
+     * variables of button
+     */
     Button btn_dltProfile,btn_resetpass;
+
+    /**
+     * variables of material TextInputLayout
+     */
     TextInputLayout edt_email,edt_name;
+
+    /**
+     * Variable og ImageView
+     */
     ImageView img_edtEmail;
+
+    /**
+     * Variable of String type for storing name, email, password.
+     */
     String  email,nEmail,UName;
+
+    /**
+     * Variable of {@link SwitchMaterial} for accuracy mode
+     */
     SwitchMaterial switch_mode;
+
+    /**
+     * Variable of int
+     */
     int accuracyMode;
 
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +173,9 @@ public class ProfileActivity extends AppCompatActivity {
         loadData();
     }
 
+    /**
+     * method for updating accuracy mode value in database
+     */
     private void updateAccuracyMode() {
         curUser=auth.getCurrentUser();
         Map<String,Object> usermap=new HashMap<>();
@@ -140,6 +201,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * method for getting all user data from database
+     */
     private void loadData() {
         curUser=auth.getCurrentUser();
         if(curUser!=null){
@@ -165,6 +229,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * onClicklistener for circle image view
+     */
     CircleImageView.OnClickListener changeProfile=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -190,6 +257,12 @@ public class ProfileActivity extends AppCompatActivity {
     };
 
 
+    /**
+     * onActivityResult method
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -217,6 +290,10 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * method for uploading image in Firebase Storage
+     * @param bitmap
+     */
     private void handleUpload(Bitmap bitmap) {
         ByteArrayOutputStream baos= new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
@@ -238,6 +315,10 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * method for download url of uploaded image
+     * @param reference
+     */
     private void getDownloadUrl(StorageReference reference){
         reference.getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -248,6 +329,11 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * method for linking profile image url with user profile
+     * @param uri
+     */
     private void setUserProfile(Uri uri){
         UserProfileChangeRequest request=new UserProfileChangeRequest.Builder()
                 .setPhotoUri(uri)
@@ -266,6 +352,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *OnClickListener for btn_dltProfile
+     */
     View.OnClickListener DeleteProfile=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -335,7 +424,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
     };
-
+    /**
+     * OnClickListener for btn_profileChangePass
+     */
     View.OnClickListener resetPass= new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -357,6 +448,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * OnClickListener for update email
+     */
     ImageView.OnClickListener updateEmail = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -459,12 +553,21 @@ public class ProfileActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * method for inflating menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_profile, menu);
         return true;
     }
+
+    /**
+     * Click listener for menu item
+     */
     Toolbar.OnMenuItemClickListener toolListener = new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
@@ -482,6 +585,11 @@ public class ProfileActivity extends AppCompatActivity {
             return true;
         }
     };
+
+    /**
+     * method for checking validations
+     * @return
+     */
     public  boolean checkEmptyField(){
         if(TextUtils.isEmpty(UName)) {
             edt_name.setError("Name cannot be blank!");
@@ -492,6 +600,10 @@ public class ProfileActivity extends AppCompatActivity {
             return false;
         }
     }
+
+    /**
+     * method for updating user's name
+     */
     public void updateData(){
         curUser=auth.getCurrentUser();
         Map<String,Object> usermap=new HashMap<>();

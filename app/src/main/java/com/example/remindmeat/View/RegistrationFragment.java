@@ -35,22 +35,68 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * This java class is for {@link RegistrationFragment}
+ */
 public class RegistrationFragment extends Fragment {
+    /**
+     * Variables of TextView
+     */
     TextView txt_login,txt_title,txt_tag;
+
+    /**
+     * Variable of login button
+     */
     Button btn_register;
+
+    /**
+     * variables of material TextInputLayout
+     */
     TextInputLayout txt_layEmail,txt_layPass,txt_layName,txt_layCPass;
+
+    /**
+     * Object of {@link FirebaseAuth}
+     */
     FirebaseAuth auth;
+
+    /**
+     * Object of {@link FirebaseFirestore}
+     */
     FirebaseFirestore db;
+
+    /**
+     * Variable of String type for storing name, email, password.
+     */
     String name,email,pass,cPass;
+
+    /**
+     * Variable of LinearLayout
+     */
     LinearLayout layout_bottom;
+    /**
+     * Variable of ImageView for logo
+     */
     ImageView img_logo;
+
+    /**
+     * Default constructor
+     */
     public RegistrationFragment() {
         // Required empty public constructor
     }
 
 
-
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +105,11 @@ public class RegistrationFragment extends Fragment {
                 .inflateTransition(android.R.transition.move));
     }
 
+    /**
+     * onViewCreated
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -79,6 +130,9 @@ public class RegistrationFragment extends Fragment {
     }
 
 
+    /**
+     * Click listener for navigation to login page
+     */
     View.OnClickListener oldUser=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -98,6 +152,9 @@ public class RegistrationFragment extends Fragment {
     };
 
 
+    /**
+     * Click listener for registration button
+     */
     View.OnClickListener registerUser=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -157,6 +214,13 @@ public class RegistrationFragment extends Fragment {
         }
     };
 
+    /**
+     * onCreateView
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -164,6 +228,10 @@ public class RegistrationFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_registration, container, false);
     }
 
+    /**
+     * method for checking validations
+     * @return
+     */
     public boolean checkEmptyField() {
 
         if (TextUtils.isEmpty(name)) {

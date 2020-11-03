@@ -41,25 +41,67 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * This java class is for {@link LoginFragment}
+ */
 public class LoginFragment extends Fragment {
 
+    /**
+     * Variables of TextView
+     */
     TextView txt_reg,txt_forgot,txt_title,txt_tag;
+    /**
+     * variables of material TextInputLayout
+     */
     TextInputLayout txt_layEmail,txt_layPass;
+    /**
+     * Variable of login button
+     */
     Button btn_login;
+    /**
+     * Variable of String type for storing email, password.
+     */
     String email,pass;
+    /**
+     * Object of {@link FirebaseAuth}
+     */
     FirebaseAuth auth;
+    /**
+     * Variable of LinearLayout
+     */
     LinearLayout layout_bottom;
+    /**
+     * Variable og ImageView for logo
+     */
     ImageView img_logo;
+    /**
+     * Object of {@link FirebaseFirestore}
+     */
     FirebaseFirestore db;
+    /**
+     * Final variable of int
+     */
     private final int REQUEST_LOCATION_PERMISSION = 1;
 
+    /**
+     * Default constructor
+     */
     public LoginFragment() {
         // Required empty public constructor
     }
 
 
-
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +111,11 @@ public class LoginFragment extends Fragment {
 
     }
 
+    /**
+     * onViewCreated
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -88,6 +135,10 @@ public class LoginFragment extends Fragment {
         txt_reg.setOnClickListener(newUser);
         requestLocationPermission();
     }
+
+    /**
+     * Click listener for forgot password textview.
+     */
     View.OnClickListener forgot=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -104,6 +155,12 @@ public class LoginFragment extends Fragment {
         }
     };
 
+    /**
+     * onRequestPermissionsResult method for getting result from permission request dialog.
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -112,6 +169,9 @@ public class LoginFragment extends Fragment {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
+    /**
+     * requestLocationPermission of easy permission library
+     */
     @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
     public void requestLocationPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -125,7 +185,9 @@ public class LoginFragment extends Fragment {
     }
 
 
-
+    /**
+     * Click listener for login button
+     */
     View.OnClickListener login=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -169,6 +231,10 @@ public class LoginFragment extends Fragment {
         }
     };
 
+    /**
+     * method for checking for user type(Admin/User).
+     * @param uid
+     */
     private void checkIfAdmin(String uid) {
 
         db.collection("Users").document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -190,8 +256,9 @@ public class LoginFragment extends Fragment {
     }
 
 
-
-
+    /**
+     * Click listener for navigation to register page
+     */
     View.OnClickListener newUser=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -209,6 +276,13 @@ public class LoginFragment extends Fragment {
         }
     };
 
+    /**
+     * onCreateView
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -216,6 +290,10 @@ public class LoginFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
+    /**
+     * method for checking validations
+     * @return
+     */
     public boolean checkEmptyField() {
 
         if (TextUtils.isEmpty(email)) {
@@ -238,6 +316,9 @@ public class LoginFragment extends Fragment {
         return false;
     }
 
+    /**
+     * onStart for checking if user is already login or not.
+     */
     @Override
     public void onStart() {
         super.onStart();

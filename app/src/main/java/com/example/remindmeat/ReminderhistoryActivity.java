@@ -22,6 +22,7 @@ import com.example.remindmeat.View.EditreminderActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -43,6 +44,7 @@ public class ReminderhistoryActivity extends AppCompatActivity {
     FirebaseUser curUser;
     RecyclerView recyclerView;
     ReminderHistoryAdapter reminderHistoryAdapter;
+    MaterialToolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,14 @@ public class ReminderhistoryActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         recyclerView=findViewById(R.id.recycler_listReminderHistory);
+        toolbar=findViewById(R.id.topbar_reminderHistory);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               onBackPressed();
+            }
+        });
         loadData();
     }
 
