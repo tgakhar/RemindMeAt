@@ -195,6 +195,9 @@ public class ListFragment extends Fragment {
 
     }
 
+    /**
+     * {@link TextWatcher} method
+     */
     TextWatcher searchAdpter=new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -213,6 +216,9 @@ public class ListFragment extends Fragment {
         }
     };
 
+    /**
+     * {@link android.view.View.OnClickListener} for filter button
+     */
     View.OnClickListener fabMain=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -246,6 +252,9 @@ public class ListFragment extends Fragment {
     };
 
 
+    /**
+     * OnclickListener for active filter button
+     */
     View.OnClickListener fabActive=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -257,6 +266,9 @@ public class ListFragment extends Fragment {
         }
     };
 
+    /**
+     * OnClickListener for inactive filter button
+     */
     View.OnClickListener fabInactive=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -268,6 +280,9 @@ public class ListFragment extends Fragment {
         }
     };
 
+    /**
+     * OnClickListener for showing all reminders
+     */
     View.OnClickListener fabAll=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -350,7 +365,9 @@ public class ListFragment extends Fragment {
 
     }
 
-
+    /**
+     * Method to add all reminder details into the list
+     */
     private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong, Integer reminderUid) {
 
         reminderList.add(new Reminder(reminderId, reminderTitle, reminderLocation, reminderDescription, reminderDate, reminderRepeat, reminderRange, reminderStatus, reminderLat, reminderLong,reminderUid));
@@ -358,6 +375,9 @@ public class ListFragment extends Fragment {
         setReminderRecycler(reminderList);
     }
 
+    /**
+     * Method for setting the reminder array list to recycler view
+     */
     private void setReminderRecycler(final List<Reminder> reminderList) {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
@@ -401,6 +421,9 @@ public class ListFragment extends Fragment {
         });
     }
 
+    /**
+     * OnClickListener method for adapter
+     */
     View.OnClickListener adapterClick=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -428,6 +451,9 @@ public class ListFragment extends Fragment {
         }
     };
 
+    /**
+     * Method to edit reminder detail by getting the item position in the adapter
+     */
     private void editReminder(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
@@ -437,7 +463,9 @@ public class ListFragment extends Fragment {
 
     }
 
-
+    /**
+     * method to opem google maps for navigation
+     */
     private void openMap(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
@@ -447,6 +475,9 @@ public class ListFragment extends Fragment {
 
     }
 
+    /**
+     * For showing reminder details
+     */
     private void showReminderDetails(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();
@@ -456,6 +487,9 @@ public class ListFragment extends Fragment {
         startActivity(intent);
     }
 
+    /**
+     * Method to delete reminder from the listview and database
+     */
     private void deleteReminder(View view) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) view.getTag();
         final int position = viewHolder.getAdapterPosition();

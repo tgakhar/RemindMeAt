@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ReminderhistoryActivity">
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,13 +30,31 @@
     </com.google.android.material.appbar.MaterialToolbar>
 </com.google.android.material.appbar.AppBarLayout>
 
+    <EditText
+        android:background="@drawable/search_input_style"
+        android:hint="Search"
+        android:textColor="@color/main"
+        android:drawableLeft="@drawable/ic_baseline_search_24"
+        android:textSize="18dp"
+        android:id="@+id/edt_searchList_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:drawableRight="@drawable/ic_baseline_clear_24"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/topbar_layoutReminderHistory"
+        android:ems="10"
+        android:inputType="textPersonName" />
 
 <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         android:id="@+id/recycler_listReminderHistory"
-        android:layout_below="@id/topbar_layoutReminderHistory"
+        android:layout_below="@id/edt_searchList_history"
         tools:listitem="@layout/layout_reminderhistory"
         />
 </RelativeLayout>

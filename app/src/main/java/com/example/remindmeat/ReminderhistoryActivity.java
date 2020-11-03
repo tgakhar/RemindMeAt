@@ -10,15 +10,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.remindmeat.Adapter.ReminderAdapter;
 import com.example.remindmeat.Adapter.ReminderHistoryAdapter;
 import com.example.remindmeat.Location.LocationService;
+import com.example.remindmeat.Model.Admin;
 import com.example.remindmeat.Model.Reminder;
 import com.example.remindmeat.View.AddreminderActivity;
+import com.example.remindmeat.View.DashActivity;
 import com.example.remindmeat.View.EditreminderActivity;
+import com.example.remindmeat.View.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -78,6 +85,11 @@ public class ReminderhistoryActivity extends AppCompatActivity {
     MaterialToolbar toolbar;
 
     /**
+     * Object of {@link EditText for search bar}
+     */
+    EditText searchReminder;
+
+    /**
      * onCreate
      * @param savedInstanceState
      */
@@ -89,18 +101,73 @@ public class ReminderhistoryActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         recyclerView=findViewById(R.id.recycler_listReminderHistory);
         toolbar=findViewById(R.id.topbar_reminderHistory);
+        searchReminder=findViewById(R.id.edt_searchList_history);
+        searchReminder.addTextChangedListener(searchAdapter);
+
+        searchReminder.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if(motionEvent.getRawX() >= (searchReminder.getRight() - searchReminder.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // your action here
+                        searchReminder.getText().clear();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+
+        searchReminderList();
+
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               onBackPressed();
+                Intent intent=new Intent(ReminderhistoryActivity.this, DashActivity.class);
+                startActivity(intent);
             }
         });
         loadData();
     }
 
+
     /**
-     * loadaData for loading the Data from Cloud FireStore
+     * {@link TextWatcher} method for getting text value on change
+     */
+    TextWatcher searchAdapter=new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            reminderHistoryAdapter.getFilter().filter(s);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+
+    /**
+     * This method set design of search edit text
+     */
+    private void searchReminderList() {
+        searchReminder.setBackgroundResource(R.drawable.search_input_style);
+    }
+
+    /**
+     * loadData for loading the Data from Cloud FireStore
      */
     private void loadData() {
         reminderList.clear();
@@ -195,8 +262,7 @@ public class ReminderhistoryActivity extends AppCompatActivity {
     private void addReminder(View v) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) v.getTag();
         final int position = viewHolder.getAdapterPosition();
-
-        final Reminder reminder=reminderList.get(position);
+        final Reminder reminder=reminderHistoryAdapter.getItem(position);
 
         Intent intent=new Intent(getApplicationContext(), AddreminderActivity.class);
         intent.putExtra("Reminder",reminder);
@@ -211,6 +277,7 @@ public class ReminderhistoryActivity extends AppCompatActivity {
     private void deleteReminder(View v) {
         RecyclerView.ViewHolder viewHolder=(RecyclerView.ViewHolder) v.getTag();
         final int position = viewHolder.getAdapterPosition();
+        final Reminder r=reminderHistoryAdapter.getItem(position);
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(ReminderhistoryActivity.this);
         builder.setMessage("Do you want to delete the reminder?")
@@ -218,7 +285,7 @@ public class ReminderhistoryActivity extends AppCompatActivity {
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         curUser=auth.getCurrentUser();
-                        DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder History").document(reminderList.get(position).getReminderId());
+                        DocumentReference docRef=db.collection("Users").document(curUser.getUid()).collection("Reminder History").document(r.getReminderId());
 
                         docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
