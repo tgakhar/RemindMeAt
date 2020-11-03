@@ -49,14 +49,50 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * This java class is for showing items in the listview using fragment
+ */
 public class ListFragment extends Fragment {
+
+    /**
+     * Object of FirebaseUser
+     */
     FirebaseUser curUser;
+
+    /**
+     * Object of FirebaseAuth
+     */
     FirebaseAuth auth;
+
+    /**
+     * Object of Firestore
+     */
     FirebaseFirestore db;
+
+    /**
+     * Arraylist of Reminder type
+     */
     List<Reminder> reminderList = new ArrayList<>();
+
+    /**
+     * Variable for recyclerView
+     */
     RecyclerView recyclerView_listReminder;
+
+    /**
+     * object of Reminder Adapter
+     */
     ReminderAdapter reminderAdapter;
+    /**
+     * EditText variable
+     */
     EditText search;
     //For exapndable Floating menu
     private FloatingActionButton fab_main, fab_all, fab_inactive,fab_active;
@@ -64,11 +100,19 @@ public class ListFragment extends Fragment {
     TextView textview_all,textview_mail, textview_active;
     int status=0;
     Boolean isOpen = false;
+
+    /**
+     * default constructor for the class
+     */
     public ListFragment() {
         // Required empty public constructor
+
     }
 
-
+    /**
+     * onCreate Method
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +120,13 @@ public class ListFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * onCreateView Method
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,6 +134,11 @@ public class ListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
+    /**
+     * onViewCreated method
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -129,6 +185,9 @@ public class ListFragment extends Fragment {
         searchList();
     }
 
+    /**
+     * For setting the drawable resource file for search list
+     */
     private void searchList() {
         search.setBackgroundResource(R.drawable.search_input_style);
 
@@ -141,6 +200,7 @@ public class ListFragment extends Fragment {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
         }
+
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -219,8 +279,9 @@ public class ListFragment extends Fragment {
         }
     };
 
-
-
+    /**
+     * For getting reminder details
+     */
     private void filterData(){
         reminderList.clear();
         curUser=auth.getCurrentUser();
@@ -252,6 +313,9 @@ public class ListFragment extends Fragment {
 
     }
 
+    /**
+     * Method to fetch reminder data from database
+     */
     private void loadData() {
         reminderList.clear();
         curUser = auth.getCurrentUser();
@@ -285,6 +349,7 @@ public class ListFragment extends Fragment {
 
 
     }
+
 
     private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong, Integer reminderUid) {
 

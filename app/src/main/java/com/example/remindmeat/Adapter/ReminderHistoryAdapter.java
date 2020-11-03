@@ -15,6 +15,7 @@ import com.example.remindmeat.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * @author Patel Dhruv
  * @author Gakhar Tanvi
@@ -23,17 +24,17 @@ import java.util.List;
  * @author Varma Akshay
  * @author Dankhara Chintan
  * @author Karthik Modubowna
- * This adapter class is used for showing all Reminders in the Reminder History as list in recyclerview {@link ReminderHistoryAdapter}.
+ * This adapter class is used for showing the user's reminder history
+ * all previously set reminders once completed would go into reminder history section
  */
-
 public class ReminderHistoryAdapter extends RecyclerView.Adapter<ReminderHistoryAdapter.ViewHolder>{
 
     /**
-     * ArrayList of Reminder type for saving all Reminder's details
+     * Arraylist of Reminder type to save user's reminder details
      */
     List<Reminder> reminderList = new ArrayList<>();
     /**
-     * Variable of a context
+     * Variable of context
      */
     Context context;
     /**
@@ -52,7 +53,7 @@ public class ReminderHistoryAdapter extends RecyclerView.Adapter<ReminderHistory
     }
 
     /**
-     * onCreate method which returns new object of {@ReminderHistoryAdapter ViewHolder}
+     * onCreate method which returns new object of {@link ReminderHistoryAdapter.ViewHolder}
      * @param parent
      * @param viewType
      * @return
@@ -76,13 +77,17 @@ public class ReminderHistoryAdapter extends RecyclerView.Adapter<ReminderHistory
     }
 
     /**
-     * this method is to return the size of Reminderlist
+     * return size of arrayList
      * @return
      */
     @Override
     public int getItemCount() {
         return reminderList.size();
     }
+
+    /**
+     * @param onClickListner
+     */
     public void setOnClickListner(View.OnClickListener onClickListner)
     {
         OnClick = onClickListner;

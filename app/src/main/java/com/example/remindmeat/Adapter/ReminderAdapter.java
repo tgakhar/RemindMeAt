@@ -24,22 +24,59 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * This adapter class is used for showing user's reminders
+ */
 public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHolder> implements Filterable {
 
+    /**
+     * Arraylist of Reminder type
+     */
     List<Reminder> reminderList = new ArrayList<>();
+
+    /**
+     * FilteredArraylist of Reminder type
+     */
     List<Reminder> reminderListFiltered=new ArrayList<>();
+
+    /**
+     * Variable of Context
+     */
     Context context;
+
+    /**
+     * Variable to get the current latitude/longitude of user
+     */
     LatLng current;
+
     private View.OnClickListener OnClick;
     SwitchMaterial.OnCheckedChangeListener statusChangeListener;
 
+    /**
+     * constructor
+     * @param context
+     * @param reminderList
+     */
     public ReminderAdapter(List<Reminder> reminderList, Context context) {
         this.reminderList = reminderList;
         this.context = context;
         this.reminderListFiltered= reminderList;
     }
 
-
+    /**
+     * onCreateViewHolder of adapter
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,6 +84,11 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
         return new ViewHolder(view);
     }
 
+    /**
+     * onBindViewHolder of adapter
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
@@ -79,6 +121,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
                 });
 
     }
+
+    /**
+     * Method to search the list according to user's input and get the filtered result
+     */
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -106,7 +152,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
                 //updatelist(reminderListFiltered);
                 return filterResults;
             }
-
+            /**
+             *Method to publish the filtered results
+             */
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 reminderListFiltered = (ArrayList<Reminder>) filterResults.values;
@@ -116,25 +164,43 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
             }
         };
     }
+
+    /**
+     * return item from filteredList
+     * @return
+     */
     public Reminder getItem (int position) {
         return reminderListFiltered.get(position);
     }
 
+    /**
+     * return size of arrayList
+     * @return
+     */
     @Override
     public int getItemCount() {
         return reminderListFiltered.size();
     }
 
-
+    /**
+     *
+     * @param onClickListner
+     */
     public void setOnClickListner(View.OnClickListener onClickListner)
     {
         OnClick = onClickListner;
     }
 
+    /**
+     *clickListener to check for switch material status change
+     */
     public void setStatusChangeListener(SwitchMaterial.OnCheckedChangeListener onCheckedChangeListener){
         statusChangeListener=onCheckedChangeListener;
     }
 
+    /**
+     * item class
+     */
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txt_title,txt_address,txt_distance;
         ImageView img_delete,img_edit,img_distance;
