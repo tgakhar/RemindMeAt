@@ -32,23 +32,66 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dhankara Chintan
+ * @author Karthik Modubowna
+ * Java class for Reminderdialog {@link ReminderdialogActivity}
+ */
 
 public class ReminderdialogActivity extends AppCompatActivity {
-
+    /**
+     * Object of FirebaseFirestore
+     */
     FirebaseFirestore db;
+    /**
+     * Object of FirebaseAuth
+     */
     FirebaseAuth auth;
+    /**
+     * Object of FirebaseUser
+     */
     FirebaseUser user;
+    /**
+     * Object of reminder
+     */
     Reminder reminder;
+    /**
+     * Variables of Text views
+     */
     TextView txt_tite,txt_location,txt_distance;
+    /**
+     * Variable of Image Views
+     */
     ImageView img_delete,img_location,img_edit;
+    /**
+     * object of Toggle Switch
+     */
     SwitchMaterial switchMaterial;
+    /**
+     * Object of dialog
+     */
     Dialog dialog1;
+
+    /**
+     * onCreate Method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminderdialog);
     }
 
+    /**
+     * showDialog Method used to display the dialog requested
+     * @param activity
+     * @param reminder
+     */
     public void showDialog(final FragmentActivity activity, final Reminder reminder) {
         this.reminder=reminder;
         final Dialog dialog = new Dialog(activity);
@@ -68,7 +111,9 @@ public class ReminderdialogActivity extends AppCompatActivity {
         //ImageView next = (ImageView) dialog.findViewById(R.id.btn_dialog);
 
         showReminderDetail(dialog,reminder);
-
+/**
+ * setOnClickListener method for when the title of the reminder is clicked
+ */
         txt_tite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +122,9 @@ public class ReminderdialogActivity extends AppCompatActivity {
                 activity.startActivity(i);
             }
         });
-
+/**
+ * setOnClickListener method for when the image of the reminder is clicked
+ */
         img_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +136,12 @@ public class ReminderdialogActivity extends AppCompatActivity {
         dialog.show();
 
     }
+
+    /**
+     * Method to show the details of the reminder
+     * @param dialog
+     * @param reminder
+     */
 
     private void showReminderDetail(final Dialog dialog, final Reminder reminder) {
 
@@ -118,9 +171,21 @@ public class ReminderdialogActivity extends AppCompatActivity {
                         txt_distance.setText(""+d+"Km");
                     }
                 });
+        /**
+         * setOnCheckedChangeListener to switch the active/inactive status of the reminder
+         */
         switchMaterial.setOnCheckedChangeListener(updateStatus);
+        /**
+         * Image View onClickListeners to Open Map
+         */
         img_location.setOnClickListener(openMap);
+        /**
+         * Text View onClickListener to Open Map
+         */
         txt_distance.setOnClickListener(openMap);
+        /**
+         * Image View onClickListener to delete reminder
+         */
         img_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +195,10 @@ public class ReminderdialogActivity extends AppCompatActivity {
                 DocumentReference docRef=db.collection("Users").document(user.getUid()).collection("Reminder").document(reminder.getReminderId());
 
                 docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    /**
+                     * Delete reminder onSuccess method
+                     * @param aVoid
+                     */
                     @Override
                     public void onSuccess(Void aVoid) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -154,6 +223,11 @@ public class ReminderdialogActivity extends AppCompatActivity {
 
 
     SwitchMaterial.OnCheckedChangeListener updateStatus=new CompoundButton.OnCheckedChangeListener() {
+        /**
+         * onCheckedChanged method to set active/inactive reminders
+         * @param compoundButton
+         * @param b
+         */
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
             auth=FirebaseAuth.getInstance();
@@ -189,7 +263,9 @@ public class ReminderdialogActivity extends AppCompatActivity {
         }
     };
 
-
+    /**
+     * onClickListener to open Map for navigation
+     */
     View.OnClickListener openMap =new View.OnClickListener() {
         @Override
         public void onClick(View view) {

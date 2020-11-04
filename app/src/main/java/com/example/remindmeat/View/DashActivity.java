@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.R;
-import com.example.remindmeat.ReminderhistoryActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,19 +30,62 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dhankara Chintan
+ * @author Karthik Modubowna
+ * Java class for Dash activity {@link DashActivity}
+ */
+
 public class DashActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
-
+    /**
+     * Variables for buttons
+     */
     Button btn_mapView,btn_listView;
+    /**
+     * Variable for floating action button
+     */
     FloatingActionButton btn_addReminder;
-
+    /**
+     * Variable for drawer layout
+     */
     DrawerLayout drawerLayout;
+    /**
+     * Variable for Navigation View
+     */
     NavigationView navigationView;
+    /**
+     * Variable for Material toolbar
+     */
     MaterialToolbar materialToolbar;
+    /**
+     * Object of FirebaseAuth
+     */
     FirebaseAuth auth;
+    /**
+     * object of FirebaseUser
+     */
     FirebaseUser curUser;
+    /**
+     * Variable of CircleImageView
+     */
     CircleImageView imageView;
+    /**
+     * Variables of TextViews
+     */
     TextView useremail, name;
+    /**
+     * Object of Firestore
+     */
     FirebaseFirestore db;
+    /**
+     * onCreate Method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,14 +102,24 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         imageView = header.findViewById(R.id.profile_image);
         useremail= header.findViewById(R.id.profile_email);
         name= header.findViewById(R.id.profile_name);
+        /**
+         * Image View OnClickListener to start profile activity
+         */
         imageView.setOnClickListener(openProfile);
+        /**
+         * TextView OnClickListeners to start profile activity
+         */
         useremail.setOnClickListener(openProfile);
         name.setOnClickListener(openProfile);
-
+        /**
+         * Toggle for Action Bar Drawer
+         */
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,materialToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
+        /**
+         * navigation Item click Listener
+         */
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
 
@@ -80,6 +132,10 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         startService();
         loadData();
     }
+
+    /**
+     * Button OnClickListener to start add reminder activity
+     */
     View.OnClickListener addReminder=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -87,6 +143,9 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
     };
+    /**
+     * OnClickListener to start profile activity
+     */
     View.OnClickListener openProfile  = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -96,6 +155,9 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    /**
+     * Method to start Foreground Service
+     */
     public void startService(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             //Intent intent=new Intent(this,LocationService.class);
@@ -109,7 +171,10 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
+    /**
+     * onClick method
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         NavController navController= Navigation.findNavController(DashActivity.this,R.id.nav_host_dash);
@@ -129,6 +194,12 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+    /**
+     * onNavigationItemSelected method
+     * @param item
+     * @return
+     */
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -156,6 +227,9 @@ public class DashActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+    /**
+     * loadData method to load user data from the FireStore database in the profile
+     */
     private void loadData() {
         curUser=auth.getCurrentUser();
         if(curUser!=null){

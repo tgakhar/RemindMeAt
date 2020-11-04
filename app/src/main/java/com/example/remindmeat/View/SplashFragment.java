@@ -22,24 +22,53 @@ import android.widget.TextView;
 
 import com.example.remindmeat.R;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dhankara Chintan
+ * @author Karthik Modubowna
+ * Java class for Splash Screen activity {@link SplashFragment}
+ */
 
 public class SplashFragment extends Fragment {
-
+    /**
+     * Variable for animation
+     */
     Animation topAnim,bottomAnim;
+    /**
+     * Variables for text views
+     */
     TextView txt_title,txt_tag;
+    /**
+     * Variable for image view
+     */
     ImageView img_main;
+    /**
+     * Constant int of 3000ms showing the time of the splash screen
+     */
     private static int SPLASH_SCREEN=3000;
     public SplashFragment() {
         // Required empty public constructor
     }
 
-
+    /**
+     * onCreate Method
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
+    /**
+     * onViewCreated Method
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -53,6 +82,9 @@ public class SplashFragment extends Fragment {
         txt_tag.setAnimation(bottomAnim);
 
         new Handler().postDelayed(new Runnable() {
+            /**
+             * Run Method to show Splash Screen with Animations
+              */
             @Override
             public void run() {
                 NavController navController= Navigation.findNavController(getActivity(),R.id.nav_host_main);
@@ -66,6 +98,13 @@ public class SplashFragment extends Fragment {
         },SPLASH_SCREEN);
     }
 
+    /**
+     * onViewCreated Method
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

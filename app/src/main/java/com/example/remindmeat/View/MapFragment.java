@@ -77,19 +77,58 @@ import java.util.Locale;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dhankara Chintan
+ * @author Karthik Modubowna
+ * Java class for MapFragment {@link MapFragment}
+ */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private final int REQUEST_LOCATION_PERMISSION = 1;
+    /**
+     * Object of GoogleMap Api
+     */
     GoogleMap mGoogleMap;
+    /**
+     * Object of SupportMapFragment
+     */
     SupportMapFragment mapFrag;
+    /**
+     * Variable for LocationRequest
+     */
     LocationRequest mLocationRequest;
+    /**
+     * Object of Location
+     */
     Location mLastLocation;
+    /**
+     * Object of marker for current location
+     */
     Marker mCurrLocationMarker;
+    /**
+     * Object of FusedLocationProviderClient
+     */
     FusedLocationProviderClient mFusedLocationClient;
+    /**
+     * Object of FirebaseAuth
+     */
     FirebaseAuth auth;
+    /**
+     * Object of FirebaseFirestore
+     */
     FirebaseFirestore db;
+    /**
+     * Object of FirebaseUser
+     */
     FirebaseUser curUser;
+    /**
+     * Object of Reminder ArrayList
+     */
     List<Reminder> reminderList=new ArrayList<>();
     ArrayList markerLocation= new ArrayList();
     private static final float COORDINATE_OFFSET = 0.000025f;
@@ -100,12 +139,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
+    /**
+     * onCreate Method
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * onCreateViewMethod
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -113,12 +162,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
+    /**
+     * onViewCreated Method
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
         requestLocationPermission();
+        /**
+         * Method to load the map
+         */
         loadMap();
         if(checkInternetConnection()){
             loadData();
@@ -128,6 +185,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    /**
+     * Method to load data from the Firebase Firestore
+     */
     private void loadData() {
         curUser=auth.getCurrentUser();
         CollectionReference collectionReference=db.collection("Users").document(curUser.getUid()).collection("Reminder");
@@ -162,10 +222,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    /**
+     * To store reminder's in {@link List} reminderList
+      * @param reminderId
+     * @param reminderTitle
+     * @param reminderLocation
+     * @param reminderDescription
+     * @param reminderDate
+     * @param reminderRepeat
+     * @param reminderRange
+     * @param reminderStatus
+     * @param reminderLat
+     * @param reminderLong
+     * @param reminderUid
+     */
     private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong, Integer reminderUid) {
         reminderList.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
 
     }
+
+    /**
+     * Method to check the Internet connection on the device
+     * @return
+     */
     public boolean checkInternetConnection() {
 
         //Check internet connection:
@@ -178,6 +257,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return connected;
     }
 
+    /**
+     * Method to run when there is no internet connection
+     */
     private void noInternetConnection() {
         final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.mapFrag),"No Internet Connection!!!",Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("Retry!", new View.OnClickListener() {
@@ -194,7 +276,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
+    /**
+     * Method to receive results for request permissions
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -204,6 +291,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         loadMap();
     }
 
+    /**
+     * Method to request permission to access user's location
+     */
     @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
     public void requestLocationPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -216,7 +306,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-
+    /**
+     * Method to load the map
+     */
     private void loadMap() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -237,6 +329,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
+            /**
+             * Method when a place is selected in the autocompleteFragment
+             */
             @Override
             public void onPlaceSelected(@NotNull Place place) {
                 // TODO: Get info about the selected place.
@@ -257,6 +352,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             }
 
+            /**
+             * Method when there is error in the fragment
+             * @param status
+             */
             @Override
             public void onError(@NotNull Status status) {
                 // TODO: Handle the error.
@@ -265,6 +364,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    /**
+     * Method to put markers on the map for the reminders
+     * @param latLng
+     * @param reminderId
+     */
     void putReminderMarker(LatLng latLng, String reminderId){
 
 
@@ -310,9 +414,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
 
-
     }
 
+    /**
+     * This method is used for marker clustering
+     * @param latLng
+     * @return
+     */
     private LatLng getLatLng(LatLng latLng) {
 
         LatLng updatedLatLng;
@@ -351,6 +459,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return updatedLatLng;
     }
 
+    /**
+     * onMapReadyMethod method is triggered when map is ready to be used
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -391,7 +503,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
+    /**
+     * Method used to receive notifications when device location changes
+     */
 
     LocationCallback mLocationCallback = new LocationCallback() {
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -414,7 +528,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     };
 
-
+    /**
+     * Place marker at current position
+     * @param latLng
+     */
     private void putmarker(LatLng latLng) {
         //Place current location marker
         if (mCurrLocationMarker != null) {
