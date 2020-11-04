@@ -23,15 +23,57 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * ReminderdetailsActivity java class used for showing reminder details
+ */
 public class ReminderdetailsActivity extends AppCompatActivity {
 
+    /**
+     * variable of FloatingActionButton
+     */
     FloatingActionButton navigate;
+
+    /**
+     * variable of Reminder
+     */
     Reminder reminder;
+
+    /**
+     * variable of MaterialToolbar
+     */
     MaterialToolbar toolbar;
+
+    /**
+     * variables of TextView
+     */
     TextView txt_title,txt_address,txt_description,txt_range,txt_repeat,txt_status,txt_date;
+
+    /**
+     * variable of FirebaseUser
+     */
     FirebaseUser curUser;
+
+    /**
+     * variable of FirebaseFirestore
+     */
     FirebaseFirestore db;
+
+    /**
+     * variable of FirebaseAuth
+     */
     FirebaseAuth auth;
+
+    /**
+     * onCreate method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +101,9 @@ public class ReminderdetailsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * OnMenuItemClickListener method for checking the item clicked
+     */
     Toolbar.OnMenuItemClickListener menuClick=new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
@@ -77,6 +122,9 @@ public class ReminderdetailsActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Alert diaolg box for deleting the reminder from the list
+     */
     private void deleteReminder() {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(ReminderdetailsActivity.this);
@@ -115,7 +163,9 @@ public class ReminderdetailsActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     *Method to set the text to be displayed in the TextView
+     */
     private void setTextData() {
         txt_title.setText(reminder.getReminderTitle());
         txt_range.setText("Within "+reminder.getReminderRange()+" m");
@@ -141,6 +191,9 @@ public class ReminderdetailsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * OnClickListener method
+     */
     View.OnClickListener toolNav=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -148,8 +201,14 @@ public class ReminderdetailsActivity extends AppCompatActivity {
         }
     };
 
-
+    /**
+     * OnClickListener method
+     */
     View.OnClickListener Navigate=new View.OnClickListener() {
+
+        /**
+         * OnClick event handler method for google maps
+         */
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,

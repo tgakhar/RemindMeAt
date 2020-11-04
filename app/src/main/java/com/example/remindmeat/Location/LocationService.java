@@ -57,30 +57,87 @@ import java.util.List;
 
 import io.grpc.android.BuildConfig;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * LocationService java class is used for foreground location services
+ */
 public class LocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
+    /**
+     * variable of FirebaseAuth
+     */
     FirebaseAuth auth;
+
+    /**
+     * variable of FirebaseFirestore
+     */
     FirebaseFirestore db;
+
+    /**
+     * variable of FirebaseUser
+     */
     FirebaseUser user;
+
+    /**
+     * Arraylist of Reminder type
+     */
     List<Reminder> reminderList=new ArrayList<>();
+    /**
+     * Tag for using in log
+     */
     public static final String TAG = LocationService.class.getSimpleName();
+    /**
+     * Interval in milli seconds for location check
+     */
     private static final long LOCATION_REQUEST_INTERVAL = 30000;
+    /**
+     * Location displacement value in meters for location check
+     */
     private static final float LOCATION_REQUEST_DISPLACEMENT = 30;
+    /**
+     * Object of {@link GoogleApiClient}
+     */
     private GoogleApiClient mGoogleApiClient;
+    /**
+     * Object of {@link FusedLocationProviderClient}
+     */
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    /**
+     * Object of {@link LocationRequest}
+     */
     private LocationRequest mLocationRequest;
+    /**
+     * Object of {@link LocationCallback}
+     */
     private LocationCallback mLocationCallback;
+    /**
+     * String variable to storing notification channel name
+     */
     private static final String CHANNEL_ID = "Notification";
+    /**
+     * int variable for storing accuracy mode value
+     */
     private static int accuracyMode = 100;
 
-
+    /**
+     * Method to provide binding for a service
+     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    /**
+     * onCreate method
+     */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -145,6 +202,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
     }
 
+    /**
+     * Method to check accuracy mode for location
+     */
     private void getAccuracyMode() {
         user=auth.getCurrentUser();
         db.collection("Users").document(user.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -161,6 +221,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     }
 
 
+    /**
+     * Method for triggering the notifications for reminders with complete intent
+     */
     private void createNotification(Reminder r) {
         NotificationCompat.Builder builder=new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID);
         createNotificationChannel();
@@ -192,6 +255,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         notificationManagerCompat.notify(r.getUid(), builder.build());
     }
 
+    /**
+     * Method to group our notifications into groups—channels
+     */
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
 
@@ -207,39 +273,10 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         }
     }
 
-   /* void loadData(){
-        user=auth.getCurrentUser();
-        String date= DateFormat.getDateInstance().format(new Date());
-        CollectionReference collectionReference=db.collection("Users").document(user.getUid()).collection("Reminder");
-        Query query=collectionReference.whereEqualTo("Status","1");
-        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                    if (((Long) document.getData().get("Status")).intValue() == 1) {
 
-                    }
-                        Log.d("LocationService", "Document=" + document.getData());
-                        String reminderId = document.getId();
-                        String reminderTitle = (String) document.getData().get("Title");
-                        String reminderLocation = (String) document.getData().get("Address");
-                        String reminderDescription = (String) document.getData().get("Description");
-                        String reminderDate = (String) document.getData().get("Date");
-                        Integer reminderRepeat = ((Long) document.getData().get("Repeat")).intValue();
-                        Integer reminderRange = ((Long) document.getData().get("Range")).intValue();
-                        Integer reminderStatus = ((Long) document.getData().get("Status")).intValue();
-                        Double reminderLat = (Double) document.getData().get("Latitude");
-                        Double reminderLong = (Double) document.getData().get("Longitude");
-                        Integer reminderUid = ((Long) document.getData().get("UniqueId")).intValue();
-                        //test.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
-                        addToList(reminderId, reminderTitle, reminderLocation, reminderDescription, reminderDate, reminderRepeat, reminderRange, reminderStatus, reminderLat, reminderLong, reminderUid);
-                        Log.d("ListView", "ListId=" + reminderId);
-
-                }
-            }
-        });
-    }*/
-
+    /**
+     * loadData for loading the Data from Cloud FireStore
+     */
    private void loadData() {
         user=auth.getCurrentUser();
         final String date= DateFormat.getDateInstance().format(new Date());
@@ -287,19 +324,37 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         });
     }
 
-
-
+    /**
+     * for adding the reminder to list
+     * @param reminderId
+     * @param reminderTitle
+     * @param reminderLocation
+     * @param reminderDescription
+     * @param reminderDate
+     * @param reminderRepeat
+     * @param reminderRange
+     * @param reminderStatus
+     * @param reminderLat
+     * @param reminderLong
+     * @param reminderUid
+     */
     private void addToList(String reminderId, String reminderTitle, String reminderLocation, String reminderDescription, String reminderDate, Integer reminderRepeat, Integer reminderRange, Integer reminderStatus, Double reminderLat, Double reminderLong, Integer reminderUid) {
         reminderList.add(new Reminder(reminderId,reminderTitle,reminderLocation,reminderDescription,reminderDate,reminderRepeat,reminderRange,reminderStatus,reminderLat,reminderLong,reminderUid));
         Log.d("Location","ListL="+reminderId);
     }
 
+    /**
+     *  Method called every time a client starts the service using startService
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         return START_STICKY;
     }
 
+    /**
+     *  Method called when user removed a task that comes from the service's application
+     */
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         Intent broadcastIntent = new Intent();
@@ -364,6 +419,10 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
             }
         }).addOnFailureListener(new OnFailureListener() {
+
+            /**
+             * Method called when device fails to get last location
+             */
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, "Failed="+e.getMessage());
@@ -374,6 +433,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
                 Looper.myLooper());
     }
 
+    /**
+     * Method for removing updates
+     */
     private void removeLocationUpdate() {
         mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
     }
@@ -413,6 +475,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         }
     }
 
+    /**
+     * Method to get location updates when connected
+     */
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "GoogleApi Client Connected");
@@ -420,16 +485,25 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         Log.d(TAG, "createLocationRequest Called");
     }
 
+    /**
+     * Method used when connection gets suspended
+     */
     @Override
     public void onConnectionSuspended(int i) {
         Log.d(TAG, "GoogleApi Client Suspended");
     }
 
+    /**
+     * Method for failure in connection to services
+     */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "GoogleApi Client Failed");
     }
 
+    /**
+     * Method called to destroy activity
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();

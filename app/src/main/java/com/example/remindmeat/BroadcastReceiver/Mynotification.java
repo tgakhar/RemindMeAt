@@ -21,11 +21,42 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * Mynotification java class for triggering when notifications using broadcast receiver
+ */
 public class Mynotification extends BroadcastReceiver {
+
+    /**
+     * variable of Reminder
+     */
     Reminder reminder;
+
+    /**
+     * variable of Firebase authentication
+     */
     FirebaseAuth auth;
+
+    /**
+     * variable of FirebaseFirestore
+     */
     FirebaseFirestore db;
+
+    /**
+     * variable of FirebaseUser
+     */
     FirebaseUser curUser;
+
+    /**
+     * Method to receive the broadcast receiver components
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         String action=intent.getStringExtra("Complete");
@@ -45,6 +76,9 @@ public class Mynotification extends BroadcastReceiver {
 
     }
 
+    /**
+     * Method to delete reminder from database
+     */
     private void deleteReminder(final Context context) {
         curUser=auth.getCurrentUser();
 
@@ -66,6 +100,9 @@ public class Mynotification extends BroadcastReceiver {
         });
     }
 
+    /**
+     * Method called when reminder goes to the reminderHistory list when completed
+     */
     private void saveToHistory(Context context) {
         Date date = new Date();
         Map<String, Object> reminderMap = new HashMap<>();

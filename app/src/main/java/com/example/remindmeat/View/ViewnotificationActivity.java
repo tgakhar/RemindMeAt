@@ -26,16 +26,57 @@ import java.util.Map;
 
 import in.shadowfax.proswipebutton.ProSwipeButton;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * ViewnotificationActivity java class used for viewing notification details
+ */
 public class ViewnotificationActivity extends AppCompatActivity {
 
+    /**
+     * variable of ProSwipe button
+     */
     ProSwipeButton proSwipeBtn;
+
+    /**
+     * variable of Reminder
+     */
     Reminder reminder;
+
+    /**
+     * variables of TextView
+     */
     TextView txt_title,txt_location,txt_description,txt_range;
+
+    /**
+     * variable of FirebaseAuth
+     */
     FirebaseAuth auth;
+
+    /**
+     * variable of FirebaseFirestore
+     */
     FirebaseFirestore db;
+
+    /**
+     * variable of Button
+     */
     Button btn_cancel;
+
+    /**
+     * variable of FirebaseUser
+     */
     FirebaseUser curUser;
 
+    /**
+     * onCreate method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +85,9 @@ public class ViewnotificationActivity extends AppCompatActivity {
         onNewIntent(getIntent());
     }
 
+    /**
+     * Method to add permissions to already existing ones
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -54,6 +98,9 @@ public class ViewnotificationActivity extends AppCompatActivity {
         showDetails();
     }
 
+    /**
+     * Method to show all details of reminder
+     */
     private void showDetails() {
         Toast.makeText(this, "Title="+reminder.getReminderTitle(), Toast.LENGTH_SHORT).show();
         txt_title=findViewById(R.id.txt_notificationTitle);
@@ -70,7 +117,9 @@ public class ViewnotificationActivity extends AppCompatActivity {
         btn_cancel.setOnClickListener(cancel);
     }
 
-
+    /**
+     * OnClickListener method
+     */
     View.OnClickListener cancel=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -79,6 +128,9 @@ public class ViewnotificationActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * OnSwipeListener method for complete reminder
+     */
     ProSwipeButton.OnSwipeListener completeReminder=new ProSwipeButton.OnSwipeListener() {
         @Override
         public void onSwipeConfirm() {
@@ -98,6 +150,9 @@ public class ViewnotificationActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Method to delete reminder from database collection
+     */
     private void deleteReminder() {
         curUser=auth.getCurrentUser();
 
@@ -119,6 +174,9 @@ public class ViewnotificationActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method for saving reminder in reminderHistory list
+     */
     private void saveToHistory() {
         Date date = new Date();
         Map<String, Object> reminderMap = new HashMap<>();

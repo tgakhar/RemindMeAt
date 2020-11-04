@@ -149,7 +149,7 @@ public class ReminderHistoryAdapter extends RecyclerView.Adapter<ReminderHistory
 
 
     /**
-     *  This method returns position of item in {@link ArrayList reminderFiltered}
+     * This method returns position of item in {@link ArrayList reminderFiltered}
      * @param position
      * @return
      */

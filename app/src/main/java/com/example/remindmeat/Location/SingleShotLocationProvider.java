@@ -8,12 +8,26 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * SingleShotLocationProvider java class used for getting the current location fast and only single time
+ */
 public class SingleShotLocationProvider {
 
+    /**
+     *  Method for receiving notifications from the FusedLocationProviderApi
+     */
     public static interface LocationCallback {
         public void onNewLocationAvailable(GPSCoordinates location);
     }
@@ -39,19 +53,28 @@ public class SingleShotLocationProvider {
                 return;
             }
             locationManager.requestSingleUpdate(criteria, new LocationListener() {
+
+                /**
+                 * Method to get new GPS coordinates on location change
+                 */
                 @Override
                 public void onLocationChanged(Location location) {
                     callback.onNewLocationAvailable(new GPSCoordinates(location.getLatitude(), location.getLongitude()));
                 }
 
+
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) {
                 }
+
 
                 @Override
                 public void onProviderEnabled(String provider) {
                 }
 
+                /**
+                 * Method called when the provider is disabled by the user.
+                 */
                 @Override
                 public void onProviderDisabled(String provider) {
                 }
@@ -62,20 +85,37 @@ public class SingleShotLocationProvider {
                 Criteria criteria = new Criteria();
                 criteria.setAccuracy(Criteria.ACCURACY_FINE);
                 locationManager.requestSingleUpdate(criteria, new LocationListener() {
+
+                    /**
+                     *Method called when the location has changed.
+                     */
                     @Override
                     public void onLocationChanged(Location location) {
                         callback.onNewLocationAvailable(new GPSCoordinates(location.getLatitude(), location.getLongitude()));
                     }
 
+                    /**
+                     *Method called when the status has changed.
+                     */
                     @Override public void onStatusChanged(String provider, int status, Bundle extras) { }
+
+                    /**
+                     *Method called when the provider is enabled
+                     */
                     @Override public void onProviderEnabled(String provider) { }
+
+                    /**
+                     *Method called when the provider is disabled
+                     */
                     @Override public void onProviderDisabled(String provider) { }
                 }, null);
             }
         }
     }
 
-
+    /**
+     *Method to get GPS coordinates, latitude and longitude
+     */
     // consider returning Location instead of this dummy wrapper class
     public static class GPSCoordinates {
         public float longitude = -1;
