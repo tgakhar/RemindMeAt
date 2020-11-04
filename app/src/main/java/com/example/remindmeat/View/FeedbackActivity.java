@@ -12,11 +12,41 @@ import android.widget.EditText;
 import com.example.remindmeat.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dankhara Chintan
+ * @author Karthik Modubowna
+ * This java class is for {@link FeedbackActivity}
+ */
 public class FeedbackActivity extends AppCompatActivity {
+
+    /**
+     * Variable of send feedback button
+     */
     Button btn_send;
+    /**
+     * Variable of edit text
+     */
     EditText txt_message;
+
+    /**
+     * Variable of String type for storing message.
+     */
     String message;
+
+    /**
+     * variable of toolbar
+     */
     MaterialToolbar toolbar;
+
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +64,9 @@ public class FeedbackActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * OnCLickListener for back button click in toolbar
+     */
     View.OnClickListener toolNav=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -41,6 +74,9 @@ public class FeedbackActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * this method open E-mail application for sending feedback
+     */
     private void sendFeedback() {
         String[] TO = {"dhruvj5418@gmail.com","karthik.bablu25@gmail.com","gakhartanvi@gmail.com","nishuuukaur12@gmail.com","akshay9varma@gmail.com","dankharachintan@gmail.com","saikamaljit181294@gmail.com"};
         String[] CC = {""};

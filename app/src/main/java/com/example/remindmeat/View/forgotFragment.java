@@ -27,21 +27,63 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 
+/**
+ * @author Patel Dhruv
+ * @author Gakhar Tanvi
+ * @author Kaur Sarbjit
+ * @author Kaur Kamaljit
+ * @author Varma Akshay
+ * @author Dhankara Chintan
+ * @author Karthik Modubowna
+ * Java class for MapFragment {@link forgotFragment}
+ */
 public class forgotFragment extends Fragment {
 
+    /**
+     * Variables of TextView
+     */
     TextView txt_login,txt_title,txt_tag;
+
+    /**
+     * variables of material TextInputLayout
+     */
     TextInputLayout txt_layEmail;
+    /**
+     * Variable of forgot button
+     */
     Button btn_forgot;
+
+    /**
+     * Variable of String type for storing email.
+     */
     String email;
+
+    /**
+     * Object of {@link FirebaseAuth}
+     */
     FirebaseAuth auth;
+    /**
+     * Variable of LinearLayout
+     */
     LinearLayout layout_bottom;
+
+    /**
+     * Variable of ImageView for logo
+     */
     ImageView img_logo;
+
+    /**
+     * Default constructor
+     */
     public forgotFragment() {
         // Required empty public constructor
     }
 
 
-
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +92,11 @@ public class forgotFragment extends Fragment {
 
     }
 
+    /**
+     * onViewCreated
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -65,6 +112,9 @@ public class forgotFragment extends Fragment {
     }
 
 
+    /**
+     * Click listener for forgot button for sending password reset link to user's email
+     */
     View.OnClickListener forgot=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -96,6 +146,9 @@ public class forgotFragment extends Fragment {
     };
 
 
+    /**
+     * Click listener for navigation to login page
+     */
     View.OnClickListener login=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -113,6 +166,13 @@ public class forgotFragment extends Fragment {
     };
 
 
+    /**
+     * onCreateView
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,6 +180,10 @@ public class forgotFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_forgot, container, false);
     }
 
+    /**
+     * method for checking validations
+     * @return
+     */
     public boolean checkEmptyField() {
 
         if (TextUtils.isEmpty(email)) {
