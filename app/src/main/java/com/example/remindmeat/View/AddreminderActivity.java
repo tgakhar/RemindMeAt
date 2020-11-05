@@ -44,8 +44,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -273,8 +276,17 @@ public class AddreminderActivity extends AppCompatActivity {
             materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                 @Override
                 public void onPositiveButtonClick(Object selection) {
-                    edt_date.getEditText().setText(materialDatePicker.getHeaderText());
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+                    Date date = null;
+                    try {
+                         date = sdf.parse(materialDatePicker.getHeaderText());
 
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    sdf.applyPattern("dd-MM-yyyy");
+                    edt_date.getEditText().setText(sdf.format(date));
+                    Log.d("Add","Long="+selection);
                 }
             });
         }

@@ -1,4 +1,4 @@
-package com.example.remindmeat;
+package com.example.remindmeat.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,15 +16,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.remindmeat.Adapter.ReminderAdapter;
 import com.example.remindmeat.Adapter.ReminderHistoryAdapter;
-import com.example.remindmeat.Location.LocationService;
-import com.example.remindmeat.Model.Admin;
 import com.example.remindmeat.Model.Reminder;
-import com.example.remindmeat.View.AddreminderActivity;
-import com.example.remindmeat.View.DashActivity;
-import com.example.remindmeat.View.EditreminderActivity;
-import com.example.remindmeat.View.ProfileActivity;
+import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -39,9 +32,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Patel Dhruv

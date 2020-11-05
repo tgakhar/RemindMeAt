@@ -50,6 +50,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -96,7 +97,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     /**
      * Interval in milli seconds for location check
      */
-    private static final long LOCATION_REQUEST_INTERVAL = 30000;
+    private static final long LOCATION_REQUEST_INTERVAL = 10000;
     /**
      * Location displacement value in meters for location check
      */
@@ -142,12 +143,13 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     public void onCreate() {
         super.onCreate();
 
-        buildGoogleApiClient();
+
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
         user=auth.getCurrentUser();
         getAccuracyMode();
         loadData();
+        buildGoogleApiClient();
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -279,7 +281,10 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
      */
    private void loadData() {
         user=auth.getCurrentUser();
-        final String date= DateFormat.getDateInstance().format(new Date());
+        //final String date= DateFormat.getDateInstance().format(new Date());
+        //DateFormat simple = new SimpleDateFormat("dd MMM yyyy");
+        String pattern = "dd-MM-yyyy";
+       final String date =new SimpleDateFormat(pattern).format(new Date());
         int s=1;
         Log.d("LocationService","Date="+date);
         CollectionReference collectionReference=db.collection("Users").document(user.getUid()).collection("Reminder");
