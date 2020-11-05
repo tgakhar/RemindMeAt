@@ -35,7 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
  * @author Varma Akshay
  * @author Dhankara Chintan
  * @author Karthik Modubowna
- * Java class for MapFragment {@link forgotFragment}
+ * Java class for ForgotFragment {@link forgotFragment}
  */
 public class forgotFragment extends Fragment {
 

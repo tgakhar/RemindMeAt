@@ -277,7 +277,7 @@ public class AddreminderActivity extends AppCompatActivity {
                 @Override
                 public void onPositiveButtonClick(Object selection) {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-                    Date date = null;
+                    Date date = new Date();
                     try {
                          date = sdf.parse(materialDatePicker.getHeaderText());
 
