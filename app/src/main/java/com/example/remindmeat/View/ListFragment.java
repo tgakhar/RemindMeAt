@@ -1,9 +1,12 @@
 package com.example.remindmeat.View;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -94,13 +98,21 @@ public class ListFragment extends Fragment {
      * EditText variable
      */
     EditText search;
-    //For exapndable Floating menu
+
+    /**
+     * Final int variable
+     */
+    private final int REQUEST_LOCATION_PERMISSION = 1;
+
+    /**
+     *   For exapndable Floating menu
+     */
     private FloatingActionButton fab_main, fab_all, fab_inactive,fab_active;
     private Animation fab_open, fab_close, fab_clock, fab_anticlock;
     TextView textview_all,textview_mail, textview_active;
     int status=0;
     Boolean isOpen = false;
-
+    private boolean connected;
     /**
      * default constructor for the class
      */
@@ -143,7 +155,11 @@ public class ListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView_listReminder = view.findViewById(R.id.recycler_listReminder);
-        loadData();
+        if(checkInternetConnection()){
+            loadData();
+        }else {
+            noInternetConnection();
+        }
 
         fab_main = view.findViewById(R.id.fab);
         fab_all = view.findViewById(R.id.fab_all);
@@ -184,6 +200,43 @@ public class ListFragment extends Fragment {
         });
         searchList();
     }
+
+    /**
+     * Method to check the Internet connection on the device
+     * @return
+     */
+    public boolean checkInternetConnection() {
+
+        //Check internet connection:
+        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        //Means that we are connected to a network (mobile or wi-fi)
+        connected = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
+
+        return connected;
+    }
+
+    /**
+     * Method to run when there is no internet connection
+     */
+    private void noInternetConnection() {
+        final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.listFrag),"No Internet Connection!!!",Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Retry!", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkInternetConnection()){
+                    snackbar.dismiss();
+                    loadData();
+                }else {
+                    noInternetConnection();
+                }
+            }
+        }).show();
+    }
+
+
+
 
     /**
      * For setting the drawable resource file for search list

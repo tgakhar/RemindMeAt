@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.remindmeat.Adapter.AdminAdapter;
+import com.example.remindmeat.Location.LocationService;
 import com.example.remindmeat.Model.Admin;
 import com.example.remindmeat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -125,9 +128,31 @@ public class AdminActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                auth.signOut();
-                Intent intent=new Intent(AdminActivity.this,MainActivity.class);
-                startActivity(intent);
+
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(AdminActivity.this);
+                builder.setMessage("Do you want to Sign out?")
+                        .setCancelable(false)
+                        .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                auth.signOut();
+                                Intent intent=new Intent(AdminActivity.this,MainActivity.class);
+                                startActivity(intent);
+
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //  Action for 'NO' Button
+                                dialog.cancel();
+                            }
+                        });
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle("Sign Out!!!");
+                alert.show();
+
             }
         });
         db=FirebaseFirestore.getInstance();
