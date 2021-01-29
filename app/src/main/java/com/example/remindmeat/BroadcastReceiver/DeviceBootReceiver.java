@@ -22,7 +22,7 @@ import com.example.remindmeat.View.AddreminderActivity;
 public class DeviceBootReceiver extends BroadcastReceiver {
 
     /**
-     * Method to receive the broadcast receiver components
+     * Method to receive the broadcast receiver components to start service
      */
     @Override
     public void onReceive(Context context, Intent intent) {
